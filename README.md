@@ -1,2 +1,5 @@
-# SmoreJS
-the js side of a discord bot named SmoreBot
+# SmoreBot JS
+
+<b> What is it </b>
+SmoreBot JS is the JavaScript bot written in Discord.js and Node.js it is designed to have music and server prefixes with custom settings per guild!
+
