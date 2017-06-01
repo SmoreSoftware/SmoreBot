@@ -46,14 +46,18 @@ client.on("message", message => {
   function restOfCode(prefix, adminrole, modlog, servername, serverid, serverowner) {
     let args = message.content.split(' ').slice(1);
     if (message.content.startsWith(prefix + "ping")) {
-      message.channel.sendMessage("**STATUS**:")
-      message.channel.sendMessage("**Connection to Discord.js**: Connected")
-      message.channel.sendMessage("**Connection to MySQL Database**: Connected")
+      message.channel.send("**STATUS**:")
+      message.channel.send("**Connection to Discord.js**: Connected")
+      message.channel.send("**Connection to MySQL Database**: Connected")
+      message.channel.send("Finding response time...")
+        .then((newMsg) => {
+          newMsg.edit("**Response time**:" + (newMsg.createdTimestamp - msg.createdTimestamp) + "ms");
+        });
     } else if (message.content.startsWith(prefix + "set prefix")) {
       if (hasRole(message.member, adminrole)) {
         let newprefix = args[1];
         connection.query("update tests set prefix = ? where serverid = ?", [newprefix, message.guild.id]);
-        message.channel.sendMessage("Set prefix to " + newprefix)
+        message.channel.send("Set prefix to " + newprefix)
       } else {
         message.reply(`You do not have permission to do this! Only people with this role can access this command! \`Role Required: ${adminrole}\`, this is changeable with \`${prefix}set admin role\``);
       }
@@ -61,7 +65,7 @@ client.on("message", message => {
       if (message.author.id === serverowner) {
         let adminrole = args[2];
         connection.query("update tests set adminrole = ? where serverid = ?", [adminrole, message.guild.id]);
-        message.channel.sendMessage("Set adminrole to " + adminrole);
+        message.channel.send("Set adminrole to " + adminrole);
       } else {
         message.reply(`Sorry, only the guild owner can do this, contact ${client.guilds.get(serverid).owner.displayName} if there any issues!`);
       }
@@ -75,8 +79,8 @@ client.on("message", message => {
       if (hasRole(message.member, adminrole)) {
         let newmodlog = message.mentions.channels.first().id;
         connection.query("update tests set modlog = ? where serverid = ?", [newmodlog, message.guild.id]);
-        message.channel.sendMessage("Set Modlog to channel to <#" + newmodlog + ">");
-        message.guild.channels.find("id", newmodlog).sendMessage("Mod logs have been enabled in this channel, all moderation actions will go here");
+        message.channel.send("Set Modlog to channel to <#" + newmodlog + ">");
+        message.guild.channels.find("id", newmodlog).send("Mod logs have been enabled in this channel, all moderation actions will go here");
       } else {
         message.reply(`You do not have permission to do this! Only people with this role can access this command! \`Role Required: ${adminrole}\`, this is changeable with \`${prefix}setadmin\``);
       }
