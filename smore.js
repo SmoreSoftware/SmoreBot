@@ -2,17 +2,21 @@ const Discord = require("discord.js");
 const client = new Discord.Client();
 const mysql = require('mysql');
 const connection = mysql.createConnection({
-  host     : 'fgddfgdfgfdgfdgdfg',
-  user     : 'fdgdfgdfgdfgdfgfdgfdg',
-  password : 'fdgdfgfdgfdgfdg',
-  database : 'fdgfdgsdgsdfgsdfgafdaefe'
+  host: 'fgddfgdfgfdgfdgdfg',
+  user: 'fdgdfgdfgdfgdfgfdgfdg',
+  password: 'fdgdfgfdgfdgfdg',
+  database: 'fdgfdgsdgsdfgsdfgafdaefe'
 });
+
 function pluck(array) {
-    return array.map((item) => { return item["name"] });
+  return array.map((item) => {
+    return item["name"]
+  });
 }
+
 function hasRole(mem, role) {
-	if(pluck(mem.roles).includes(role)) return true;
-        else return false;
+  if (pluck(mem.roles).includes(role)) return true;
+  else return false;
 }
 connection.connect();
 let settings;
@@ -20,68 +24,77 @@ client.on("ready", () => {
   console.log("logged in and connected to database!")
   client.user.setGame("BETA SOFTWARE!");
   connection.query("SELECT * FROM tests", (err, results) => {
-  if (err) return console.error(err);
-  settings = results;
-});
+    if (err) return console.error(err);
+    settings = results;
+  });
 });
 
 client.on("message", message => {
   connection.query("SELECT * FROM tests WHERE serverid = ?", [message.guild.id], (err, results) => {
-if (err) return console.error(err);
-if (results.length > 0){
-let prefix = results[0].prefix;
-let adminrole = results[0].adminrole;
-let modlog = results[0].modlog;
-let servername = results[0].servername;
-let serverid = results[0].serverid;
-let serverowner = results[0].serverowner;
-restOfCode(prefix, adminrole, modlog, servername, serverid, serverowner);
-}
-});
-function restOfCode(prefix, adminrole, modlog, servername, serverid, serverowner){
- let args = message.content.split(' ').slice(1);
-if(message.content.startsWith(prefix + "ping")){
-message.channel.sendMessage("**STATUS**:")
-    message.channel.sendMessage("**Connection to Discord.js**: Connected")
-    message.channel.sendMessage("**Connection to MySQL Database**: Connected")
-}
-if(message.content.startsWith(prefix + "set prefix")){
-  if(hasRole(message.member, adminrole)){
-  let newprefix = args[1];
-  connection.query("update tests set prefix = ? where serverid = ?", [newprefix, message.guild.id]);
-  message.channel.sendMessage("Set prefix to " + newprefix)
-  } else {
-  message.reply(`You do not have permission to do this! Only people with this role can access this command! \`Role Required: ${adminrole}\`, this is changeable with \`${prefix}set admin role\``);
-}
-}
-if(message.content.startsWith(prefix + "set admin role")){
-  if(message.author.id === serverowner){
-  let adminrole = args[2];
-  connection.query("update tests set adminrole = ? where serverid = ?", [adminrole, message.guild.id]);
-  message.channel.sendMessage("Set adminrole to " + adminrole);
-  } else {
-  message.reply(`Sorry, only the guild owner can do this, contact ${client.guilds.get(serverid).owner.displayName} if there any issues!`);
-}
-}
-if(message.content.startsWith(prefix + "debug")){
-  if(message.author.id !== "220568440161697792"){
-    message.channel.send("Sorry, only the JS Dev `SpaceX#0276` can do this!");
-  } else {
-    message.channel.send(`The settings on the database for this guild are \nPrefix: ${prefix}\nAdmin Role: ${adminrole}\nModLog channel: ${modlog}\nServer Name: ${servername}/${client.guilds.get(serverid).name}\nServer ID: ${serverid}\nServer Owner: ${serverowner}/${client.guilds.get(serverid).owner.displayName}`);
+    if (err) return console.error(err);
+    if (results.length > 0) {
+      let prefix = results[0].prefix;
+      let adminrole = results[0].adminrole;
+      let modlog = results[0].modlog;
+      let servername = results[0].servername;
+      let serverid = results[0].serverid;
+      let serverowner = results[0].serverowner;
+      restOfCode(prefix, adminrole, modlog, servername, serverid, serverowner);
     }
-}
-if(message.content.startsWith(prefix + "set modlog")){
-  if(hasRole(message.member, adminrole)){
-  let newmodlog = message.mentions.channels.first().id;
-  connection.query("update tests set modlog = ? where serverid = ?", [newmodlog, message.guild.id]);
-  message.channel.sendMessage("Set Modlog to channel to <#" + newmodlog + ">");
-  message.guild.channels.find("id", newmodlog).sendMessage("Mod logs have been enabled in this channel, all moderation actions will go here");
-  } else {
-  message.reply(`You do not have permission to do this! Only people with this role can access this command! \`Role Required: ${adminrole}\`, this is changeable with \`${prefix}setadmin\``);
-}
-}
-}
+  });
 
+  function restOfCode(prefix, adminrole, modlog, servername, serverid, serverowner) {
+    let args = message.content.split(' ').slice(1);
+    if (message.content.startsWith(prefix + "ping")) {
+      message.channel.sendMessage("**STATUS**:")
+      message.channel.sendMessage("**Connection to Discord.js**: Connected")
+      message.channel.sendMessage("**Connection to MySQL Database**: Connected")
+    } else if (message.content.startsWith(prefix + "set prefix")) {
+      if (hasRole(message.member, adminrole)) {
+        let newprefix = args[1];
+        connection.query("update tests set prefix = ? where serverid = ?", [newprefix, message.guild.id]);
+        message.channel.sendMessage("Set prefix to " + newprefix)
+      } else {
+        message.reply(`You do not have permission to do this! Only people with this role can access this command! \`Role Required: ${adminrole}\`, this is changeable with \`${prefix}set admin role\``);
+      }
+    } else if (message.content.startsWith(prefix + "set admin role")) {
+      if (message.author.id === serverowner) {
+        let adminrole = args[2];
+        connection.query("update tests set adminrole = ? where serverid = ?", [adminrole, message.guild.id]);
+        message.channel.sendMessage("Set adminrole to " + adminrole);
+      } else {
+        message.reply(`Sorry, only the guild owner can do this, contact ${client.guilds.get(serverid).owner.displayName} if there any issues!`);
+      }
+    } else if (message.content.startsWith(prefix + "debug")) {
+      if (message.author.id !== "220568440161697792") {
+        message.channel.send("Sorry, only the JS Dev `SpaceX#0276` can do this!");
+      } else {
+        message.channel.send(`The settings on the database for this guild are \nPrefix: ${prefix}\nAdmin Role: ${adminrole}\nModLog channel: ${modlog}\nServer Name: ${servername}/${client.guilds.get(serverid).name}\nServer ID: ${serverid}\nServer Owner: ${serverowner}/${client.guilds.get(serverid).owner.displayName}`);
+      }
+    } else if (message.content.startsWith(prefix + "set modlog")) {
+      if (hasRole(message.member, adminrole)) {
+        let newmodlog = message.mentions.channels.first().id;
+        connection.query("update tests set modlog = ? where serverid = ?", [newmodlog, message.guild.id]);
+        message.channel.sendMessage("Set Modlog to channel to <#" + newmodlog + ">");
+        message.guild.channels.find("id", newmodlog).sendMessage("Mod logs have been enabled in this channel, all moderation actions will go here");
+      } else {
+        message.reply(`You do not have permission to do this! Only people with this role can access this command! \`Role Required: ${adminrole}\`, this is changeable with \`${prefix}setadmin\``);
+      }
+    } else if (msg.content.startsWith(prefix + "eval")) {
+      let code;
+      try {
+        code = eval(msg.content.split(' ').slice(1).join(' '));
+        //if (typeof code !== 'string') code = util.inspect(code);
+      } catch (err) {
+        code = err.msg;
+      }
+      let evaled = `:inbox_tray: **Input:**\`\`\`js\n${msg.content.split(' ').slice(1)}\`\`\`\n\n:outbox_tray: **Output:**\n\`\`\`js\n${code}\`\`\``;
+      channel.send('evaling...')
+        .then((newMsg) => {
+          newMsg.edit(evaled)
+        });
+    }
+  }
 });
 
 client.on("guildCreate", (server) => {
