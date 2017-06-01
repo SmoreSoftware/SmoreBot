@@ -80,16 +80,16 @@ client.on("message", message => {
       } else {
         message.reply(`You do not have permission to do this! Only people with this role can access this command! \`Role Required: ${adminrole}\`, this is changeable with \`${prefix}setadmin\``);
       }
-    } else if (msg.content.startsWith(prefix + "eval")) {
+    } else if (message.content.startsWith(prefix + "eval")) {
       let code;
       try {
-        code = eval(msg.content.split(' ').slice(1).join(' '));
+        code = eval(message.content.split(" ").slice(1).join(" "));
         //if (typeof code !== 'string') code = util.inspect(code);
       } catch (err) {
-        code = err.msg;
+        code = err.essage;
       }
-      let evaled = `:inbox_tray: **Input:**\`\`\`js\n${msg.content.split(' ').slice(1)}\`\`\`\n\n:outbox_tray: **Output:**\n\`\`\`js\n${code}\`\`\``;
-      channel.send('evaling...')
+      let evaled = `:inbox_tray: **Input:**\`\`\`js\n${message.content.split(' ').slice(1)}\`\`\`\n\n:outbox_tray: **Output:**\n\`\`\`js\n${code}\`\`\``;
+      message.channel.send("evaling...")
         .then((newMsg) => {
           newMsg.edit(evaled)
         });
