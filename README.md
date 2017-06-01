@@ -11,7 +11,7 @@ SmoreBot JS is the JavaScript bot written in Discord.js and Node.js it is design
     <th>Job</th>
   </tr>
   <tr>
-    <td>SpaceX</td>
+    <td>Space</td>
     <td>SpaceX#0276</td>
     <td>Head of JS Team</td>
   </tr>
