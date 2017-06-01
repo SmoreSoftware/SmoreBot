@@ -70,11 +70,8 @@ client.on("message", message => {
         message.reply(`Sorry, only the guild owner can do this, contact ${client.guilds.get(serverid).owner.displayName} if there any issues!`);
       }
     } else if (message.content.startsWith(prefix + "debug")) {
-      if (message.author.id !== "220568440161697792") {
-        message.channel.send("Sorry, only the JS Dev `SpaceX#0276` can do this!");
-      } else {
-        message.channel.send(`The settings on the database for this guild are \nPrefix: ${prefix}\nAdmin Role: ${adminrole}\nModLog channel: ${modlog}\nServer Name: ${servername}/${client.guilds.get(serverid).name}\nServer ID: ${serverid}\nServer Owner: ${serverowner}/${client.guilds.get(serverid).owner.displayName}`);
-      }
+      if (message.author.id !== "220568440161697792") return message.channel.send("Sorry, only the JS Dev `SpaceX#0276` can do this!");
+      message.channel.send(`The settings on the database for this guild are \nPrefix: ${prefix}\nAdmin Role: ${adminrole}\nModLog channel: ${modlog}\nServer Name: ${servername}/${client.guilds.get(serverid).name}\nServer ID: ${serverid}\nServer Owner: ${serverowner}/${client.guilds.get(serverid).owner.displayName}`);
     } else if (message.content.startsWith(prefix + "set modlog")) {
       if (hasRole(message.member, adminrole)) {
         let newmodlog = message.mentions.channels.first().id;
@@ -85,8 +82,10 @@ client.on("message", message => {
         message.reply(`You do not have permission to do this! Only people with this role can access this command! \`Role Required: ${adminrole}\`, this is changeable with \`${prefix}setadmin\``);
       }
     } else if (message.content.startsWith(prefix + "eval")) {
+      if (message.author.id !== "220568440161697792") return message.channel.send("Sorry, only the JS Dev `SpaceX#0276` can do this!");
       let code;
       try {
+        if (message.content.includes.tolowerCase("token")) return message.channel.send('The message was censored because it contained sensitive information!')
         code = eval(message.content.split(" ").slice(1).join(" "));
         //if (typeof code !== 'string') code = util.inspect(code);
       } catch (err) {
