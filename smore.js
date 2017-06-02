@@ -52,7 +52,7 @@ client.on("message", message => {
       message.channel.send("**Connection to MySQL Database**: Connected")
       message.channel.send("Finding response time...")
         .then((newMsg) => {
-          newMsg.edit("**Response time**:" + (newMsg.createdTimestamp - msg.createdTimestamp) + "ms");
+          newMsg.edit("**Response time**:" + (Date.now() - message.createdTimestamp) + "ms");
         });
     } else if (message.content.startsWith(prefix + "set prefix")) {
       if (hasRole(message.member, adminrole)) {
@@ -83,17 +83,17 @@ client.on("message", message => {
         message.reply(`You do not have permission to do this! Only people with this role can access this command! \`Role Required: ${adminrole}\`, this is changeable with \`${prefix}setadmin\``);
       }
     } else if (message.content.startsWith(prefix + "eval")) {
-      if (!devs.includes(msg.author.id)) return msg.channel.send("Sorry, only the JS Devs `SpaceX#0276` or `TJDoesCode#6088` can do this!");
+      if (!devs.includes(message.author.id)) return message.channel.send("Sorry, only the JS Devs `SpaceX#0276` or `TJDoesCode#6088` can do this!");
       let code;
       try {
-        if (msg.content.includes("token") || msg.content.includes("\`token\`")) return msg.channel.send('The message was censored because it contained sensitive information!');
-        code = eval(msg.content.split(" ").slice(1).join(" "));
+        if (message.content.includes("token") || message.content.includes("\`token\`")) return message.channel.send('The message was censored because it contained sensitive information!');
+        code = eval(message.content.split(" ").slice(1).join(" "));
         //if (typeof code !== 'string') code = util.inspect(code);
       } catch (err) {
         code = err.essage;
       }
-      let evaled = `:inbox_tray: **Input:**\`\`\`js\n${msg.content.split(' ').slice(1)}\`\`\`\n\n:outbox_tray: **Output:**\n\`\`\`js\n${code}\`\`\``;
-      msg.channel.send("evaling...")
+      let evaled = `:inbox_tray: **Input:**\`\`\`js\n${message.content.split(' ').slice(1)}\`\`\`\n\n:outbox_tray: **Output:**\n\`\`\`js\n${code}\`\`\``;
+      message.channel.send("evaling...")
         .then((newMsg) => {
           newMsg.edit(evaled)
         });
