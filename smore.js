@@ -44,7 +44,7 @@ client.on("message", message => {
   });
 
   function restOfCode(prefix, adminrole, modlog, servername, serverid, serverowner) {
-    let devs = ["220568440161697792", "197891949913571329"];
+    let devs = ["220568440161697792", "197891949913571329", "186295030388883456", "251383432331001856"];
     let args = message.content.split(' ').slice(1);
     if (message.content.startsWith(prefix + "ping")) {
       message.channel.send("**STATUS**:")
@@ -71,7 +71,7 @@ client.on("message", message => {
         message.reply(`Sorry, only the guild owner can do this, contact ${client.guilds.get(serverid).owner.displayName} if there any issues!`);
       }
     } else if (message.content.startsWith(prefix + "debug")) {
-      if (!devs.includes(message.author.id)) return message.channel.send("Sorry, only the JS Devs `SpaceX#0276` or `TJDoesCode#6088` can do this!");
+      if (message.author.id !== "220568440161697792") return message.channel.send("Sorry, only the JS Dev `SpaceX#0276` can do this!");
       message.channel.send(`The settings on the database for this guild are \nPrefix: ${prefix}\nAdmin Role: ${adminrole}\nModLog channel: ${modlog}\nServer Name: ${servername}/${client.guilds.get(serverid).name}\nServer ID: ${serverid}\nServer Owner: ${serverowner}/${client.guilds.get(serverid).owner.displayName}`);
     } else if (message.content.startsWith(prefix + "set modlog")) {
       if (hasRole(message.member, adminrole)) {
@@ -83,17 +83,17 @@ client.on("message", message => {
         message.reply(`You do not have permission to do this! Only people with this role can access this command! \`Role Required: ${adminrole}\`, this is changeable with \`${prefix}setadmin\``);
       }
     } else if (message.content.startsWith(prefix + "eval")) {
-      if (!devs.includes(message.author.id)) return message.channel.send("Sorry, only the JS Devs `SpaceX#0276` or `TJDoesCode#6088` can do this!");
+      if (!devs.includes(msg.author.id)) return msg.channel.send("Sorry, only the JS Devs `SpaceX#0276` or `TJDoesCode#6088` can do this!");
       let code;
       try {
-        //if (message.content.includes.tolowerCase("token")) return message.channel.send('The message was censored because it contained sensitive information!')
-        code = eval(message.content.split(" ").slice(1).join(" "));
+        if (msg.content.includes("token") || msg.content.includes("\`token\`")) return msg.channel.send('The message was censored because it contained sensitive information!');
+        code = eval(msg.content.split(" ").slice(1).join(" "));
         //if (typeof code !== 'string') code = util.inspect(code);
       } catch (err) {
         code = err.essage;
       }
-      let evaled = `:inbox_tray: **Input:**\`\`\`js\n${message.content.split(' ').slice(1)}\`\`\`\n\n:outbox_tray: **Output:**\n\`\`\`js\n${code}\`\`\``;
-      message.channel.send("evaling...")
+      let evaled = `:inbox_tray: **Input:**\`\`\`js\n${msg.content.split(' ').slice(1)}\`\`\`\n\n:outbox_tray: **Output:**\n\`\`\`js\n${code}\`\`\``;
+      msg.channel.send("evaling...")
         .then((newMsg) => {
           newMsg.edit(evaled)
         });
