@@ -48,7 +48,7 @@ client.on("message", message => {
   function restOfCode(prefix, adminrole, modlog, servername, serverid, serverowner, modrole) {
     if (!message.content.startsWith(prefix)) return;
 
-    let command = message.content.split(' ')[0];
+    let command = message.content.split(" ")[0];
     command = command.slice(prefix.length);
     if (message.guild) {
       console.log(`Command ran
@@ -65,7 +65,8 @@ client.on("message", message => {
     }
 
     let devs = ["197891949913571329", "220568440161697792"];
-    let args = message.content.split(' ').slice(1);
+    let args = message.content.split(" ").slice(1);
+    let argsresult = args.join(" ");
     if (command === "ping") {
       message.channel.send("**Response time**:" + (Date.now() - message.createdTimestamp) + "ms");
     } else if (command === "set prefix") {
@@ -101,13 +102,13 @@ client.on("message", message => {
       if (!devs.includes(message.author.id)) return message.channel.send("Sorry, only the JS Devs `SpaceX#0276` or `TJDoesCode#6088` can do this!");
       let code;
       try {
-        if (message.content.includes("token") || message.content.includes("\`token\`")) return message.channel.send('The message was censored because it contained sensitive information!');
+        if (message.content.includes("token") || message.content.includes("\`token\`")) return message.channel.send("The message was censored because it contained sensitive information!");
         code = eval(message.content.split(" ").slice(1).join(" "));
-        //if (typeof code !== 'string') code = util.inspect(code);
+        //if (typeof code !== "string") code = util.inspect(code);
       } catch (err) {
         code = err.essage;
       }
-      let evaled = `:inbox_tray: **Input:**\`\`\`js\n${message.content.split(' ').slice(1)}\`\`\`\n\n:outbox_tray: **Output:**\n\`\`\`js\n${code}\`\`\``;
+      let evaled = `:inbox_tray: **Input:**\`\`\`js\n${message.content.split(" ").slice(1)}\`\`\`\n\n:outbox_tray: **Output:**\n\`\`\`js\n${code}\`\`\``;
       message.channel.send("evaling...")
         .then((newMsg) => {
           newMsg.edit(evaled)
@@ -135,25 +136,46 @@ client.on("message", message => {
       }
     } else if (command === "kick") {
       if (hasRole(message.member, modrole || adminrole)) {
-        message.reply('hi')
+        message.reply("hi")
       } else {
         message.reply(`You do not have permission to do this! Only people with this role can access this command! \`Role Required: ${modrole}\`, this is changeable with \`${prefix}set mod role\``);
       }
     } else if (command === "mute") {
       if (hasRole(message.member, modrole || adminrole)) {
-        message.reply('hi')
+        message.reply("hi")
       } else {
         message.reply(`You do not have permission to do this! Only people with this role can access this command! \`Role Required: ${modrole}\`, this is changeable with \`${prefix}set mod role\``);
       }
     } else if (command === "unmute") {
       if (hasRole(message.member, modrole || adminrole)) {
-        message.reply('hi')
+        message.reply("hi")
       } else {
         message.reply(`You do not have permission to do this! Only people with this role can access this command! \`Role Required: ${modrole}\`, this is changeable with \`${prefix}set mod role\``);
       }
     } else if (command === "warn") {
       if (hasRole(message.member, modrole || adminrole)) {
-        message.reply('hi')
+        if (!message.guild.member(client.user).hasPermission("KICK_MEMBERS")) return message.reply("I do not have permission to kick members!");
+        let reason = args[1];
+        reason = message.content.split(" ").slice(2).join(" ");
+        if (message.mentions.users.size === 0) return message.reply("Please mention a user to kick!");
+        let kickMember = message.guild.member(message.mentions.users.first());
+        if (!kickMember) return message.reply("I can not kick that user!");
+        kickMember.send(`You have been kicked from the server '${guild}'!
+Staff member: ${message.author.username}
+Reason: '${reason}'`);
+        const embed = new Discord.RichEmbed()
+          .setTitle(`:bangbang: Moderation action :bangbang: `)
+          .setAuthor(`${message.author.username} (${message.author.id})`, `${message.author.avatarURL}`)
+          .setColor(0xD4FF00)
+          .setDescription(`**Action:** Kick \n**User:** ${kickMember.user.username} (${kickMember.user.id}) \n**Reason:** ${reason}`)
+          .setTimestamp()
+        message.delete(1);
+        message.guild.channels.find("id", modlog).send({
+          embed: embed
+        });
+        kickMember.kick(reason).then(member => {
+          message.reply(`The user ${member.user.tag} was successfully kicked.`)
+        });
       } else {
         message.reply(`You do not have permission to do this! Only people with this role can access this command! \`Role Required: ${modrole}\`, this is changeable with \`${prefix}set mod role\``);
       }
