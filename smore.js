@@ -1,13 +1,13 @@
 const Discord = require("discord.js");
 const client = new Discord.Client();
-const mysql = require('mysql');
-const connection = mysql.createConnection({
-  host: 'fgddfgdfgfdgfdgdfg',
-  user: 'fdgdfgdfgdfgdfgfdgfdg',
-  password: 'fdgdfgfdgfdgfdg',
-  database: 'fdgfdgsdgsdfgsdfgafdaefe'
+var details = require("./stuff.json")
+var mysql      = require('mysql');
+var connection = mysql.createConnection({
+  host     : details.host,
+  user     : details.user,
+  password : details.password,
+  database : details.database
 });
-
 function pluck(array) {
   return array.map((item) => {
     return item["name"]
@@ -39,21 +39,16 @@ client.on("message", message => {
       let servername = results[0].servername;
       let serverid = results[0].serverid;
       let serverowner = results[0].serverowner;
-      restOfCode(prefix, adminrole, modlog, servername, serverid, serverowner);
+      let modrole= results[0].modrole;
+      restOfCode(prefix, adminrole, modlog, servername, serverid, serverowner, modrole);
     }
   });
 
-  function restOfCode(prefix, adminrole, modlog, servername, serverid, serverowner) {
-    let devs = ["220568440161697792", "197891949913571329", "186295030388883456", "251383432331001856"];
+  function restOfCode(prefix, adminrole, modlog, servername, serverid, serverowner, modrole) {
+    let devs = ["197891949913571329", "220568440161697792"];
     let args = message.content.split(' ').slice(1);
     if (message.content.startsWith(prefix + "ping")) {
-      message.channel.send("**STATUS**:")
-      message.channel.send("**Connection to Discord.js**: Connected")
-      message.channel.send("**Connection to MySQL Database**: Connected")
-      message.channel.send("Finding response time...")
-        .then((newMsg) => {
-          newMsg.edit("**Response time**:" + (Date.now() - message.createdTimestamp) + "ms");
-        });
+      message.channel.send("**Response time**:" + (Date.now() - message.createdTimestamp) + "ms");
     } else if (message.content.startsWith(prefix + "set prefix")) {
       if (hasRole(message.member, adminrole)) {
         let newprefix = args[1];
@@ -72,7 +67,8 @@ client.on("message", message => {
       }
     } else if (message.content.startsWith(prefix + "debug")) {
       if (message.author.id !== "220568440161697792") return message.channel.send("Sorry, only the JS Dev `SpaceX#0276` can do this!");
-      message.channel.send(`The settings on the database for this guild are \nPrefix: ${prefix}\nAdmin Role: ${adminrole}\nModLog channel: ${modlog}\nServer Name: ${servername}/${client.guilds.get(serverid).name}\nServer ID: ${serverid}\nServer Owner: ${serverowner}/${client.guilds.get(serverid).owner.displayName}`);
+      message.channel.send(`The settings on the database for this guild are \nPrefix: ${prefix}\nAdmin Role: ${adminrole}\nModLog channel: ${modlog}\nServer Name: ${servername}/${client.guilds.get(serverid).name}\nServer ID: ${serverid}\nServer Owner: ${serverowner}/${client.guilds.get(serverid).owner.displayName}\nMod Role: ${modrole}`);
+    
     } else if (message.content.startsWith(prefix + "set modlog")) {
       if (hasRole(message.member, adminrole)) {
         let newmodlog = message.mentions.channels.first().id;
@@ -97,7 +93,20 @@ client.on("message", message => {
         .then((newMsg) => {
           newMsg.edit(evaled)
         });
-    }
+    } else if (message.content.startsWith(prefix + "restart")) {
+      if (!devs.includes(message.author.id)) return message.channel.send("Sorry, only the JS Devs `SpaceX#0276` or `TJDoesCode#6088` can do this!");
+      message.reply("Restarting...");
+      setTimeout(() => {console.log(process.exit(0))}, 1000);
+  
+  } else if (message.content.startsWith(prefix + "set mod role")) {
+      if (hasRole(message.member, adminrole)) {
+        let newmodrole = args[2];
+        connection.query("update tests set modrole = ? where serverid = ?", [newmodrole, message.guild.id]);
+        message.channel.send("Set mod role to " + newmodrole)
+      } else {
+        message.reply(`You do not have permission to do this! Only people with this role can access this command! \`Role Required: ${adminrole}\`, this is changeable with \`${prefix}set admin role\``);
+      }
+  }
   }
 });
 
@@ -109,6 +118,7 @@ client.on("guildCreate", (server) => {
     "serverowner": server.owner.id,
     "prefix": "s.",
     "adminrole": "FireTrap Admin",
+    "modrole": "FireTrap Mod",
     "modlog": "Not Set"
   }
 
@@ -140,4 +150,4 @@ client.on("guildDelete", (server) => {
   });
 });
 
-client.login("dfgfsdagsdgdgfgbdhdfghfdgas7f6dg098dgttsadf785rnagtmf78sdtg na7ftsdgf7sdgf7mad6nrg7fsdgk70kfydhs97,gfy9sd760gtm9sdg,f08y,78as")
+client.login(details.token)
