@@ -142,7 +142,7 @@ client.on("message", message => {
         if (message.mentions.users.size === 0) return message.reply("Please mention a user to kick!");
         let kickMember = message.guild.member(message.mentions.users.first());
         if (!kickMember) return message.reply("I can not kick that user!");
-        kickMember.send(`You have been kicked from the server '${guild}'!
+        kickMember.send(`You have been kicked from the server '${message.guild}'!
   Staff member: ${message.author.username}
   Reason: '${reason}'`).catch(console.error);
         const embed = new Discord.RichEmbed()
