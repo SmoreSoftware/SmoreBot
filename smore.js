@@ -130,7 +130,7 @@ client.on("message", message => {
       }
     } else if (command === "ban") {
       if (hasRole(message.member, adminrole)) {
-        if (!msg.guild.member(this.client.user).hasPermission("BAN_MEMBERS")) return msg.reply("I do not have permission to ban members!")
+        if (!message.guild.member(this.client.user).hasPermission("BAN_MEMBERS")) return message.reply("I do not have permission to ban members!")
         let pruneDays = args[1];
         let reason = args[2];
         reason = message.content.split(" ").slice(3).join(" ");
@@ -152,7 +152,7 @@ client.on("message", message => {
         });
         message.guild.ban(args.use, {
           days: pruneDays,
-          reason: `Moderator: ${msg.author.tag}
+          reason: `Moderator: ${message.author.tag}
 Reason: ${reason}`
         }).then(member => {
           message.reply(`The user ${member.user.tag} was successfully banned.`).catch(console.error)
@@ -182,7 +182,7 @@ Reason: ${reason}`
         message.guild.channels.find("id", modlog).send({
           embed: embed
         });
-        kickMember.kick(`Moderator: ${msg.author.tag}
+        kickMember.kick(`Moderator: ${message.author.tag}
 Reason: ${reason}`).then(member => {
           message.reply(`The user ${member.user.tag} was successfully kicked.`).catch(console.error)
         });
