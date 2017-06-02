@@ -144,7 +144,7 @@ client.on("message", message => {
         if (!kickMember) return message.reply("I can not kick that user!");
         kickMember.send(`You have been kicked from the server '${guild}'!
   Staff member: ${message.author.username}
-  Reason: '${reason}'`);
+  Reason: '${reason}'`).catch(console.error);
         const embed = new Discord.RichEmbed()
           .setTitle(`:bangbang: Moderation action :bangbang: `)
           .setAuthor(`${message.author.username} (${message.author.id})`, `${message.author.avatarURL}`)
@@ -156,7 +156,7 @@ client.on("message", message => {
           embed: embed
         });
         kickMember.kick(reason).then(member => {
-          message.reply(`The user ${member.user.tag} was successfully kicked.`)
+          message.reply(`The user ${member.user.tag} was successfully kicked.`).catch(console.error)
         });
       } else {
         message.reply(`You do not have permission to do this! Only people with this role can access this command! \`Role Required: ${modrole}\`, this is changeable with \`${prefix}set mod role\``);
