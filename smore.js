@@ -44,7 +44,7 @@ client.on("message", message => {
   });
 
   function restOfCode(prefix, adminrole, modlog, servername, serverid, serverowner) {
-    let devs = ["220568440161697792", "197891949913571329"]
+    let devs = ["220568440161697792", "197891949913571329"];
     let args = message.content.split(' ').slice(1);
     if (message.content.startsWith(prefix + "ping")) {
       message.channel.send("**STATUS**:")
