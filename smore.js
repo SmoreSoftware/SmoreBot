@@ -136,24 +136,6 @@ client.on("message", message => {
       }
     } else if (command === "kick") {
       if (hasRole(message.member, modrole || adminrole)) {
-        message.reply("hi")
-      } else {
-        message.reply(`You do not have permission to do this! Only people with this role can access this command! \`Role Required: ${modrole}\`, this is changeable with \`${prefix}set mod role\``);
-      }
-    } else if (command === "mute") {
-      if (hasRole(message.member, modrole || adminrole)) {
-        message.reply("hi")
-      } else {
-        message.reply(`You do not have permission to do this! Only people with this role can access this command! \`Role Required: ${modrole}\`, this is changeable with \`${prefix}set mod role\``);
-      }
-    } else if (command === "unmute") {
-      if (hasRole(message.member, modrole || adminrole)) {
-        message.reply("hi")
-      } else {
-        message.reply(`You do not have permission to do this! Only people with this role can access this command! \`Role Required: ${modrole}\`, this is changeable with \`${prefix}set mod role\``);
-      }
-    } else if (command === "warn") {
-      if (hasRole(message.member, modrole || adminrole)) {
         if (!message.guild.member(client.user).hasPermission("KICK_MEMBERS")) return message.reply("I do not have permission to kick members!");
         let reason = args[1];
         reason = message.content.split(" ").slice(2).join(" ");
@@ -161,8 +143,8 @@ client.on("message", message => {
         let kickMember = message.guild.member(message.mentions.users.first());
         if (!kickMember) return message.reply("I can not kick that user!");
         kickMember.send(`You have been kicked from the server '${guild}'!
-Staff member: ${message.author.username}
-Reason: '${reason}'`);
+  Staff member: ${message.author.username}
+  Reason: '${reason}'`);
         const embed = new Discord.RichEmbed()
           .setTitle(`:bangbang: Moderation action :bangbang: `)
           .setAuthor(`${message.author.username} (${message.author.id})`, `${message.author.avatarURL}`)
@@ -179,6 +161,20 @@ Reason: '${reason}'`);
       } else {
         message.reply(`You do not have permission to do this! Only people with this role can access this command! \`Role Required: ${modrole}\`, this is changeable with \`${prefix}set mod role\``);
       }
+    } else if (command === "mute") {
+      if (hasRole(message.member, modrole || adminrole)) {
+        message.reply("hi")
+      } else {
+        message.reply(`You do not have permission to do this! Only people with this role can access this command! \`Role Required: ${modrole}\`, this is changeable with \`${prefix}set mod role\``);
+      }
+    } else if (command === "unmute") {
+      if (hasRole(message.member, modrole || adminrole)) {
+        message.reply("hi")
+      } else {
+        message.reply(`You do not have permission to do this! Only people with this role can access this command! \`Role Required: ${modrole}\`, this is changeable with \`${prefix}set mod role\``);
+      }
+    } else if (command === "warn") {
+
     } else if (command === "lockdown") {
       if (hasRole(message.member, adminrole)) {
 
