@@ -55,15 +55,13 @@ client.on("message", message => {
         Guild: ${message.guild.name} (${message.guild.id})
         Channel: ${message.channel.name} (${message.channel.id})
         User: ${message.author.tag} (${message.author.id})
-        Command: ${command.groupID}:${command.memberName}
         Message: "${message.content}"`)
     } else {
       console.log(`Command ran:
         Guild: DM
         Channel: N/A
         User: ${message.author.tag} (${message.author.id})
-        Command: ${command.groupID}:${command.memberName}
-        Message: "${message.content}"`)
+        Command: "${message.content}"`)
     }
 
     let devs = ["197891949913571329", "220568440161697792"];
@@ -137,25 +135,25 @@ client.on("message", message => {
       }
     } else if (command === "kick") {
       if (hasRole(message.member, modrole || adminrole)) {
-        msg.reply('hi')
+        message.reply('hi')
       } else {
         message.reply(`You do not have permission to do this! Only people with this role can access this command! \`Role Required: ${modrole}\`, this is changeable with \`${prefix}set mod role\``);
       }
     } else if (command === "mute") {
       if (hasRole(message.member, modrole || adminrole)) {
-        msg.reply('hi')
+        message.reply('hi')
       } else {
         message.reply(`You do not have permission to do this! Only people with this role can access this command! \`Role Required: ${modrole}\`, this is changeable with \`${prefix}set mod role\``);
       }
     } else if (command === "unmute") {
       if (hasRole(message.member, modrole || adminrole)) {
-        msg.reply('hi')
+        message.reply('hi')
       } else {
         message.reply(`You do not have permission to do this! Only people with this role can access this command! \`Role Required: ${modrole}\`, this is changeable with \`${prefix}set mod role\``);
       }
     } else if (command === "warn") {
       if (hasRole(message.member, modrole || adminrole)) {
-        msg.reply('hi')
+        message.reply('hi')
       } else {
         message.reply(`You do not have permission to do this! Only people with this role can access this command! \`Role Required: ${modrole}\`, this is changeable with \`${prefix}set mod role\``);
       }
