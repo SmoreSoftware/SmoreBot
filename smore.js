@@ -130,7 +130,33 @@ client.on("message", message => {
       }
     } else if (command === "ban") {
       if (hasRole(message.member, adminrole)) {
-
+        if (!msg.guild.member(this.client.user).hasPermission("BAN_MEMBERS")) return msg.reply("I do not have permission to ban members!")
+        let pruneDays = args[1];
+        let reason = args[2];
+        reason = message.content.split(" ").slice(3).join(" ");
+        if (message.mentions.users.size === 0) return message.reply("Please mention a user to ban!");
+        let banMember = message.guild.member(message.mentions.users.first());
+        if (!banMember) return message.reply("I can not ban that user!");
+        kickMember.send(`You have been banned from the server '${message.guild}'!
+  Staff member: ${message.author.username}
+  Reason: '${reason}'`).catch(console.error);
+        const embed = new Discord.RichEmbed()
+          .setTitle(`:bangbang: Moderation action :bangbang: `)
+          .setAuthor(`${message.author.username} (${message.author.id})`, `${message.author.avatarURL}`)
+          .setColor(0xFF0000)
+          .setDescription(`**Action:** Ban \n**User:** ${banMember.user.tag} (${banMember.user.id}) \n**Reason:** ${reason}`)
+          .setTimestamp()
+        message.delete(1);
+        message.guild.channels.find("id", modlog).send({
+          embed: embed
+        });
+        message.guild.ban(args.use, {
+          days: pruneDays,
+          reason: `Moderator: ${msg.author.tag}
+Reason: ${reason}`
+        }).then(member => {
+          message.reply(`The user ${member.user.tag} was successfully banned.`).catch(console.error)
+        });
       } else {
         message.reply(`You do not have permission to do this! Only people with this role can access this command! \`Role Required: ${adminrole}\`, this is changeable with \`${prefix}set admin role\``);
       }
@@ -142,6 +168,7 @@ client.on("message", message => {
         if (message.mentions.users.size === 0) return message.reply("Please mention a user to kick!");
         let kickMember = message.guild.member(message.mentions.users.first());
         if (!kickMember) return message.reply("I can not kick that user!");
+        if (!reason) return message.reply("Please specify a reson!");
         kickMember.send(`You have been kicked from the server '${message.guild}'!
   Staff member: ${message.author.username}
   Reason: '${reason}'`).catch(console.error);
@@ -149,13 +176,14 @@ client.on("message", message => {
           .setTitle(`:bangbang: Moderation action :bangbang: `)
           .setAuthor(`${message.author.username} (${message.author.id})`, `${message.author.avatarURL}`)
           .setColor(0xD4FF00)
-          .setDescription(`**Action:** Kick \n**User:** ${kickMember.user.username} (${kickMember.user.id}) \n**Reason:** ${reason}`)
+          .setDescription(`**Action:** Kick \n**User:** ${kickMember.user.tag} (${kickMember.user.id}) \n**Reason:** ${reason}`)
           .setTimestamp()
         message.delete(1);
         message.guild.channels.find("id", modlog).send({
           embed: embed
         });
-        kickMember.kick(reason).then(member => {
+        kickMember.kick(`Moderator: ${msg.author.tag}
+Reason: ${reason}`).then(member => {
           message.reply(`The user ${member.user.tag} was successfully kicked.`).catch(console.error)
         });
       } else {
