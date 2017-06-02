@@ -70,7 +70,7 @@ client.on("message", message => {
     let args = message.content.split(' ').slice(1);
     if (command === "ping") {
       message.channel.send("**Response time**:" + (Date.now() - message.createdTimestamp) + "ms");
-    } else if (command === "set prefix")) {
+    } else if (command === "set prefix") {
       if (hasRole(message.member, adminrole)) {
         let newprefix = args[1];
         connection.query("update tests set prefix = ? where serverid = ?", [newprefix, message.guild.id]);
@@ -90,7 +90,7 @@ client.on("message", message => {
       if (!devs.includes(message.author.id)) return message.channel.send("Sorry, only the JS Devs `SpaceX#0276` or `TJDoesCode#6088` can do this!");
       message.channel.send(`The settings on the database for this guild are \nPrefix: ${prefix}\nAdmin Role: ${adminrole}\nModLog channel: ${modlog}\nServer Name: ${servername}/${client.guilds.get(serverid).name}\nServer ID: ${serverid}\nServer Owner: ${serverowner}/${client.guilds.get(serverid).owner.displayName}\nMod Role: ${modrole}`);
 
-    } else if (command === "set modlog")) {
+    } else if (command === "set modlog") {
       if (hasRole(message.member, adminrole)) {
         let newmodlog = message.mentions.channels.first().id;
         connection.query("update tests set modlog = ? where serverid = ?", [newmodlog, message.guild.id]);
@@ -99,7 +99,7 @@ client.on("message", message => {
       } else {
         message.reply(`You do not have permission to do this! Only people with this role can access this command! \`Role Required: ${adminrole}\`, this is changeable with \`${prefix}setadmin\``);
       }
-    } else if (command === "eval")) {
+    } else if (command === "eval") {
       if (!devs.includes(message.author.id)) return message.channel.send("Sorry, only the JS Devs `SpaceX#0276` or `TJDoesCode#6088` can do this!");
       let code;
       try {
@@ -114,14 +114,14 @@ client.on("message", message => {
         .then((newMsg) => {
           newMsg.edit(evaled)
         });
-    } else if (command === "restart")) {
+    } else if (command === "restart") {
       if (!devs.includes(message.author.id)) return message.channel.send("Sorry, only the JS Devs `SpaceX#0276` or `TJDoesCode#6088` can do this!");
       message.reply("Restarting...");
       setTimeout(() => {
         console.log(process.exit(0))
       }, 1000);
 
-    } else if (command === "set mod role")) {
+    } else if (command === "set mod role") {
       if (hasRole(message.member, adminrole)) {
         let newmodrole = args[2];
         connection.query("update tests set modrole = ? where serverid = ?", [newmodrole, message.guild.id]);
