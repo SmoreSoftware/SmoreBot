@@ -48,6 +48,7 @@ client.on("message", message => {
   function restOfCode(prefix, adminrole, modlog, servername, serverid, serverowner, modrole) {
     if (!message.content.startsWith(prefix)) return;
 
+    let msg = message; //IN CASE STUPID TJ MESSES UP GAAAH
     let command = message.content.split(" ")[0];
     command = command.slice(prefix.length);
     if (message.guild) {
