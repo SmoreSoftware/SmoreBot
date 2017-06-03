@@ -139,6 +139,8 @@ client.on("message", message => {
         if (message.mentions.users.size === 0) return message.reply("Please mention a user to ban!");
         let banMember = message.guild.member(message.mentions.users.first());
         if (!banMember) return message.reply("I can not ban that user!");
+        if (!reason) return message.reply("Please specify a reason!")
+        if (!pruneDays) return message.reply("Please specify a number of days to prune for! (0-7)");
         kickMember.send(`You have been banned from the server '${message.guild}'!
   Staff member: ${message.author.username}
   Reason: '${reason}'`).catch(console.error);
