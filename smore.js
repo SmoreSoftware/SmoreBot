@@ -49,7 +49,7 @@ client.on("message", message => {
     if (!message.content.startsWith(prefix)) return;
 
     let msg = message; //IN CASE STUPID TJ MESSES UP GAAAH
-    let command = message.content.split(" ")[0];
+    let command = message.content.split(" ");
     command = command.slice(prefix.length);
     if (message.guild) {
       console.log(`Command ran
