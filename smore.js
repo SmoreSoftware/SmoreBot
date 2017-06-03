@@ -183,11 +183,14 @@ client.on("message", message => {
       });
     } else if (message.content.startsWith(prefix + "mute")) {
       if (!hasRole(message.member, modrole || adminrole)) return message.reply(`You do not have permission to do this! Only people with this role can access this command! \`Role Required: ${modrole}\`, this is changeable with \`${prefix}set mod role\``);
-      if (message.mentions.users.size === 0) return message.reply("Please mention a user to kick!");
-      let kickMember = message.guild.member(message.mentions.users.first());
-      if (!kickMember) return message.reply("I can not kick that user!");
-      let reason = args[1];
-      reason = message.content.split(" ").slice(2).join(" ");
+      if (message.mentions.users.size === 0) return message.reply("Please mention a user to mute!");
+      let muteMember = message.guild.member(message.mentions.users.first());
+      if (!muteMember) return message.reply("I can not mute that user!");
+      let time = args[1];
+      let reason = args[2];
+      reason = message.content.split(" ").slice(3).join(" ");
+      if (!reason) return message.reply("Please specify a reason for muting!");
+      if (!time) return message.reply("Please specify a time to mute for!");
       msg.guild.channels.map((channel) => {
         channel.overwritePermissions(muteMember, {
             SEND_MESSAGES: false,
