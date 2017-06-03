@@ -3,11 +3,6 @@ const client = new Discord.Client();
 const details = require("./stuff.json")
 const mysql = require('mysql');
 const childProcess = require('child_process');
-childProcess.exec(args.join(" "), {},
-  (err, stdout, stderr) => {
-    if (err) return message.channel.sendCode('', err.message);
-    message.channel.sendCode('', stdout);
-  });
 var connection = mysql.createConnection({
   host: details.host,
   user: details.user,
@@ -126,7 +121,6 @@ client.on("message", message => {
       childProcess.exec(args.join(" "), {},
         (err, stdout, stderr) => {
           if (err) return message.channel.sendCode('', err.message);
-          message.channel.send('Command:');
           message.channel.sendCode('', stdout);
         });
     } else if (message.content.startsWith(prefix + "restart")) {
