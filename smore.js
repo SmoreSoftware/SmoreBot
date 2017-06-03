@@ -1,8 +1,8 @@
 const Discord = require("discord.js");
 const client = new Discord.Client();
 const details = require("./stuff.json")
-const mysql = require('mysql');
-const childProcess = require('child_process');
+const mysql = require("mysql");
+const childProcess = require("child_process");
 var connection = mysql.createConnection({
   host: details.host,
   user: details.user,
@@ -73,34 +73,25 @@ client.on("message", message => {
     if (message.content.startsWith(prefix + "ping")) {
       message.channel.send("**Response time**:" + (Date.now() - message.createdTimestamp) + "ms");
     } else if (message.content.startsWith(prefix + "set prefix")) {
-      if (hasRole(message.member, adminrole)) {
-        let newprefix = args[1];
-        connection.query("update tests set prefix = ? where serverid = ?", [newprefix, message.guild.id]);
-        message.channel.send("Set prefix to " + newprefix)
-      } else {
-        message.reply(`You do not have permission to do this! Only people with this role can access this command! \`Role Required: ${adminrole}\`, this is changeable with \`${prefix}set admin role\``);
-      }
+      if (!hasRole(message.member, adminrole)) return message.reply(`You do not have permission to do this! Only people with this role can access this command! \`Role Required: ${adminrole}\`, this is changeable with \`${prefix}set admin role\``);
+      let newprefix = args[1];
+      connection.query("update tests set prefix = ? where serverid = ?", [newprefix, message.guild.id]);
+      message.channel.send("Set prefix to " + newprefix)
     } else if (message.content.startsWith(prefix + "set admin role")) {
-      if (message.author.id === serverowner) {
-        let adminrole = args[2];
-        connection.query("update tests set adminrole = ? where serverid = ?", [adminrole, message.guild.id]);
-        message.channel.send("Set adminrole to " + adminrole);
-      } else {
-        message.reply(`Sorry, only the guild owner can do this, contact ${client.guilds.get(serverid).owner.displayName} if there any issues!`);
-      }
+      if (message.author.id !== serverowner) return message.reply(`Sorry, only the guild owner can do this, contact ${client.guilds.get(serverid).owner.displayName} if there any issues!`);
+      let adminrole = args[2];
+      connection.query("update tests set adminrole = ? where serverid = ?", [adminrole, message.guild.id]);
+      message.channel.send("Set adminrole to " + adminrole);
     } else if (message.content.startsWith(prefix + "debug")) {
       if (!devs.includes(message.author.id)) return message.channel.send("Sorry, only the JS Devs `SpaceX#0276` or `TJDoesCode#6088` can do this!");
       message.channel.send(`The settings on the database for this guild are \nPrefix: ${prefix}\nAdmin Role: ${adminrole}\nModLog channel: ${modlog}\nServer Name: ${servername}/${client.guilds.get(serverid).name}\nServer ID: ${serverid}\nServer Owner: ${serverowner}/${client.guilds.get(serverid).owner.displayName}\nMod Role: ${modrole}`);
 
     } else if (message.content.startsWith(prefix + "set modlog")) {
-      if (hasRole(message.member, adminrole)) {
-        let newmodlog = message.mentions.channels.first().id;
-        connection.query("update tests set modlog = ? where serverid = ?", [newmodlog, message.guild.id]);
-        message.channel.send("Set Modlog to channel to <#" + newmodlog + ">");
-        message.guild.channels.find("id", newmodlog).send("Mod logs have been enabled in this channel, all moderation actions will go here");
-      } else {
-        message.reply(`You do not have permission to do this! Only people with this role can access this command! \`Role Required: ${adminrole}\`, this is changeable with \`${prefix}setadmin\``);
-      }
+      if (!hasRole(message.member, adminrole)) return message.reply(`You do not have permission to do this! Only people with this role can access this command! \`Role Required: ${adminrole}\`, this is changeable with \`${prefix}setadmin\``);
+      let newmodlog = message.mentions.channels.first().id;
+      connection.query("update tests set modlog = ? where serverid = ?", [newmodlog, message.guild.id]);
+      message.channel.send("Set Modlog to channel to <#" + newmodlog + ">");
+      message.guild.channels.find("id", newmodlog).send("Mod logs have been enabled in this channel, all moderation actions will go here");
     } else if (message.content.startsWith(prefix + "eval")) {
       if (!devs.includes(message.author.id)) return message.channel.send("Sorry, only the JS Devs `SpaceX#0276` or `TJDoesCode#6088` can do this!");
       let code;
@@ -120,8 +111,8 @@ client.on("message", message => {
       if (!devs.includes(msg.author.id)) return message.channel.send("Sorry, only the JS Devs `SpaceX#0276` or `TJDoesCode#6088` can do this!");
       childProcess.exec(args.join(" "), {},
         (err, stdout, stderr) => {
-          if (err) return message.channel.sendCode('', err.message);
-          message.channel.sendCode('', stdout);
+          if (err) return message.channel.sendCode("", err.message);
+          message.channel.sendCode("", stdout);
         });
     } else if (message.content.startsWith(prefix + "restart")) {
       if (!devs.includes(message.author.id)) return message.channel.send("Sorry, only the JS Devs `SpaceX#0276` or `TJDoesCode#6088` can do this!");
@@ -131,94 +122,129 @@ client.on("message", message => {
       }, 1000);
 
     } else if (message.content.startsWith(prefix + "set mod role")) {
-      if (hasRole(message.member, adminrole)) {
-        let newmodrole = args[2];
-        connection.query("update tests set modrole = ? where serverid = ?", [newmodrole, message.guild.id]);
-        message.channel.send("Set mod role to " + newmodrole)
-      } else {
-        message.reply(`You do not have permission to do this! Only people with this role can access this command! \`Role Required: ${adminrole}\`, this is changeable with \`${prefix}set admin role\``);
-      }
+      if (!hasRole(message.member, adminrole)) return message.reply(`You do not have permission to do this! Only people with this role can access this command! \`Role Required: ${adminrole}\`, this is changeable with \`${prefix}set admin role\``);
+      let newmodrole = args[2];
+      connection.query("update tests set modrole = ? where serverid = ?", [newmodrole, message.guild.id]);
+      message.channel.send("Set mod role to " + newmodrole)
     } else if (message.content.startsWith(prefix + "ban")) {
-      if (hasRole(message.member, adminrole)) {
-        if (!message.guild.member(this.client.user).hasPermission("BAN_MEMBERS")) return message.reply("I do not have permission to ban members!")
-        let pruneDays = args[1];
-        let reason = args[2];
-        reason = message.content.split(" ").slice(3).join(" ");
-        if (message.mentions.users.size === 0) return message.reply("Please mention a user to ban!");
-        let banMember = message.guild.member(message.mentions.users.first());
-        if (!banMember) return message.reply("I can not ban that user!");
-        if (!reason) return message.reply("Please specify a reason!")
-        if (!pruneDays) return message.reply("Please specify a number of days to prune for! (0-7)");
-        kickMember.send(`You have been banned from the server '${message.guild}'!
+      if (!hasRole(message.member, adminrole)) message.reply(`You do not have permission to do this! Only people with this role can access this command! \`Role Required: ${adminrole}\`, this is changeable with \`${prefix}set admin role\``);
+      if (!message.guild.member(this.client.user).hasPermission("BAN_MEMBERS")) return message.reply("I do not have permission to ban members!")
+      let pruneDays = args[1];
+      let reason = args[2];
+      reason = message.content.split(" ").slice(3).join(" ");
+      if (message.mentions.users.size === 0) return message.reply("Please mention a user to ban!");
+      let banMember = message.guild.member(message.mentions.users.first());
+      if (!banMember) return message.reply("I can not ban that user!");
+      if (!reason) return message.reply("Please specify a reason!")
+      if (!pruneDays) return message.reply("Please specify a number of days to prune for! (0-7)");
+      kickMember.send(`You have been banned from the server "${message.guild}"!
   Staff member: ${message.author.username}
-  Reason: '${reason}'`).catch(console.error);
-        const embed = new Discord.RichEmbed()
-          .setTitle(`:bangbang: Moderation action :bangbang: `)
-          .setAuthor(`${message.author.username} (${message.author.id})`, `${message.author.avatarURL}`)
-          .setColor(0xFF0000)
-          .setDescription(`**Action:** Ban \n**User:** ${banMember.user.tag} (${banMember.user.id}) \n**Reason:** ${reason}`)
-          .setTimestamp()
-        message.delete(1);
-        message.guild.channels.find("id", modlog).send({
-          embed: embed
-        });
-        message.guild.ban(banMember, {
-          days: pruneDays,
-          reason: `${reason} -${msg.author.tag}`
-        }).then(member => {
-          message.reply(`The user ${member.user.tag} was successfully banned.`).catch(console.error)
-        });
-      } else {
-        message.reply(`You do not have permission to do this! Only people with this role can access this command! \`Role Required: ${adminrole}\`, this is changeable with \`${prefix}set admin role\``);
-      }
+  Reason: "${reason}"`).catch(console.error);
+      const embed = new Discord.RichEmbed()
+        .setTitle(`:bangbang: Moderation action :bangbang: `)
+        .setAuthor(`${message.author.username} (${message.author.id})`, `${message.author.avatarURL}`)
+        .setColor(0xFF0000)
+        .setDescription(`**Action:** Ban \n**User:** ${banMember.user.tag} (${banMember.user.id}) \n**Reason:** ${reason}`)
+        .setTimestamp()
+      message.delete(1);
+      message.guild.channels.find("id", modlog).send({
+        embed: embed
+      });
+      message.guild.ban(banMember, {
+        days: pruneDays,
+        reason: `${reason} -${msg.author.tag}`
+      }).then(member => {
+        message.reply(`The user ${member.user.tag} was successfully banned.`).catch(console.error)
+      });
     } else if (message.content.startsWith(prefix + "kick")) {
-      if (hasRole(message.member, modrole || adminrole)) {
-        if (!message.guild.member(client.user).hasPermission("KICK_MEMBERS")) return message.reply("I do not have permission to kick members!");
-        let reason = args[1];
-        reason = message.content.split(" ").slice(2).join(" ");
-        if (message.mentions.users.size === 0) return message.reply("Please mention a user to kick!");
-        let kickMember = message.guild.member(message.mentions.users.first());
-        if (!kickMember) return message.reply("I can not kick that user!");
-        if (!reason) return message.reply("Please specify a reson!");
-        kickMember.send(`You have been kicked from the server '${message.guild}'!
+      if (!hasRole(message.member, modrole || adminrole)) message.reply(`You do not have permission to do this! Only people with this role can access this command! \`Role Required: ${modrole}\`, this is changeable with \`${prefix}set mod role\``);
+      if (!message.guild.member(client.user).hasPermission("KICK_MEMBERS")) return message.reply("I do not have permission to kick members!");
+      let reason = args[1];
+      reason = message.content.split(" ").slice(2).join(" ");
+      if (message.mentions.users.size === 0) return message.reply("Please mention a user to kick!");
+      let kickMember = message.guild.member(message.mentions.users.first());
+      if (!kickMember) return message.reply("I can not kick that user!");
+      if (!reason) return message.reply("Please specify a reson!");
+      kickMember.send(`You have been kicked from the server "${message.guild}"!
   Staff member: ${message.author.username}
-  Reason: '${reason}'`).catch(console.error);
-        const embed = new Discord.RichEmbed()
-          .setTitle(`:bangbang: Moderation action :bangbang: `)
-          .setAuthor(`${message.author.username} (${message.author.id})`, `${message.author.avatarURL}`)
-          .setColor(0xD4FF00)
-          .setDescription(`**Action:** Kick \n**User:** ${kickMember.user.tag} (${kickMember.user.id}) \n**Reason:** ${reason}`)
-          .setTimestamp()
-        message.delete(1);
-        message.guild.channels.find("id", modlog).send({
-          embed: embed
-        });
-        kickMember.kick(`${reason} -${msg.author.tag}`).then(member => {
-          message.reply(`The user ${member.user.tag} was successfully kicked.`).catch(console.error)
-        });
-      } else {
-        message.reply(`You do not have permission to do this! Only people with this role can access this command! \`Role Required: ${modrole}\`, this is changeable with \`${prefix}set mod role\``);
-      }
+  Reason: "${reason}"`).catch(console.error);
+      const embed = new Discord.RichEmbed()
+        .setTitle(`:bangbang: Moderation action :bangbang: `)
+        .setAuthor(`${message.author.username} (${message.author.id})`, `${message.author.avatarURL}`)
+        .setColor(0xFFFF00)
+        .setDescription(`**Action:** Kick \n**User:** ${kickMember.user.tag} (${kickMember.user.id}) \n**Reason:** ${reason}`)
+        .setTimestamp()
+      message.delete(1);
+      message.guild.channels.find("id", modlog).send({
+        embed: embed
+      });
+      kickMember.kick(`${reason} -${msg.author.tag}`).then(member => {
+        message.reply(`The user ${member.user.tag} was successfully kicked.`).catch(console.error)
+      });
     } else if (message.content.startsWith(prefix + "mute")) {
-      if (hasRole(message.member, modrole || adminrole)) {
-        message.reply("hi")
-      } else {
-        message.reply(`You do not have permission to do this! Only people with this role can access this command! \`Role Required: ${modrole}\`, this is changeable with \`${prefix}set mod role\``);
+      if (!hasRole(message.member, modrole || adminrole)) return message.reply(`You do not have permission to do this! Only people with this role can access this command! \`Role Required: ${modrole}\`, this is changeable with \`${prefix}set mod role\``);
+      if (message.mentions.users.size === 0) return message.reply("Please mention a user to kick!");
+      let kickMember = message.guild.member(message.mentions.users.first());
+      if (!kickMember) return message.reply("I can not kick that user!");
+      let reason = args[1];
+      reason = message.content.split(" ").slice(2).join(" ");
+      msg.guild.channels.map((channel) => {
+        channel.overwritePermissions(muteMember, {
+            SEND_MESSAGES: false,
+            ADD_REACTIONS: false,
+            SPEAK: false
+          })
+          .then(() => console.log("Done per 1 channel."))
+          .catch(err => {
+            if (errcount === 0) {
+              msg.reply("**Failed to mute in one or more channels.** Please mute manually or give me administrator permission and try again.")
+              errcount++
+            } else return console.log(`errcount === ${errcount}`)
+          });
+      });
+
+      msg.channel.send(`**${muteMember} has been muted for ${time} minutes.** Use ${prefix}unmute to unmute before time is over.`);
+      const embed = new Discord.RichEmbed()
+        .setTitle(`:bangbang: Moderation action :bangbang: `)
+        .setAuthor(`${message.author.username} (${message.author.id})`, `${message.author.avatarURL}`)
+        .setColor(0xCC7A00)
+        .setDescription(`**Action:** Mute \n**User:** ${muteMember.user.tag} (${mutekMember.user.id}) \n**Reason:** ${reason}`)
+        .setTimestamp()
+      time = time * 1000 * 60
+      console.log(`time = ${time}`);
+      setTimeout(unMute, time);
+
+      function unMute() {
+        if (msg.channel.permissionsFor(muteMember).has("SEND_MESSAGES")) return //msg.channel.send(`:warning: **${args.user} is already unmuted!**`)
+        msg.guild.channels.map((channel) => {
+          channel.overwritePermissions(muteMember, {
+              SEND_MESSAGES: true,
+              ADD_REACTIONS: true,
+              SPEAK: true
+            })
+            .then(() => console.log("Time elapsed, user unmuted per 1 channel."))
+            .catch(err => {
+              if (errcount2 === 0) {
+                msg.reply(":warning: **Failed to unmute in one or more channels.** Please unmute manually or give me administrator permission and try again.")
+                errcount2++
+              } else return console.log(`errcount2 === ${errcount2}`)
+            });
+        });
+        alert()
+      }
+
+      function alert() {
+        msg.channel.send(`:loud_sound: ${muteMember} has been unmuted.`)
       }
     } else if (message.content.startsWith(prefix + "unmute")) {
-      if (hasRole(message.member, modrole || adminrole)) {
-        message.reply("hi")
-      } else {
-        message.reply(`You do not have permission to do this! Only people with this role can access this command! \`Role Required: ${modrole}\`, this is changeable with \`${prefix}set mod role\``);
-      }
+      if (!hasRole(message.member, modrole || adminrole)) return message.reply(`You do not have permission to do this! Only people with this role can access this command! \`Role Required: ${modrole}\`, this is changeable with \`${prefix}set mod role\``);
+
     } else if (message.content.startsWith(prefix + "warn")) {
+      if (!hasRole(message.member, modrole || adminrole)) return message.reply(`You do not have permission to do this! Only people with this role can access this command! \`Role Required: ${modrole}\`, this is changeable with \`${prefix}set mod role\``);
 
     } else if (message.content.startsWith(prefix + "lockdown")) {
-      if (hasRole(message.member, adminrole)) {
+      if (!hasRole(message.member, adminrole)) return message.reply(`You do not have permission to do this! Only people with this role can access this command! \`Role Required: ${adminrole}\`, this is changeable with \`${prefix}set admin role\``);
 
-      } else {
-        message.reply(`You do not have permission to do this! Only people with this role can access this command! \`Role Required: ${adminrole}\`, this is changeable with \`${prefix}set admin role\``);
-      }
     }
   }
 });
@@ -257,14 +283,16 @@ client.on("guildUpdate", (server) => {
 
 client.on("guildDelete", (server) => {
   console.log(`Attempting to remove ${server.name} from the database!`);
-  connection.query("DELETE FROM tests WHERE serverid = '" + server.id + "'", (err) => {
-    if (err) return console.error(err);
-    console.log("Server Removed!");
-  });
+  connection.query("DELETE FROM tests WHERE serverid = "
+    " + server.id + "
+    "", (err) => {
+      if (err) return console.error(err);
+      console.log("Server Removed!");
+    });
 });
 
-process.on('unhandledRejection', err => {
-  console.error('Uncaught Promise Error: \n' + err.stack);
+process.on("unhandledRejection", err => {
+  console.error("Uncaught Promise Error: \n" + err.stack);
 });
 
 client.login(details.token)
