@@ -169,7 +169,7 @@ client.on("message", message => {
   Staff member: ${message.author.username}
   Reason: "${reason}"`).catch(console.error);
       const embed = new Discord.RichEmbed()
-        .setTitle(`:bangbang: Moderation action :bangbang: `)
+        .setTitle(`:bangbang: Moderation action :bangbang:`)
         .setAuthor(`${message.author.username} (${message.author.id})`, `${message.author.avatarURL}`)
         .setColor(0xFFFF00)
         .setDescription(`**Action:** Kick \n**User:** ${kickMember.user.tag} (${kickMember.user.id}) \n**Reason:** ${reason}`)
@@ -183,59 +183,7 @@ client.on("message", message => {
       });
     } else if (message.content.startsWith(prefix + "mute")) {
       if (!hasRole(message.member, modrole || adminrole)) return message.reply(`You do not have permission to do this! Only people with this role can access this command! \`Role Required: ${modrole}\`, this is changeable with \`${prefix}set mod role\``);
-      if (message.mentions.users.size === 0) return message.reply("Please mention a user to kick!");
-      let kickMember = message.guild.member(message.mentions.users.first());
-      if (!kickMember) return message.reply("I can not kick that user!");
-      let reason = args[1];
-      reason = message.content.split(" ").slice(2).join(" ");
-      msg.guild.channels.map((channel) => {
-        channel.overwritePermissions(muteMember, {
-            SEND_MESSAGES: false,
-            ADD_REACTIONS: false,
-            SPEAK: false
-          })
-          .then(() => console.log("Done per 1 channel."))
-          .catch(err => {
-            if (errcount === 0) {
-              msg.reply("**Failed to mute in one or more channels.** Please mute manually or give me administrator permission and try again.")
-              errcount++
-            } else return console.log(`errcount === ${errcount}`)
-          });
-      });
 
-      msg.channel.send(`**${muteMember} has been muted for ${time} minutes.** Use ${prefix}unmute to unmute before time is over.`);
-      const embed = new Discord.RichEmbed()
-        .setTitle(`:bangbang: Moderation action :bangbang: `)
-        .setAuthor(`${message.author.username} (${message.author.id})`, `${message.author.avatarURL}`)
-        .setColor(0xCC7A00)
-        .setDescription(`**Action:** Mute \n**User:** ${muteMember.user.tag} (${mutekMember.user.id}) \n**Reason:** ${reason}`)
-        .setTimestamp()
-      time = time * 1000 * 60
-      console.log(`time = ${time}`);
-      setTimeout(unMute, time);
-
-      function unMute() {
-        if (msg.channel.permissionsFor(muteMember).has("SEND_MESSAGES")) return //msg.channel.send(`:warning: **${args.user} is already unmuted!**`)
-        msg.guild.channels.map((channel) => {
-          channel.overwritePermissions(muteMember, {
-              SEND_MESSAGES: true,
-              ADD_REACTIONS: true,
-              SPEAK: true
-            })
-            .then(() => console.log("Time elapsed, user unmuted per 1 channel."))
-            .catch(err => {
-              if (errcount2 === 0) {
-                msg.reply(":warning: **Failed to unmute in one or more channels.** Please unmute manually or give me administrator permission and try again.")
-                errcount2++
-              } else return console.log(`errcount2 === ${errcount2}`)
-            });
-        });
-        alert()
-      }
-
-      function alert() {
-        msg.channel.send(`:loud_sound: ${muteMember} has been unmuted.`)
-      }
     } else if (message.content.startsWith(prefix + "unmute")) {
       if (!hasRole(message.member, modrole || adminrole)) return message.reply(`You do not have permission to do this! Only people with this role can access this command! \`Role Required: ${modrole}\`, this is changeable with \`${prefix}set mod role\``);
 
