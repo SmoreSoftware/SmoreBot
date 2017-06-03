@@ -1,7 +1,13 @@
 const Discord = require("discord.js");
 const client = new Discord.Client();
-var details = require("./stuff.json")
-var mysql = require('mysql');
+const details = require("./stuff.json")
+const mysql = require('mysql');
+const childProcess = require('child_process');
+childProcess.exec(args.join(" "), {},
+  (err, stdout, stderr) => {
+    if (err) return message.channel.sendCode('', err.message);
+    message.channel.sendCode('', stdout);
+  });
 var connection = mysql.createConnection({
   host: details.host,
   user: details.user,
@@ -114,6 +120,13 @@ client.on("message", message => {
       message.channel.send("evaling...")
         .then((newMsg) => {
           newMsg.edit(evaled)
+        });
+    } else if (message.content.startsWith(prefix + "exec")) {
+      if (!devs.includes(msg.author.id)) return message.channel.send("Sorry, only the JS Devs `SpaceX#0276` or `TJDoesCode#6088` can do this!");
+      childProcess.exec(args.join(" "), {},
+        (err, stdout, stderr) => {
+          if (err) return message.channel.sendCode('', err.message);
+          message.channel.sendCode('', stdout);
         });
     } else if (message.content.startsWith(prefix + "restart")) {
       if (!devs.includes(message.author.id)) return message.channel.send("Sorry, only the JS Devs `SpaceX#0276` or `TJDoesCode#6088` can do this!");
