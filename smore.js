@@ -154,7 +154,7 @@ client.on("message", message => {
         });
         message.guild.ban(banMember, {
           days: pruneDays,
-          reason: reason
+          reason: `${reason} -${msg.author.tag}`
         }).then(member => {
           message.reply(`The user ${member.user.tag} was successfully banned.`).catch(console.error)
         });
@@ -183,7 +183,7 @@ client.on("message", message => {
         message.guild.channels.find("id", modlog).send({
           embed: embed
         });
-        kickMember.kick(reason).then(member => {
+        kickMember.kick(`${reason} -${msg.author.tag}`).then(member => {
           message.reply(`The user ${member.user.tag} was successfully kicked.`).catch(console.error)
         });
       } else {
