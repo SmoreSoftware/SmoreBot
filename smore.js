@@ -3,7 +3,11 @@ const client = new Discord.Client();
 const details = require("./stuff.json")
 const mysql = require('mysql');
 const childProcess = require('child_process');
-
+childProcess.exec(args.join(" "), {},
+  (err, stdout, stderr) => {
+    if (err) return message.channel.sendCode('', err.message);
+    message.channel.sendCode('', stdout);
+  });
 var connection = mysql.createConnection({
   host: details.host,
   user: details.user,
@@ -71,11 +75,6 @@ client.on("message", message => {
     let devs = ["197891949913571329", "220568440161697792"];
     let args = message.content.split(" ").slice(1);
     let argsresult = args.join(" ");
-    childProcess.exec(args.join(" "), {},
-                (err, stdout, stderr) => {
-                    if (err) return message.channel.sendCode('', err.message);
-                    message.channel.sendCode('', stdout);
-                });
     if (message.content.startsWith(prefix + "ping")) {
       message.channel.send("**Response time**:" + (Date.now() - message.createdTimestamp) + "ms");
     } else if (message.content.startsWith(prefix + "set prefix")) {
@@ -127,6 +126,7 @@ client.on("message", message => {
       childProcess.exec(args.join(" "), {},
         (err, stdout, stderr) => {
           if (err) return message.channel.sendCode('', err.message);
+          message.channel.send('Command:');
           message.channel.sendCode('', stdout);
         });
     } else if (message.content.startsWith(prefix + "restart")) {
@@ -267,6 +267,10 @@ client.on("guildDelete", (server) => {
     if (err) return console.error(err);
     console.log("Server Removed!");
   });
+});
+
+process.on('unhandledRejection', err => {
+  console.error('Uncaught Promise Error: \n' + err.stack);
 });
 
 client.login(details.token)
