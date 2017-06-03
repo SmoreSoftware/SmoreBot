@@ -231,9 +231,7 @@ client.on("guildUpdate", (server) => {
 
 client.on("guildDelete", (server) => {
   console.log(`Attempting to remove ${server.name} from the database!`);
-  connection.query("DELETE FROM tests WHERE serverid = "
-    " + server.id + "
-    "", (err) => {
+  connection.query(`DELETE FROM tests WHERE serverid = ${server.id}`, (err) => {
       if (err) return console.error(err);
       console.log("Server Removed!");
     });
