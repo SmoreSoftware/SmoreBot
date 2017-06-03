@@ -206,13 +206,16 @@ client.on("message", message => {
           });
       });
 
-      msg.channel.send(`**${muteMember} has been muted for ${time} minutes.** Use ${prefix}unmute to unmute before time is over.`);
+      msg.channel.send(`**${muteMember} has been muted for ${time} minutes.** Use \`${prefix}unmute\` to unmute before time is over.`);
       const embed = new Discord.RichEmbed()
         .setTitle(`:bangbang: Moderation action :bangbang: `)
         .setAuthor(`${message.author.username} (${message.author.id})`, `${message.author.avatarURL}`)
         .setColor(0xCC7A00)
         .setDescription(`**Action:** Mute \n**User:** ${muteMember.user.tag} (${muteMember.user.id}) \n**Reason:** ${reason}`)
         .setTimestamp()
+      message.guild.channels.find("id", modlog).send({
+        embed: embed
+      });
       time = time * 1000 * 60
       console.log(`time = ${time}`);
       setTimeout(unMute, time);
