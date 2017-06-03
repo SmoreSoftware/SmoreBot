@@ -211,7 +211,7 @@ client.on("message", message => {
         .setTitle(`:bangbang: Moderation action :bangbang: `)
         .setAuthor(`${message.author.username} (${message.author.id})`, `${message.author.avatarURL}`)
         .setColor(0xCC7A00)
-        .setDescription(`**Action:** Mute \n**User:** ${muteMember.user.tag} (${mutekMember.user.id}) \n**Reason:** ${reason}`)
+        .setDescription(`**Action:** Mute \n**User:** ${muteMember.user.tag} (${muteMember.user.id}) \n**Reason:** ${reason}`)
         .setTimestamp()
       time = time * 1000 * 60
       console.log(`time = ${time}`);
