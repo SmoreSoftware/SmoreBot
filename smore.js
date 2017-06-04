@@ -244,7 +244,25 @@ client.on("message", message => {
       }
     } else if (message.content.startsWith(prefix + "unmute")) {
       if (!hasRole(message.member, modrole || adminrole)) return message.reply(`You do not have permission to do this! Only people with this role can access this command! \`Role Required: ${modrole}\`, this is changeable with \`${prefix}set mod role\``);
-
+      if (message.mentions.users.size === 0) return message.reply("Please mention a user to unmute!");
+      let unmuteMember = message.guild.member(message.mentions.users.first());
+      if (!unmuteMember) return message.reply("I can not unmute that user!");
+      if (msg.channel.permissionsFor(unmuteMember).has("SEND_MESSAGES")) return msg.channel.send(`${args.user} is already unmuted!`);
+      msg.guild.channels.map((channel) => {
+        channel.overwritePermissions(unmuteMember, {
+            SEND_MESSAGES: true,
+            ADD_REACTIONS: true,
+            SPEAK: true
+          })
+          .then(() => console.log("User unmuted per 1 channel."))
+          .catch(err => {
+            if (errcount === 0) {
+              msg.reply("**Failed to unmute in one or more channels.** Please unmute manually or give me administrator permission and try again.");
+              errcount++
+            } else return console.log(`errcount === ${errcount}`);
+          });
+      });
+      msg.channel.send(`:loud_sound: ${args.user} has been unmuted.`);
     } else if (message.content.startsWith(prefix + "warn")) {
       if (!hasRole(message.member, modrole || adminrole)) return message.reply(`You do not have permission to do this! Only people with this role can access this command! \`Role Required: ${modrole}\`, this is changeable with \`${prefix}set mod role\``);
 
