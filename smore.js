@@ -208,7 +208,7 @@ client.on("message", message => {
 
       message.channel.send(`**${muteMember} has been muted for ${time} minutes.** Use \`${prefix}unmute\` to unmute before time is over.`);
       const embed = new Discord.RichEmbed()
-        .setTitle(`:bangbang: **Moderation action** :scales`)
+        .setTitle(`:bangbang: **Moderation action** :scales:`)
         .setAuthor(`${message.author.username} (${message.author.id})`, `${message.author.avatarURL}`)
         .setColor(0xCC5200)
         .setDescription(`**Action:** Mute \n**User:** ${muteMember.user.tag} (${muteMember.user.id}) \n**Reason:** ${reason} \n**Time:** ${time} minutes`)
@@ -285,8 +285,8 @@ client.on("message", message => {
       });
     } else if (message.content.startsWith(prefix + "lockdown")) {
       if (!hasRole(message.member, adminrole)) return message.reply(`You do not have permission to do this! Only people with this role can access this command! \`Role Required: ${adminrole}\`, this is changeable with \`${prefix}set admin role\``);
-      if (!lockit) lockit = [];
-      let time = argsresult;
+      let lockit = [];
+      let time = args[0];
       let validUnlocks = ["release", "unlock"];
       if (!time) return message.reply("You must set a duration for the lockdown in either hours, minutes or seconds!");
 
