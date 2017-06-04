@@ -4,14 +4,14 @@ const details = require("./stuff.json");
 const mysql = require("mysql");
 const childProcess = require("child_process");
 const ms = require("ms");
-const Twitter = require("twitter-node-client").Twitter; {
-  "consumerKey": details.ck,
-  "consumerSecret": details.cs,
-  "accessToken": details.at,
-  "accessTokenSecret": details.ats
-}
-const twitter = new Twitter();
-var connection = mysql.createConnection({
+const Twitter = require("twit");
+const T = new Twit({
+  "consumer_key": details.ck,
+  "consumer_secret": details.cs,
+  "access_token": details.at,
+  "access_token_secret": details.ats
+})
+const connection = mysql.createConnection({
   host: details.host,
   user: details.user,
   password: details.password,
@@ -352,12 +352,21 @@ client.on("message", message => {
       if (!devs.includes(message.author.id)) return message.channel.send("Sorry, only the SmoreBot Development Team can do this!");
       let toSay = argsresult;
       if (!toSay) return message.reply("Please specify something to tweet!");
-      twitter.postTweet(toSay, function(err) {
-        console.error(err)
-        msg.reply("Tweet failed to send! Contact JS Devs `SpaceX#0276` or `TJDoesCode#6088`!")
-      }, function() {
-        msg.reply("Tweet sent successfully.")
-      });
+      if (toSay.length > 140) return message.reply("Your tweet must be 140 characters or less!");
+      let tweet = {
+        status: `${toSay}
+  -${message.author.username}`
+      }
+
+      T.post('statuses/update', tweet, tweeted);
+
+      function tweeted(err, data, response) {
+        if (err) {
+          console.error(err);
+          message.reply("There was an error! Contact a JS dev.");
+        }
+        message.reply("Tweet sent successfully.")
+      }
     }
   }
 });
