@@ -191,8 +191,6 @@ client.on("message", message => {
       reason = message.content.split(" ").slice(3).join(" ");
       if (!reason) return message.reply("Please specify a reason for muting!");
       if (!time) return message.reply("Please specify a time to mute for!");
-      time = time * 1000 * 60
-      console.log(`time = ${time}`);
       msg.guild.channels.map((channel) => {
         channel.overwritePermissions(muteMember, {
             SEND_MESSAGES: false,
@@ -218,10 +216,12 @@ client.on("message", message => {
       message.guild.channels.find("id", modlog).send({
         embed: embed
       });
+      time = time * 1000 * 60
+      console.log(`time = ${time}`);
       setTimeout(unMute, time);
 
       function unMute() {
-        if (msg.channel.permissionsFor(muteMember).has("SEND_MESSAGES")) return //msg.channel.send(`:warning: **${args.user} is already unmuted!**`)
+        //if (msg.channel.permissionsFor(muteMember).has("SEND_MESSAGES")) return //msg.channel.send(`:warning: **${args.user} is already unmuted!**`)
         msg.guild.channels.map((channel) => {
           channel.overwritePermissions(muteMember, {
               SEND_MESSAGES: true,
