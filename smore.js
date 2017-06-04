@@ -4,7 +4,7 @@ const details = require("./stuff.json");
 const mysql = require("mysql");
 const childProcess = require("child_process");
 const ms = require("ms");
-const Twitter = require("twit");
+const Twit = require("twit");
 const T = new Twit({
   "consumer_key": details.ck,
   "consumer_secret": details.cs,
