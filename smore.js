@@ -4,13 +4,9 @@ const details = require("./stuff.json");
 const mysql = require("mysql");
 const childProcess = require("child_process");
 const ms = require("ms");
-const Twit = require("twit");
-const T = new Twit({
-  "consumer_key": details.ck,
-  "consumer_secret": details.cs,
-  "access_token": details.at,
-  "access_token_secret": details.ats
-})
+const Twitter = require("twit");
+const twitconfig = require("./twitconfig.js");
+const T = new Twit(twitconfig);
 const connection = mysql.createConnection({
   host: details.host,
   user: details.user,
