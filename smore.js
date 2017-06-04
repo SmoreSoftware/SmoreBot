@@ -221,7 +221,7 @@ client.on("message", message => {
       setTimeout(unMute, time);
 
       function unMute() {
-        //if (msg.channel.permissionsFor(muteMember).has("SEND_MESSAGES")) return //msg.channel.send(`:warning: **${args.user} is already unmuted!**`)
+        if (msg.channel.permissionsFor(muteMember).has("SEND_MESSAGES")) return //msg.channel.send(`:warning: **${args.user} is already unmuted!**`)
         msg.guild.channels.map((channel) => {
           channel.overwritePermissions(muteMember, {
               SEND_MESSAGES: true,
