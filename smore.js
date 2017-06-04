@@ -49,7 +49,7 @@ client.on("message", message => {
   function restOfCode(prefix, adminrole, modlog, servername, serverid, serverowner, modrole) {
     if (!message.content.startsWith(prefix)) return;
 
-    let msg = message; //IN CASE STUPID TJ MESSES UP GAAAH
+    let message = message; //IN CASE STUPID TJ MESSES UP GAAAH
     //Somehow TJ managed to brake the db commands with this setup.
     //let command = message.content.split(" ");
     //command = command.slice(prefix.length);
@@ -108,7 +108,7 @@ client.on("message", message => {
           newMsg.edit(evaled)
         });
     } else if (message.content.startsWith(prefix + "exec")) {
-      if (!devs.includes(msg.author.id)) return message.channel.send("Sorry, only the JS Devs `SpaceX#0276` or `TJDoesCode#6088` can do this!");
+      if (!devs.includes(message.author.id)) return message.channel.send("Sorry, only the JS Devs `SpaceX#0276` or `TJDoesCode#6088` can do this!");
       childProcess.exec(args.join(" "), {},
         (err, stdout, stderr) => {
           if (err) return message.channel.sendCode("", err.message);
@@ -152,7 +152,7 @@ client.on("message", message => {
       });
       message.guild.ban(banMember, {
         days: pruneDays,
-        reason: `${reason} -${msg.author.tag}`
+        reason: `${reason} -${message.author.tag}`
       }).then(member => {
         message.reply(`The user ${member.user.tag} was successfully banned.`).catch(console.error)
       });
@@ -171,14 +171,14 @@ client.on("message", message => {
       const embed = new Discord.RichEmbed()
         .setTitle(`:bangbang: **Moderation action** :scales:`)
         .setAuthor(`${message.author.username} (${message.author.id})`, `${message.author.avatarURL}`)
-        .setColor(0xFFFF00)
+        .setColor(0x990073)
         .setDescription(`**Action:** Kick \n**User:** ${kickMember.user.tag} (${kickMember.user.id}) \n**Reason:** ${reason}`)
         .setTimestamp()
       message.delete(1);
       message.guild.channels.find("id", modlog).send({
         embed: embed
       });
-      kickMember.kick(`${reason} -${msg.author.tag}`).then(member => {
+      kickMember.kick(`${reason} -${message.author.tag}`).then(member => {
         message.reply(`The user ${member.user.tag} was successfully kicked.`).catch(console.error)
       });
     } else if (message.content.startsWith(prefix + "mute")) {
@@ -191,7 +191,7 @@ client.on("message", message => {
       reason = message.content.split(" ").slice(3).join(" ");
       if (!reason) return message.reply("Please specify a reason for muting!");
       if (!time) return message.reply("Please specify a time to mute for!");
-      msg.guild.channels.map((channel) => {
+      message.guild.channels.map((channel) => {
         channel.overwritePermissions(muteMember, {
             SEND_MESSAGES: false,
             ADD_REACTIONS: false,
@@ -200,13 +200,13 @@ client.on("message", message => {
           .then(() => console.log("Done per 1 channel."))
           .catch(err => {
             if (errcount === 0) {
-              msg.reply("**Failed to mute in one or more channels.** Please mute manually or give me administrator permission and try again.")
+              message.reply("**Failed to mute in one or more channels.** Please mute manually or give me administrator permission and try again.")
               errcount++
             } else return console.log(`errcount === ${errcount}`)
           });
       });
 
-      msg.channel.send(`**${muteMember} has been muted for ${time} minutes.** Use \`${prefix}unmute\` to unmute before time is over.`);
+      message.channel.send(`**${muteMember} has been muted for ${time} minutes.** Use \`${prefix}unmute\` to unmute before time is over.`);
       const embed = new Discord.RichEmbed()
         .setTitle(`:bangbang: **Moderation action** :scales`)
         .setAuthor(`${message.author.username} (${message.author.id})`, `${message.author.avatarURL}`)
@@ -221,8 +221,8 @@ client.on("message", message => {
       setTimeout(unMute, time);
 
       function unMute() {
-        if (msg.channel.permissionsFor(muteMember).has("SEND_MESSAGES")) return //msg.channel.send(`:warning: **${args.user} is already unmuted!**`)
-        msg.guild.channels.map((channel) => {
+        if (message.channel.permissionsFor(muteMember).has("SEND_MESSAGES")) return //message.channel.send(`:warning: **${args.user} is already unmuted!**`)
+        message.guild.channels.map((channel) => {
           channel.overwritePermissions(muteMember, {
               SEND_MESSAGES: true,
               ADD_REACTIONS: true,
@@ -231,7 +231,7 @@ client.on("message", message => {
             .then(() => console.log("Time elapsed, user unmuted per 1 channel."))
             .catch(err => {
               if (errcount2 === 0) {
-                msg.reply(":warning: **Failed to unmute in one or more channels.** Please unmute manually or give me administrator permission and try again.")
+                message.reply(":warning: **Failed to unmute in one or more channels.** Please unmute manually or give me administrator permission and try again.")
                 errcount2++
               } else return console.log(`errcount2 === ${errcount2}`)
             });
@@ -240,15 +240,15 @@ client.on("message", message => {
       }
 
       function alert() {
-        msg.channel.send(`:loud_sound: ${muteMember} has been unmuted.`)
+        message.channel.send(`:loud_sound: ${muteMember} has been unmuted.`)
       }
     } else if (message.content.startsWith(prefix + "unmute")) {
       if (!hasRole(message.member, modrole || adminrole)) return message.reply(`You do not have permission to do this! Only people with this role can access this command! \`Role Required: ${modrole}\`, this is changeable with \`${prefix}set mod role\``);
       if (message.mentions.users.size === 0) return message.reply("Please mention a user to unmute!");
       let unmuteMember = message.guild.member(message.mentions.users.first());
       if (!unmuteMember) return message.reply("I can not unmute that user!");
-      if (msg.channel.permissionsFor(unmuteMember).has("SEND_MESSAGES")) return msg.channel.send(`${args.user} is already unmuted!`);
-      msg.guild.channels.map((channel) => {
+      if (message.channel.permissionsFor(unmuteMember).has("SEND_MESSAGES")) return message.channel.send(`${unmuteMember} is already unmuted!`);
+      message.guild.channels.map((channel) => {
         channel.overwritePermissions(unmuteMember, {
             SEND_MESSAGES: true,
             ADD_REACTIONS: true,
@@ -257,18 +257,88 @@ client.on("message", message => {
           .then(() => console.log("User unmuted per 1 channel."))
           .catch(err => {
             if (errcount === 0) {
-              msg.reply("**Failed to unmute in one or more channels.** Please unmute manually or give me administrator permission and try again.");
+              message.reply("**Failed to unmute in one or more channels.** Please unmute manually or give me administrator permission and try again.");
               errcount++
             } else return console.log(`errcount === ${errcount}`);
           });
       });
-      msg.channel.send(`:loud_sound: ${args.user} has been unmuted.`);
+      message.channel.send(`:loud_sound: ${unmuteMember} has been unmuted.`);
     } else if (message.content.startsWith(prefix + "warn")) {
       if (!hasRole(message.member, modrole || adminrole)) return message.reply(`You do not have permission to do this! Only people with this role can access this command! \`Role Required: ${modrole}\`, this is changeable with \`${prefix}set mod role\``);
-
+      if (message.mentions.users.size === 0) return message.reply("Please mention a user to warn!");
+      let warnMember = message.guild.member(message.mentions.users.first());
+      if (!warnMember) return message.reply("I can not warn that user!");
+      let reason = args[1];
+      reason = message.content.split(" ").slice(2).join(" ");
+      warnMember.send(`You have been warned on the server "${message.guild}"!
+  Staff member: ${message.author.username}
+  Reason: "${reason}"`).catch(console.error);
+      const embed = new Discord.RichEmbed()
+        .setTitle(`:bangbang: **Moderation action** :scales:`)
+        .setAuthor(`${message.author.username} (${message.author.id})`, `${message.author.avatarURL}`)
+        .setColor(0xFFFF00)
+        .setDescription(`**Action:** Warning \n**User:** ${warnMember.user.tag} (${warnMember.user.id}) \n**Reason:** ${reason}`)
+        .setTimestamp()
+      message.delete(1);
+      message.guild.channels.find("id", modlog).send({
+        embed: embed
+      });
     } else if (message.content.startsWith(prefix + "lockdown")) {
       if (!hasRole(message.member, adminrole)) return message.reply(`You do not have permission to do this! Only people with this role can access this command! \`Role Required: ${adminrole}\`, this is changeable with \`${prefix}set admin role\``);
+      if (!lockit) lockit = [];
+      let time = argsresult;
+      let validUnlocks = ["release", "unlock"];
+      if (!time) return message.reply("You must set a duration for the lockdown in either hours, minutes or seconds!");
 
+      if (validUnlocks.includes(time)) {
+        message.channel.overwritePermissions(message.guild.id, {
+          SEND_MESSAGES: null
+        }).then(() => {
+          message.channel.send(":loud_sound: Lockdown lifted.");
+          clearTimeout(lockit[message.channel.id]);
+          delete lockit[message.channel.id];
+        }).catch(error => {
+          console.log(error)
+        })
+      } else {
+        let count = 0;
+        let count2 = 0;
+        //console.log(`first ${count2}`)
+        message.guild.roles.map((role) => {
+          message.channel.overwritePermissions(role.id, {
+              SEND_MESSAGES: false,
+              ADD_REACTIONS: false
+            })
+            .then(() => {
+              //console.log(count)
+              //console.log(`second ${count2}`)
+              if (count === 0) {
+                count++
+                //console.log(count)
+                message.channel.send(`:mute: Channel locked down for ${ms(ms(time), { long:true })} (Do \`${prefix}lockdown unlock\` to unlock.)`).then(() => {
+                  lockit[message.channel.id] = setTimeout(() => {
+                    //console.log(`third ${count2}`)
+                    message.guild.roles.map((role) => {
+                      message.channel.overwritePermissions(role.id, {
+                        SEND_MESSAGES: null,
+                        ADD_REACTIONS: null
+                      }).then(() => {
+                        if (count2 === 0) {
+                          count2++
+                          message.channel.send(":loud_sound: Lockdown lifted.");
+                        }
+                      });
+                      delete lockit[message.channel.id]
+                    }, ms(time))
+                  });
+
+                }).catch(error => {
+                  console.log(error)
+                });
+              }
+            });
+        });
+      }
     }
   }
 });
