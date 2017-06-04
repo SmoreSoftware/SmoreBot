@@ -1,8 +1,9 @@
 const Discord = require("discord.js");
 const client = new Discord.Client();
-const details = require("./stuff.json")
+const details = require("./stuff.json");
 const mysql = require("mysql");
 const childProcess = require("child_process");
+const ms = require("ms");
 var connection = mysql.createConnection({
   host: details.host,
   user: details.user,
