@@ -141,7 +141,7 @@ client.on("message", message => {
   Staff member: ${message.author.username}
   Reason: "${reason}"`).catch(console.error);
       const embed = new Discord.RichEmbed()
-        .setTitle(`:bangbang: Moderation action :bangbang: `)
+        .setTitle(`:bangbang: **Moderation action** :scales:`)
         .setAuthor(`${message.author.username} (${message.author.id})`, `${message.author.avatarURL}`)
         .setColor(0xFF0000)
         .setDescription(`**Action:** Ban \n**User:** ${banMember.user.tag} (${banMember.user.id}) \n**Reason:** ${reason}`)
@@ -169,7 +169,7 @@ client.on("message", message => {
   Staff member: ${message.author.username}
   Reason: "${reason}"`).catch(console.error);
       const embed = new Discord.RichEmbed()
-        .setTitle(`:bangbang: Moderation action :bangbang:`)
+        .setTitle(`:bangbang: **Moderation action** :scales:`)
         .setAuthor(`${message.author.username} (${message.author.id})`, `${message.author.avatarURL}`)
         .setColor(0xFFFF00)
         .setDescription(`**Action:** Kick \n**User:** ${kickMember.user.tag} (${kickMember.user.id}) \n**Reason:** ${reason}`)
@@ -191,6 +191,8 @@ client.on("message", message => {
       reason = message.content.split(" ").slice(3).join(" ");
       if (!reason) return message.reply("Please specify a reason for muting!");
       if (!time) return message.reply("Please specify a time to mute for!");
+      time = time * 1000 * 60
+      console.log(`time = ${time}`);
       msg.guild.channels.map((channel) => {
         channel.overwritePermissions(muteMember, {
             SEND_MESSAGES: false,
@@ -208,16 +210,14 @@ client.on("message", message => {
 
       msg.channel.send(`**${muteMember} has been muted for ${time} minutes.** Use \`${prefix}unmute\` to unmute before time is over.`);
       const embed = new Discord.RichEmbed()
-        .setTitle(`:bangbang: Moderation action :bangbang: `)
+        .setTitle(`:bangbang: **Moderation action** :scales`)
         .setAuthor(`${message.author.username} (${message.author.id})`, `${message.author.avatarURL}`)
-        .setColor(0xCC7A00)
-        .setDescription(`**Action:** Mute \n**User:** ${muteMember.user.tag} (${muteMember.user.id}) \n**Reason:** ${reason}`)
+        .setColor(0xCC5200)
+        .setDescription(`**Action:** Mute \n**User:** ${muteMember.user.tag} (${muteMember.user.id}) \n**Reason:** ${reason} \n**Time:** ${time} minutes`)
         .setTimestamp()
       message.guild.channels.find("id", modlog).send({
         embed: embed
       });
-      time = time * 1000 * 60
-      console.log(`time = ${time}`);
       setTimeout(unMute, time);
 
       function unMute() {
