@@ -364,6 +364,7 @@ client.on("message", message => {
         if (err) {
           console.error(err);
           message.reply("There was an error! Contact a JS dev.");
+          return;
         }
         message.reply("Tweet sent successfully.")
       }
