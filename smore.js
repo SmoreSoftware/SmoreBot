@@ -49,7 +49,7 @@ client.on("message", message => {
   function restOfCode(prefix, adminrole, modlog, servername, serverid, serverowner, modrole) {
     if (!message.content.startsWith(prefix)) return;
 
-    let message = message; //IN CASE STUPID TJ MESSES UP GAAAH
+    let msg = message; //IN CASE STUPID TJ MESSES UP GAAAH
     //Somehow TJ managed to brake the db commands with this setup.
     //let command = message.content.split(" ");
     //command = command.slice(prefix.length);
