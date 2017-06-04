@@ -4,6 +4,13 @@ const details = require("./stuff.json");
 const mysql = require("mysql");
 const childProcess = require("child_process");
 const ms = require("ms");
+const Twitter = require("twitter-node-client").Twitter; {
+  "consumerKey": details.ck,
+  "consumerSecret": details.cs,
+  "accessToken": details.at,
+  "accessTokenSecret": details.ats
+}
+const twitter = new Twitter();
 var connection = mysql.createConnection({
   host: details.host,
   user: details.user,
@@ -68,7 +75,8 @@ client.on("message", message => {
         Command: "${message.content}"`)
     }
 
-    let devs = ["197891949913571329", "220568440161697792"];
+    let jsdevs = ["197891949913571329", "220568440161697792"];
+    let devs = ["197891949913571329", "220568440161697792", "251383432331001856", "186295030388883456", "250432205145243649", "142782417994907648"];
     let args = message.content.split(" ").slice(1);
     let argsresult = args.join(" ");
     if (message.content.startsWith(prefix + "ping")) {
@@ -84,7 +92,7 @@ client.on("message", message => {
       connection.query("update tests set adminrole = ? where serverid = ?", [adminrole, message.guild.id]);
       message.channel.send("Set adminrole to " + adminrole);
     } else if (message.content.startsWith(prefix + "debug")) {
-      if (!devs.includes(message.author.id)) return message.channel.send("Sorry, only the JS Devs `SpaceX#0276` or `TJDoesCode#6088` can do this!");
+      if (!jsdevs.includes(message.author.id)) return message.channel.send("Sorry, only the JS Devs `SpaceX#0276` or `TJDoesCode#6088` can do this!");
       message.channel.send(`The settings on the database for this guild are \nPrefix: ${prefix}\nAdmin Role: ${adminrole}\nModLog channel: ${modlog}\nServer Name: ${servername}/${client.guilds.get(serverid).name}\nServer ID: ${serverid}\nServer Owner: ${serverowner}/${client.guilds.get(serverid).owner.displayName}\nMod Role: ${modrole}`);
 
     } else if (message.content.startsWith(prefix + "set modlog")) {
@@ -94,7 +102,7 @@ client.on("message", message => {
       message.channel.send("Set Modlog to channel to <#" + newmodlog + ">");
       message.guild.channels.find("id", newmodlog).send("Mod logs have been enabled in this channel, all moderation actions will go here");
     } else if (message.content.startsWith(prefix + "eval")) {
-      if (!devs.includes(message.author.id)) return message.channel.send("Sorry, only the JS Devs `SpaceX#0276` or `TJDoesCode#6088` can do this!");
+      if (!jsdevs.includes(message.author.id)) return message.channel.send("Sorry, only the JS Devs `SpaceX#0276` or `TJDoesCode#6088` can do this!");
       let code;
       try {
         if (message.content.includes("token") || message.content.includes("\`token\`")) return message.channel.send("The message was censored because it contained sensitive information!");
@@ -109,14 +117,14 @@ client.on("message", message => {
           newMsg.edit(evaled)
         });
     } else if (message.content.startsWith(prefix + "exec")) {
-      if (!devs.includes(message.author.id)) return message.channel.send("Sorry, only the JS Devs `SpaceX#0276` or `TJDoesCode#6088` can do this!");
+      if (!jsdevs.includes(message.author.id)) return message.channel.send("Sorry, only the JS Devs `SpaceX#0276` or `TJDoesCode#6088` can do this!");
       childProcess.exec(args.join(" "), {},
         (err, stdout, stderr) => {
           if (err) return message.channel.sendCode("", err.message);
           message.channel.sendCode("", stdout);
         });
     } else if (message.content.startsWith(prefix + "restart")) {
-      if (!devs.includes(message.author.id)) return message.channel.send("Sorry, only the JS Devs `SpaceX#0276` or `TJDoesCode#6088` can do this!");
+      if (!jsdevs.includes(message.author.id)) return message.channel.send("Sorry, only the JS Devs `SpaceX#0276` or `TJDoesCode#6088` can do this!");
       message.reply("Restarting...");
       setTimeout(() => {
         console.log(process.exit(0))
@@ -340,6 +348,16 @@ client.on("message", message => {
             });
         });
       }
+    } else if (message.content.startsWith(prefix + "tweet")) {
+      if (!devs.includes(message.author.id)) return message.channel.send("Sorry, only the SmoreBot Development Team can do this!");
+      let toSay = argsresult;
+      if (!toSay) return message.reply("Please specify something to tweet!");
+      twitter.postTweet(toSay, function(err) {
+        console.error(err)
+        msg.reply("Tweet failed to send! Contact JS Devs `SpaceX#0276` or `TJDoesCode#6088`!")
+      }, function() {
+        msg.reply("Tweet sent successfully.")
+      });
     }
   }
 });
