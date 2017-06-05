@@ -318,7 +318,7 @@ client.on("message", message => {
       let reason = args[1];
       reason = message.content.split(" ").slice(2).join(" ");
       let validUnlocks = ["release", "unlock"];
-      if (!time) return message.reply("You must set a duration for the lockdown in either hours, minutes or seconds!");
+      if (!time) return message.reply("You must set a duration for the lockdown in either minutes or seconds!");
       if (!reason) return message.reply("Please specify a reason for locking the channel down!");
 
       if (validUnlocks.includes(time)) {
