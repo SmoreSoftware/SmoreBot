@@ -143,11 +143,11 @@ client.on("message", message => {
       if (!reason) return message.reply("Please specify a reason!")
       if (!pruneDays) return message.reply("Please specify a number of days to prune for! (0-7)");
       kickMember.send(`You have been banned from the server "${message.guild}"!
-  Staff member: ${message.author.username}
+  Staff member: ${message.author.tag}
   Reason: "${reason}"`).catch(console.error);
       const embed = new Discord.RichEmbed()
         .setTitle(`:bangbang: **Moderation action** :scales:`)
-        .setAuthor(`${message.author.username} (${message.author.id})`, `${message.author.avatarURL}`)
+        .setAuthor(`${message.author.tag} (${message.author.id})`, `${message.author.avatarURL}`)
         .setColor(0xFF0000)
         .setDescription(`**Action:** Ban \n**User:** ${banMember.user.tag} (${banMember.user.id}) \n**Reason:** ${reason}`)
         .setTimestamp()
@@ -171,11 +171,11 @@ client.on("message", message => {
       if (!kickMember) return message.reply("I can not kick that user!");
       if (!reason) return message.reply("Please specify a reson!");
       kickMember.send(`You have been kicked from the server "${message.guild}"!
-  Staff member: ${message.author.username}
+  Staff member: ${message.author.tag}
   Reason: "${reason}"`).catch(console.error);
       const embed = new Discord.RichEmbed()
         .setTitle(`:bangbang: **Moderation action** :scales:`)
-        .setAuthor(`${message.author.username} (${message.author.id})`, `${message.author.avatarURL}`)
+        .setAuthor(`${message.author.tag} (${message.author.id})`, `${message.author.avatarURL}`)
         .setColor(0x990073)
         .setDescription(`**Action:** Kick \n**User:** ${kickMember.user.tag} (${kickMember.user.id}) \n**Reason:** ${reason}`)
         .setTimestamp()
@@ -211,10 +211,10 @@ client.on("message", message => {
           });
       });
 
-      message.channel.send(`**${muteMember} has been muted for ${time} minutes.** Use \`${prefix}unmute\` to unmute before time is over.`);
+      message.channel.send(`**${muteMember.tag} has been muted for ${time} minutes.** Use \`${prefix}unmute\` to unmute before time is over.`);
       const embed = new Discord.RichEmbed()
         .setTitle(`:bangbang: **Moderation action** :scales:`)
-        .setAuthor(`${message.author.username} (${message.author.id})`, `${message.author.avatarURL}`)
+        .setAuthor(`${message.author.tag} (${message.author.id})`, `${message.author.avatarURL}`)
         .setColor(0xCC5200)
         .setDescription(`**Action:** Mute \n**User:** ${muteMember.user.tag} (${muteMember.user.id}) \n**Reason:** ${reason} \n**Time:** ${time} minutes`)
         .setTimestamp()
@@ -245,14 +245,26 @@ client.on("message", message => {
       }
 
       function alert() {
-        message.channel.send(`:loud_sound: ${muteMember} has been unmuted.`)
+        const embed = new Discord.RichEmbed()
+          .setTitle(`:bangbang: **Moderation action** :scales:`)
+          .setAuthor(`${client.user.tag} (${client.user.id})`, `${client.user.avatarURL}`)
+          .setColor(0x00FF00)
+          .setDescription(`**Action:** Unmute \n**User:** ${muteMember.tag} (${muteMember.id}) \n**Reason:** Time ended, mute expired`)
+          .setTimestamp()
+        message.guild.channels.find("id", modlog).send({
+          embed: embed
+        });
+        message.channel.send(`:loud_sound: ${muteMember.tag} has been unmuted.`)
       }
     } else if (message.content.startsWith(prefix + "unmute")) {
       if (!hasRole(message.member, modrole || adminrole)) return message.reply(`You do not have permission to do this! Only people with this role can access this command! \`Role Required: ${modrole}\`, this is changeable with \`${prefix}set mod role\``);
       if (message.mentions.users.size === 0) return message.reply("Please mention a user to unmute!");
       let unmuteMember = message.guild.member(message.mentions.users.first());
       if (!unmuteMember) return message.reply("I can not unmute that user!");
-      if (message.channel.permissionsFor(unmuteMember).has("SEND_MESSAGES")) return message.channel.send(`${unmuteMember} is already unmuted!`);
+      if (message.channel.permissionsFor(unmuteMember).has("SEND_MESSAGES")) return message.channel.send(`${unmuteMember.tag} is already unmuted!`);
+      let reason = args[1];
+      reason = message.content.split(" ").slice(2).join(" ");
+      if (!reason) return message.reply("Please specify a reason for unmuting the user!")
       message.guild.channels.map((channel) => {
         channel.overwritePermissions(unmuteMember, {
             SEND_MESSAGES: true,
@@ -267,7 +279,17 @@ client.on("message", message => {
             } else return console.log(`errcount === ${errcount}`);
           });
       });
-      message.channel.send(`:loud_sound: ${unmuteMember} has been unmuted.`);
+      const embed = new Discord.RichEmbed()
+        .setTitle(`:bangbang: **Moderation action** :scales:`)
+        .setAuthor(`${message.author.tag} (${message.author.id})`, `${message.author.avatarURL}`)
+        .setColor(0x00FF00)
+        .setDescription(`**Action:** Unmute \n**User:** ${unmuteMember.tag} (${unmuteMember.id}) \n**Reason:** ${reason}`)
+        .setTimestamp()
+      message.delete(1);
+      message.guild.channels.find("id", modlog).send({
+        embed: embed
+      });
+      message.channel.send(`:loud_sound: ${unmuteMember.tag} has been unmuted.`);
     } else if (message.content.startsWith(prefix + "warn")) {
       if (!hasRole(message.member, modrole || adminrole)) return message.reply(`You do not have permission to do this! Only people with this role can access this command! \`Role Required: ${modrole}\`, this is changeable with \`${prefix}set mod role\``);
       if (message.mentions.users.size === 0) return message.reply("Please mention a user to warn!");
@@ -275,12 +297,13 @@ client.on("message", message => {
       if (!warnMember) return message.reply("I can not warn that user!");
       let reason = args[1];
       reason = message.content.split(" ").slice(2).join(" ");
+      if (!reason) return message.reply("Please specify a reason for warning the user!");
       warnMember.send(`You have been warned on the server "${message.guild}"!
-  Staff member: ${message.author.username}
+  Staff member: ${message.author.tag}
   Reason: "${reason}"`).catch(console.error);
       const embed = new Discord.RichEmbed()
         .setTitle(`:bangbang: **Moderation action** :scales:`)
-        .setAuthor(`${message.author.username} (${message.author.id})`, `${message.author.avatarURL}`)
+        .setAuthor(`${message.author.tag} (${message.author.id})`, `${message.author.avatarURL}`)
         .setColor(0xFFFF00)
         .setDescription(`**Action:** Warning \n**User:** ${warnMember.user.tag} (${warnMember.user.id}) \n**Reason:** ${reason}`)
         .setTimestamp()
@@ -292,14 +315,28 @@ client.on("message", message => {
       if (!hasRole(message.member, adminrole)) return message.reply(`You do not have permission to do this! Only people with this role can access this command! \`Role Required: ${adminrole}\`, this is changeable with \`${prefix}set admin role\``);
       let lockit = [];
       let time = args[0];
+      let reason = args[1];
+      reason = message.content.split(" ").slice(2).join(" ");
       let validUnlocks = ["release", "unlock"];
       if (!time) return message.reply("You must set a duration for the lockdown in either hours, minutes or seconds!");
+      if (!reason) return message.reply("Please specify a reason for locking the channel down!");
 
       if (validUnlocks.includes(time)) {
         message.channel.overwritePermissions(message.guild.id, {
           SEND_MESSAGES: null
         }).then(() => {
+          message.delete(1);
           message.channel.send(":loud_sound: Lockdown lifted.");
+          const embed = new Discord.RichEmbed()
+            .setTitle(`:bangbang: **Moderation action** :scales:`)
+            .setAuthor(`${message.author.tag} (${message.author.id})`, `${message.author.avatarURL}`)
+            .setColor(0x00FF00)
+            .setDescription(`**Action:** Lockdown lift \n**Channel:** ${message.channel.name} (${message.channel.id})`)
+            .setTimestamp()
+          message.delete(1);
+          message.guild.channels.find("id", modlog).send({
+            embed: embed
+          });
           clearTimeout(lockit[message.channel.id]);
           delete lockit[message.channel.id];
         }).catch(error => {
@@ -320,7 +357,17 @@ client.on("message", message => {
               if (count === 0) {
                 count++
                 //console.log(count)
+                message.delete(1);
                 message.channel.send(`:mute: Channel locked down for ${ms(ms(time), { long:true })} (Do \`${prefix}lockdown unlock\` to unlock.)`).then(() => {
+                  const embed = new Discord.RichEmbed()
+                    .setTitle(`:bangbang: **Moderation action** :scales:`)
+                    .setAuthor(`${message.author.tag} (${message.author.id})`, `${message.author.avatarURL}`)
+                    .setColor(0xCC5200)
+                    .setDescription(`**Action:** Lockdown \n**Channel:** ${message.channel.name} (${message.channel.id}) \n**Reason:** ${reason} \n**Time:** ${ms(ms(time), { long:true })}`)
+                    .setTimestamp()
+                  message.guild.channels.find("id", modlog).send({
+                    embed: embed
+                  });
                   lockit[message.channel.id] = setTimeout(() => {
                     //console.log(`third ${count2}`)
                     message.guild.roles.map((role) => {
@@ -331,6 +378,15 @@ client.on("message", message => {
                         if (count2 === 0) {
                           count2++
                           message.channel.send(":loud_sound: Lockdown lifted.");
+                          const embed = new Discord.RichEmbed()
+                            .setTitle(`:bangbang: **Moderation action** :scales:`)
+                            .setAuthor(`${client.user.tag} (${client.user.id})`, `${client.user.avatarURL}`)
+                            .setColor(0x00FF00)
+                            .setDescription(`**Action:** Lockdown lift \n**Channel:** ${message.channel.name} (${message.channel.id}) \n**Reason:** Time ended, lockdown expired`)
+                            .setTimestamp()
+                          message.guild.channels.find("id", modlog).send({
+                            embed: embed
+                          });
                         }
                       });
                       delete lockit[message.channel.id]
