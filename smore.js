@@ -318,7 +318,7 @@ client.on("message", message => {
       let reason = args[1];
       reason = message.content.split(" ").slice(2).join(" ");
       let validUnlocks = ["release", "unlock"];
-      if (!time) return message.reply("You must set a duration for the lockdown in either minutes or seconds!");
+      if (!time) return message.reply("You must set a duration for the lockdown in either hours, minutes or seconds!");
       if (!reason) return message.reply("Please specify a reason for locking the channel down!");
 
       if (validUnlocks.includes(time)) {
@@ -326,12 +326,12 @@ client.on("message", message => {
           SEND_MESSAGES: null
         }).then(() => {
           message.delete(1);
-          message.channel.send(":loud_sound: Lockdown lifted.");
+          message.channel.send(`:loud_sound: Lockdown lifted by ${message.author.tag}.`);
           const embed = new Discord.RichEmbed()
             .setTitle(`:bangbang: **Moderation action** :scales:`)
             .setAuthor(`${message.author.tag} (${message.author.id})`, `${message.author.avatarURL}`)
             .setColor(0x00FF00)
-            .setDescription(`**Action:** Lockdown lift \n**Channel:** ${message.channel.name} (${message.channel.id})`)
+            .setDescription(`**Action:** Lockdown lift \n**Channel:** ${message.channel.name} (${message.channel.id}) \n**Reason:** ${reason}`)
             .setTimestamp()
           message.delete(1);
           message.guild.channels.find("id", modlog).send({
@@ -358,7 +358,7 @@ client.on("message", message => {
                 count++
                 //console.log(count)
                 message.delete(1);
-                message.channel.send(`:mute: Channel locked down for ${ms(ms(time), { long:true })} (Do \`${prefix}lockdown unlock\` to unlock.)`).then(() => {
+                message.channel.send(`:mute: Channel locked down for ${ms(ms(time), { long:true })} by ${message.author.tag}. (Do \`${prefix}lockdown unlock <reason>\` to unlock.)`).then(() => {
                   const embed = new Discord.RichEmbed()
                     .setTitle(`:bangbang: **Moderation action** :scales:`)
                     .setAuthor(`${message.author.tag} (${message.author.id})`, `${message.author.avatarURL}`)
@@ -390,8 +390,8 @@ client.on("message", message => {
                         }
                       });
                       delete lockit[message.channel.id]
-                    }, ms(time))
-                  });
+                    })
+                  }, ms(time))
 
                 }).catch(error => {
                   console.log(error)
