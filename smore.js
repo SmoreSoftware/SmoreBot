@@ -96,7 +96,7 @@ client.on("message", message => {
       let newmodlog = message.mentions.channels.first().id;
       connection.query("update tests set modlog = ? where serverid = ?", [newmodlog, message.guild.id]);
       message.channel.send("Set Modlog to channel to <#" + newmodlog + ">");
-      message.guild.channels.find("id", newmodlog).send("Mod logs have been enabled in this channel, all moderation actions will go here");
+      message.guild.channels.get(newmodlog).send("Mod logs have been enabled in this channel, all moderation actions will go here");
     } else if (message.content.startsWith(prefix + "eval")) {
       if (!jsdevs.includes(message.author.id)) return message.channel.send("Sorry, only the JS Devs `SpaceX#0276` or `TJDoesCode#6088` can do this!");
       let code;
@@ -152,7 +152,7 @@ client.on("message", message => {
         .setDescription(`**Action:** Ban \n**User:** ${banMember.user.tag} (${banMember.user.id}) \n**Reason:** ${reason}`)
         .setTimestamp()
       message.delete(1);
-      message.guild.channels.find("id", modlog).send({
+      message.guild.channels.get(modlog).send({
         embed: embed
       });
       message.guild.ban(banMember, {
@@ -180,7 +180,7 @@ client.on("message", message => {
         .setDescription(`**Action:** Kick \n**User:** ${kickMember.user.tag} (${kickMember.user.id}) \n**Reason:** ${reason}`)
         .setTimestamp()
       message.delete(1);
-      message.guild.channels.find("id", modlog).send({
+      message.guild.channels.get(modlog).send({
         embed: embed
       });
       kickMember.kick(`${reason} -${message.author.tag}`).then(member => {
@@ -188,108 +188,105 @@ client.on("message", message => {
       });
     } else if (message.content.startsWith(prefix + "mute")) {
       if (!hasRole(message.member, modrole || adminrole)) return message.reply(`You do not have permission to do this! Only people with this role can access this command! \`Role Required: ${modrole}\`, this is changeable with \`${prefix}set mod role\``);
+      let muted = [];
       if (message.mentions.users.size === 0) return message.reply("Please mention a user to mute!");
       let muteMember = message.guild.member(message.mentions.users.first());
       if (!muteMember) return message.reply("I can not mute that user!");
       let time = args[1];
       let reason = args[2];
       reason = message.content.split(" ").slice(3).join(" ");
-      if (!reason) return message.reply("Please specify a reason for muting!");
-      if (!time) return message.reply("Please specify a time to mute for!");
-      message.guild.channels.map((channel) => {
-        channel.overwritePermissions(muteMember, {
-            SEND_MESSAGES: false,
-            ADD_REACTIONS: false,
-            SPEAK: false
-          })
-          .then(() => console.log("Done per 1 channel."))
-          .catch(err => {
-            if (errcount === 0) {
-              message.reply("**Failed to mute in one or more channels.** Please mute manually or give me administrator permission and try again.")
-              errcount++
-            } else return console.log(`errcount === ${errcount}`)
-          });
-      });
+      let validUnlocks = ["voice", "unmute"];
+      if (!time) return message.reply("You must set a duration for the mute in either hours, minutes or seconds!");
+      if (!reason) return message.reply("Please specify a reason for muting the user!");
 
-      message.channel.send(`**${muteMember.tag} has been muted for ${time} minutes.** Use \`${prefix}unmute\` to unmute before time is over.`);
-      const embed = new Discord.RichEmbed()
-        .setTitle(`:bangbang: **Moderation action** :scales:`)
-        .setAuthor(`${message.author.tag} (${message.author.id})`, `${message.author.avatarURL}`)
-        .setColor(0xCC5200)
-        .setDescription(`**Action:** Mute \n**User:** ${muteMember.user.tag} (${muteMember.user.id}) \n**Reason:** ${reason} \n**Time:** ${time} minutes`)
-        .setTimestamp()
-      message.guild.channels.find("id", modlog).send({
-        embed: embed
-      });
-      time = time * 1000 * 60
-      console.log(`time = ${time}`);
-      setTimeout(unMute, time);
-
-      function unMute() {
-        if (message.channel.permissionsFor(muteMember).has("SEND_MESSAGES")) return //message.channel.send(`:warning: **${args.user} is already unmuted!**`)
+      if (validUnlocks.includes(time)) {
         message.guild.channels.map((channel) => {
           channel.overwritePermissions(muteMember, {
-              SEND_MESSAGES: true,
-              ADD_REACTIONS: true,
-              SPEAK: true
+              SEND_MESSAGES: null,
+              ADD_REACTIONS: null,
+              SPEAK: null
             })
-            .then(() => console.log("Time elapsed, user unmuted per 1 channel."))
+            .then(() => console.log("Done per 1 channel."))
             .catch(err => {
-              if (errcount2 === 0) {
-                message.reply(":warning: **Failed to unmute in one or more channels.** Please unmute manually or give me administrator permission and try again.")
-                errcount2++
-              } else return console.log(`errcount2 === ${errcount2}`)
+              if (errcount === 0) {
+                message.reply("**Failed to mute in one or more channels.** Please mute manually or give me administrator permission and try again.")
+                errcount++
+              } else return console.log(`errcount === ${errcount}`)
             });
-        });
-        alert()
-      }
-
-      function alert() {
-        const embed = new Discord.RichEmbed()
-          .setTitle(`:bangbang: **Moderation action** :scales:`)
-          .setAuthor(`${client.user.tag} (${client.user.id})`, `${client.user.avatarURL}`)
-          .setColor(0x00FF00)
-          .setDescription(`**Action:** Unmute \n**User:** ${muteMember.tag} (${muteMember.id}) \n**Reason:** Time ended, mute expired`)
-          .setTimestamp()
-        message.guild.channels.find("id", modlog).send({
-          embed: embed
-        });
-        message.channel.send(`:loud_sound: ${muteMember.tag} has been unmuted.`)
-      }
-    } else if (message.content.startsWith(prefix + "unmute")) {
-      if (!hasRole(message.member, modrole || adminrole)) return message.reply(`You do not have permission to do this! Only people with this role can access this command! \`Role Required: ${modrole}\`, this is changeable with \`${prefix}set mod role\``);
-      if (message.mentions.users.size === 0) return message.reply("Please mention a user to unmute!");
-      let unmuteMember = message.guild.member(message.mentions.users.first());
-      if (!unmuteMember) return message.reply("I can not unmute that user!");
-      if (message.channel.permissionsFor(unmuteMember).has("SEND_MESSAGES")) return message.channel.send(`${unmuteMember.tag} is already unmuted!`);
-      let reason = args[1];
-      reason = message.content.split(" ").slice(2).join(" ");
-      if (!reason) return message.reply("Please specify a reason for unmuting the user!")
-      message.guild.channels.map((channel) => {
-        channel.overwritePermissions(unmuteMember, {
-            SEND_MESSAGES: true,
-            ADD_REACTIONS: true,
-            SPEAK: true
-          })
-          .then(() => console.log("User unmuted per 1 channel."))
-          .catch(err => {
-            if (errcount === 0) {
-              message.reply("**Failed to unmute in one or more channels.** Please unmute manually or give me administrator permission and try again.");
-              errcount++
-            } else return console.log(`errcount === ${errcount}`);
+        }).then(function() {
+          message.delete(1);
+          message.channel.send(`:loud_sound: ${muteMember.user.tag} unmuted by ${message.author.tag}.`);
+          const embed = new Discord.RichEmbed()
+            .setTitle(`:bangbang: **Moderation action** :scales:`)
+            .setAuthor(`${message.author.tag} (${message.author.id})`, `${message.author.avatarURL}`)
+            .setColor(0x00FF00)
+            .setDescription(`**Action:** Unmute \n**User:** ${muteMember.user.tag} (${muteMember.id}) \n**Reason:** ${reason}`)
+            .setTimestamp()
+          message.delete(1);
+          message.guild.channels.find("id", modlog).send({
+            embed: embed
           });
-      });
-      const embed = new Discord.RichEmbed()
-        .setTitle(`:bangbang: **Moderation action** :scales:`)
-        .setAuthor(`${message.author.tag} (${message.author.id})`, `${message.author.avatarURL}`)
-        .setColor(0x00FF00)
-        .setDescription(`**Action:** Unmute \n**User:** ${unmuteMember.tag} (${unmuteMember.id}) \n**Reason:** ${reason}`)
-        .setTimestamp()
-      message.delete(1);
-      message.guild.channels.find("id", modlog).send({
-        embed: embed
-      });
-      message.channel.send(`:loud_sound: ${unmuteMember.tag} has been unmuted.`);
+          clearTimeout(muted[muteMember.id]);
+          delete muted[muteMember.id];
+        }).catch(error => {
+          console.log(error)
+        })
+      } else {
+        let count = 0;
+        let count2 = 0;
+        //console.log(`first ${count2}`)
+        message.guild.channels.map((channel) => {
+          channel.overwritePermissions(muteMember, {
+              SEND_MESSAGES: false,
+              ADD_REACTIONS: false,
+              SPEAK: false
+            })
+            .then(function() {
+              if (count === 0) {
+                count++;
+                message.delete(1);
+                message.channel.send(`:mute: ${muteMember.user.tag} muted for ${ms(ms(time), { long:true })} by ${message.author.tag}. (Do \`${prefix}mute unmute ${muteMember} <reason>\` to unmute.)`).then(() => {
+                  const embed = new Discord.RichEmbed()
+                    .setTitle(`:bangbang: **Moderation action** :scales:`)
+                    .setAuthor(`${message.author.tag} (${message.author.id})`, `${message.author.avatarURL}`)
+                    .setColor(0xCC5200)
+                    .setDescription(`**Action:** Mute \n**User:** ${muteMember.user.tag} (${muteMember.id}) \n**Reason:** ${reason} \n**Time:** ${time} minutes`)
+                    .setTimestamp()
+                  message.guild.channels.find("id", modlog).send({
+                    embed: embed
+                  });
+                  muted[muteMember.id] = setTimeout(() => {
+                    //console.log(`third ${count2}`)
+                    message.guild.channels.map((channel) => {
+                      message.channel.overwritePermissions(muteMember, {
+                        SEND_MESSAGES: null,
+                        ADD_REACTIONS: null,
+                        SPEAK: null
+                      }).then(function() {
+                        if (count2 === 0) {
+                          count2++
+                          message.channel.send(`:loud_sound: ${muteMember.user.tag} unmuted.`);
+                          const embed = new Discord.RichEmbed()
+                            .setTitle(`:bangbang: **Moderation action** :scales:`)
+                            .setAuthor(`${client.user.tag} (${client.user.id})`, `${client.user.avatarURL}`)
+                            .setColor(0x00FF00)
+                            .setDescription(`**Action:** Unmute \n**User:** ${muteMember.user.tag} (${muteMember.id}) \n**Reason:** Time ended, mute expired`)
+                            .setTimestamp()
+                          message.guild.channels.find("id", modlog).send({
+                            embed: embed
+                          });
+                        }
+                      });
+                      delete muted[muteMember.id]
+                    })
+                  }, ms(time))
+                }).catch(error => {
+                  console.log(error)
+                });
+              }
+            })
+        });
+      }
     } else if (message.content.startsWith(prefix + "warn")) {
       if (!hasRole(message.member, modrole || adminrole)) return message.reply(`You do not have permission to do this! Only people with this role can access this command! \`Role Required: ${modrole}\`, this is changeable with \`${prefix}set mod role\``);
       if (message.mentions.users.size === 0) return message.reply("Please mention a user to warn!");
@@ -308,7 +305,7 @@ client.on("message", message => {
         .setDescription(`**Action:** Warning \n**User:** ${warnMember.user.tag} (${warnMember.user.id}) \n**Reason:** ${reason}`)
         .setTimestamp()
       message.delete(1);
-      message.guild.channels.find("id", modlog).send({
+      message.guild.channels.get(modlog).send({
         embed: embed
       });
     } else if (message.content.startsWith(prefix + "lockdown")) {
@@ -334,7 +331,7 @@ client.on("message", message => {
             .setDescription(`**Action:** Lockdown lift \n**Channel:** ${message.channel.name} (${message.channel.id}) \n**Reason:** ${reason}`)
             .setTimestamp()
           message.delete(1);
-          message.guild.channels.find("id", modlog).send({
+          message.guild.channels.get(modlog).send({
             embed: embed
           });
           clearTimeout(lockit[message.channel.id]);
@@ -365,7 +362,7 @@ client.on("message", message => {
                     .setColor(0xCC5200)
                     .setDescription(`**Action:** Lockdown \n**Channel:** ${message.channel.name} (${message.channel.id}) \n**Reason:** ${reason} \n**Time:** ${ms(ms(time), { long:true })}`)
                     .setTimestamp()
-                  message.guild.channels.find("id", modlog).send({
+                  message.guild.channels.get(modlog).send({
                     embed: embed
                   });
                   lockit[message.channel.id] = setTimeout(() => {
@@ -384,7 +381,7 @@ client.on("message", message => {
                             .setColor(0x00FF00)
                             .setDescription(`**Action:** Lockdown lift \n**Channel:** ${message.channel.name} (${message.channel.id}) \n**Reason:** Time ended, lockdown expired`)
                             .setTimestamp()
-                          message.guild.channels.find("id", modlog).send({
+                          message.guild.channels.get(modlog).send({
                             embed: embed
                           });
                         }
