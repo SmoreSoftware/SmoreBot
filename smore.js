@@ -76,7 +76,7 @@ client.on("message", message => {
     let args = message.content.split(" ").slice(1);
     let argsresult = args.join(" ");
     if (message.content.startsWith(prefix + "ping")) {
-      message.channel.send("**Response time**:" + (Date.now() - message.createdTimestamp) + "ms");
+      message.channel.send("**Response time**: " + (Math.abs(Date.now() - message.createdTimestamp)) + "ms");
     } else if (message.content.startsWith(prefix + "set prefix")) {
       if (!hasRole(message.member, adminrole)) return message.reply(`You do not have permission to do this! Only people with this role can access this command! \`Role Required: ${adminrole}\`, this is changeable with \`${prefix}set admin role\``);
       let newprefix = args[1];
@@ -417,6 +417,70 @@ client.on("message", message => {
         }
         message.reply("Tweet sent successfully.")
       }
+    } else if (message.content.startsWith(prefix + "smore")) {
+      let toSmore = [`https://www.poptarts.com/content/NorthAmerica/pop_tarts/en_US/pages/flavors/bakery/frosted-s-mores-toaster-pastries/jcr:content/productContent/par/responsiveimage.img.png/1475703429032.png`,
+        `https://i.ytimg.com/vi/aH8Xhz8a6VA/maxresdefault.jpg`,
+        `https://i5.walmartimages.com/asr/a666e566-cb3c-49e3-b53e-ec969e4c85c4_1.3194f476fa1cb6a1751cb559c2a67b58.jpeg`,
+        `https://upload.wikimedia.org/wikipedia/commons/b/be/Pop-Tarts-Smores.jpg`,
+        `https://static1.squarespace.com/static/553b26fde4b08ceb08a4242c/553b2823e4b0eb3719c6d635/553b2840e4b0eb3719c7e599/1312325953023/1000w/6002537933_e8d711701d.jpg`,
+        `https://s-media-cache-ak0.pinimg.com/736x/6a/24/32/6a2432d9f8b0d57243daa7fe0c67745f.jpg`,
+        `https://static1.squarespace.com/static/553b26fde4b08ceb08a4242c/553b2823e4b0eb3719c6d635/553b2840e4b0eb3719c7e597/1312325932973/1000w/6003055289_9c6c378d29.jpg`,
+        `http://www.everyview.com/wp-content/uploads/2009/09/smorespoptar.jpg`,
+        `http://www.thegrocerygirls.com/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/N/Y/NYFMK.jpg.jpg`,
+        `http://www.theimpulsivebuy.com/images/smorespoptarts.jpg`,
+        `https://s-media-cache-ak0.pinimg.com/736x/12/4a/da/124ada781e33ae30fed95b616c19c0f1.jpg`,
+        `https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTUazFmo_xjAOxt44oDs4uypI7cu0ZFJprbOXo-5kLuvZa6V2wW`,
+        `https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4PndtuGusz7YTaHQ6L7iB3Oxt0L4Qsu6_88GLkPjSWpwU_kfU`,
+        `https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZvH2ZQhcIFPyNIZlU1pVhfxk82g0T-ttaIIY9F3x0k5KgO3vn`,
+        `https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTxf-9Siyd9MYyvPLCeyZPHJE4yODJJSFy9nje5K5EhAxtsrUy6fg`,
+        `https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTG7_P7wGeFYGeeQUp0F_p_jxTjX58nfyQXTRmec7m3sB0MGcRf`,
+        `https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTm2botsr9ClVPFi3UGOEJIhzWEr7zRFu0et9qw1ptoDg8_w77AMQ`,
+        `http://www.taquitos.net/im/sn/PopTarts-Smores.jpg`,
+        `https://i5.walmartimages.ca/images/Large/140/637/140637.jpg`,
+        `https://thejelliedbelly.files.wordpress.com/2013/12/pop-t.jpg`,
+        `https://runningtofit.files.wordpress.com/2010/07/img_3456.jpg`,
+        `https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTzMukpkvYLL_AVtL1JV11mOXcuoecML2K1t1ohfhtRLH-8hNSmhQ`,
+        `http://theswca.com/images-food/poptarts-smores.jpg`
+      ];
+      toSmore = toSmore[Math.floor(Math.random() * toSmore.length)];
+      message.channel.send(toSmore);
+    } else if (message.content.startsWith(prefix + "meme")) {
+      let toMeme = [`https://s-media-cache-ak0.pinimg.com/736x/6a/24/32/6a2432d9f8b0d57243daa7fe0c67745f.jpg`,
+        `https://qph.ec.quoracdn.net/main-qimg-cf520202236c0a99986988706131aafb-c`,
+        `https://qph.ec.quoracdn.net/main-qimg-762390f6c44fdcb31cf01657d776d181-c`,
+        `https://s-media-cache-ak0.pinimg.com/originals/2b/87/17/2b8717e385f04061c8b6b78cd4c663c7.jpg`,
+        `https://lh3.googleusercontent.com/-VHV916run58/WC9To_x72tI/AAAAAAAACkE/f59cQ9_9-XY/safe_image_thumb.gif?imgmax=800`,
+        `https://digitalsynopsis.com/wp-content/uploads/2015/03/web-designer-developer-jokes-humour-funny-41.jpg`,
+        `https://pbs.twimg.com/media/ClH8MiWUgAAkIqr.jpg`,
+        `https://s-media-cache-ak0.pinimg.com/originals/35/01/ae/3501ae95813921b4a17e7d9469f1ba05.jpg`,
+        `https://img.memecdn.com/me-programmer_o_331911.jpg`,
+        `https://s-media-cache-ak0.pinimg.com/736x/d4/f2/00/d4f20041254a0727ddce7cb81be9e68c.jpg`,
+        `https://wyncode.co/wp-content/uploads/2014/08/81.jpg`,
+        `http://4.bp.blogspot.com/-u16rpXWn7Nw/U1jWM7-8NVI/AAAAAAAAHkY/gshqLZwE8iE/s1600/Difference+Between+Gamers+&+Programmers+Keyboard.jpg`,
+        `https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvk7n1gMlDTW4V4BJ9dVbJuMNs0Js7nVXt2WqHzCU5hXbGNe2u`,
+        `https://www.google.com/search?q=programming+memes&safe=strict&client=ubuntu&hs=lv1&channel=fs&source=lnms&tbm=isch&sa=X&ved=0ahUKEwi-45if-KnUAhWDJCYKHegeAxYQ_AUICigB&biw=1313&bih=671#imgrc=31C5ndmXL2GROM:`,
+        `http://2.bp.blogspot.com/-94oft_Og47c/U1ja4YagplI/AAAAAAAAHlU/Q0dCHUkj0_s/s1600/How+Programmers+Talk.jpg`,
+        `https://wyncode.co/wp-content/uploads/2014/08/191.jpg`,
+        `https://s-media-cache-ak0.pinimg.com/736x/cc/42/ae/cc42ae3bf4a60760c48f25b654c0cc83.jpg`,
+        `https://s-media-cache-ak0.pinimg.com/736x/e8/48/18/e84818a407481f290a786a9cadb2ee03.jpg`,
+        `https://s-media-cache-ak0.pinimg.com/736x/00/88/15/008815b7888e82d5a82dbd8eac2f0205.jpg`,
+        `https://s-media-cache-ak0.pinimg.com/736x/33/06/85/330685a41fa6198be3aee58339a37c62.jpg`,
+        `https://s-media-cache-ak0.pinimg.com/736x/03/a1/75/03a17558ed2efaea1ca19bbddea51dff.jpg`,
+        `https://s-media-cache-ak0.pinimg.com/736x/4f/54/29/4f5429df5ea6361fa8d3f08dfcdccdf9.jpg`,
+        `https://s-media-cache-ak0.pinimg.com/736x/6e/f0/bc/6ef0bc2a3298187807efa501cb05a375.jpg`,
+        `https://s-media-cache-ak0.pinimg.com/736x/ce/46/a6/ce46a66f29e4cc4a8179e44d70d2e560.jpg`,
+        `https://s-media-cache-ak0.pinimg.com/736x/20/1e/b1/201eb13e53e5d038e54b16f4f5786d0f.jpg`,
+        `https://s-media-cache-ak0.pinimg.com/736x/45/2b/9c/452b9c8cacfb365f9afa5baaa0bb59b4.jpg`,
+        `https://s-media-cache-ak0.pinimg.com/736x/ee/9a/08/ee9a08c938b4856c1b4d08486c89ad13.jpg`,
+        `https://s-media-cache-ak0.pinimg.com/736x/7e/90/6b/7e906b6eeac775ad40290f6d7a65f59c.jpg`,
+        `https://s-media-cache-ak0.pinimg.com/736x/eb/b5/d8/ebb5d8cb556236a732549ad83937546b.jpg`,
+        `https://s-media-cache-ak0.pinimg.com/736x/a2/9a/bc/a29abc6432badfba5106344c11c88029.jpg`,
+        `https://s-media-cache-ak0.pinimg.com/236x/87/dd/9e/87dd9ed4e8edeff76f8e5a1218656e16.jpg`,
+        `https://s-media-cache-ak0.pinimg.com/236x/eb/b5/d8/ebb5d8cb556236a732549ad83937546b.jpg`,
+        `https://s-media-cache-ak0.pinimg.com/236x/9f/7c/42/9f7c42a12a59e2706b144d62d9b67f4e.jpg`
+      ];
+      toMeme = toMeme[Math.floor(Math.random() * toMeme.length)];
+      message.channel.send(toMeme);
     }
   }
 });
