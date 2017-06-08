@@ -560,7 +560,7 @@ client.on("message", message => {
       const collector = client.channels.get(supportChan).createCollector(message => message.content.startsWith(prefix + "call"), {
         time: 0
       });
-      client.channels.get(supportChan).send(`Do \`${prefix}call answer\` to answer call and connect to server in need.`);
+      client.channels.get(supportChan).send(`Do \`${prefix}call answer\` to answer call and connect to server in need, or \`${prefix}call end\` to deny the call.`);
       collector.on("message", (message) => {
         if (message.content === "+call end") collector.stop("aborted");
         if (message.content === "+call answer") collector.stop("success");
