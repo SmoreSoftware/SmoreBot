@@ -541,58 +541,59 @@ client.on("message", message => {
             message.author.send(`${invite}`)
             message.reply('Check your DMs.')
           }).catch(console.error)
-      } else if (message.content.startsWith(prefix + "support")) {
-        let isEnabled;
-        message.reply("Thank you for contacting SmoreBot-JS Support! If there are any available support representatives, they will contact you soon.");
-        let chan = message.channel;
-        let supportChan = "322450311597916172";
-        const embed = new Discord.RichEmbed()
-          .setTitle(`:bangbang: **New support call** :bangbang:`)
-          .setAuthor(`${message.author.tag} (${message.author.id})`, `${message.author.avatarURL}`)
-          .setColor(0xFF0000)
-          .setDescription(`**Guild:** ${message.guild.name} (${message.guild.id}) \n**Channel:** #${message.channel.name} (${message.channel.id}) \n**Started by:** ${message.author.tag} (${message.author.id})`)
-          .setFooter("SmoreBot-JS Support System")
-          .setTimestamp()
-        client.channels.get(supportChan).send({
-          embed: embed
-        });
-        const collector = client.channels.get(supportChan).createCollector(message => message.content.startsWith(prefix + "call"), {
-          time: 0
-        });
-        client.channels.get(supportChan).send("Do \`+call answer\` to answer call and connect to server in need.");
-        collector.on("message", (message) => {
-          if (message.content === "+call end") collector.stop("aborted");
-          if (message.content === "+call answer") collector.stop("success");
-        });
-        collector.on("end", (collected, reason) => {
-          if (reason === "time") return msg.reply("The call timed out.");
-          if (reason === "aborted") return msg.reply("The call has been denied.");
-          if (reason === "success") {
-            client.channels.get(supportChan).send("Call picked up.");
-            chan.send("Your call has been picked up by a support representative!");
-            chan.send("You will be helped shortly.");
-            isEnabled = true;
-            client.channels.get(supportChan).send("Connected.");
-            client.on("message", message => {
-              function contact() {
-                if (isEnabled === false) return;
-                if (message.author.id === client.user.id) return;
-                if (message.content.startsWith(prefix + "call end")) {
-                  message.channel.send(":x: Call has been hung up.");
-                  if (message.channel.id === chan.id) client.channels.get(supportChan).send(":x: The call was ended from the other side.");
-                  if (message.channel.id === supportChan) chan.send(":x: The call was ended from the other side.");
-                  return isEnabled = false;
-                }
-                if (message.channel.id === chan.id) client.channels.get(supportChan).send(`:telephone_receiver: **${message.author.tag}**: ${message.content}`);
-                if (message.channel.id === supportChan) chan.send(`:star: **Representative**: ${message.content}`);
-              }
-              contact()
-            });
-          };
-        });
       }
+    } else if (message.content.startsWith(prefix + "support")) {
+      let isEnabled;
+      message.reply("Thank you for contacting SmoreBot-JS Support! If there are any available support representatives, they will contact you soon.");
+      let chan = message.channel;
+      let supportChan = "322450311597916172";
+      const embed = new Discord.RichEmbed()
+        .setTitle(`:bangbang: **New support call** :bangbang:`)
+        .setAuthor(`${message.author.tag} (${message.author.id})`, `${message.author.avatarURL}`)
+        .setColor(0xFF0000)
+        .setDescription(`**Guild:** ${message.guild.name} (${message.guild.id}) \n**Channel:** #${message.channel.name} (${message.channel.id}) \n**Started by:** ${message.author.tag} (${message.author.id})`)
+        .setFooter("SmoreBot-JS Support System")
+        .setTimestamp()
+      client.channels.get(supportChan).send({
+        embed: embed
+      });
+      const collector = client.channels.get(supportChan).createCollector(message => message.content.startsWith(prefix + "call"), {
+        time: 0
+      });
+      client.channels.get(supportChan).send("Do \`+call answer\` to answer call and connect to server in need.");
+      collector.on("message", (message) => {
+        if (message.content === "+call end") collector.stop("aborted");
+        if (message.content === "+call answer") collector.stop("success");
+      });
+      collector.on("end", (collected, reason) => {
+        if (reason === "time") return msg.reply("The call timed out.");
+        if (reason === "aborted") return msg.reply("The call has been denied.");
+        if (reason === "success") {
+          client.channels.get(supportChan).send("Call picked up.");
+          chan.send("Your call has been picked up by a support representative!");
+          chan.send("You will be helped shortly.");
+          isEnabled = true;
+          client.channels.get(supportChan).send("Connected.");
+          client.on("message", message => {
+            function contact() {
+              if (isEnabled === false) return;
+              if (message.author.id === client.user.id) return;
+              if (message.content.startsWith(prefix + "call end")) {
+                message.channel.send(":x: Call has been hung up.");
+                if (message.channel.id === chan.id) client.channels.get(supportChan).send(":x: The call was ended from the other side.");
+                if (message.channel.id === supportChan) chan.send(":x: The call was ended from the other side.");
+                return isEnabled = false;
+              }
+              if (message.channel.id === chan.id) client.channels.get(supportChan).send(`:telephone_receiver: **${message.author.tag}**: ${message.content}`);
+              if (message.channel.id === supportChan) chan.send(`:star: **Representative**: ${message.content}`);
+            }
+            contact()
+          });
+        };
+      });
     }
   }
+}
 });
 
 client.on("guildCreate", (server) => {
