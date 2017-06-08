@@ -593,7 +593,6 @@ client.on("message", message => {
       });
     }
   }
-}
 });
 
 client.on("guildCreate", (server) => {
