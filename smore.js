@@ -7,6 +7,8 @@ const ms = require("ms");
 const Twit = require("twit");
 const twitconfig = require("./twitconfig.js");
 const T = new Twit(twitconfig);
+const moment = require('moment');
+require('moment-duration-format');
 const connection = mysql.createConnection({
   host: details.host,
   user: details.user,
@@ -560,7 +562,7 @@ client.on("message", message => {
       const collector = client.channels.get(supportChan).createCollector(message => message.content.startsWith(prefix + "call"), {
         time: 0
       });
-      client.channels.get(supportChan).send(`Do \`${prefix}call answer\` to answer call and connect to server in need, or \`${prefix}call end\` to deny the call.`);
+      client.channels.get(supportChan).send(`Do \`${prefix}call answer\` to answer call and connect to server in need.`);
       collector.on("message", (message) => {
         if (message.content === "+call end") collector.stop("aborted");
         if (message.content === "+call answer") collector.stop("success");
@@ -590,6 +592,18 @@ client.on("message", message => {
             contact()
           });
         };
+      });
+    } else if (message.content.startsWith(prefix + "uptime")) {
+      const duration = moment.duration(client.uptime).format(' D [days], H [hours], m [minutes], s [seconds]');
+      const embed = new Discord.RichEmbed()
+        .setTitle(`Uptime for ${client.user.username}`)
+        .setAuthor(`${client.user.username}`, `${client.user.avatarURL}`)
+        .setColor(0x00FF2F)
+        .setDescription(`The bot has been up for ${duration}.`)
+        .setTimestamp()
+        .addField(`**Ready at:**`, `${bot.readyAt}`)
+      message.channel.send({
+        embed: embed
       });
     }
   }
