@@ -601,7 +601,7 @@ client.on("message", message => {
         .setColor(0x00FF2F)
         .setDescription(`The bot has been up for ${duration}.`)
         .setTimestamp()
-        .addField(`**Ready at:**`, `${bot.readyAt}`)
+        .addField(`**Ready at:**`, `${client.readyAt}`)
       message.channel.send({
         embed: embed
       });
