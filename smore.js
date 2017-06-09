@@ -447,7 +447,7 @@ client.on("message", message => {
       toSmore = toSmore[Math.floor(Math.random() * toSmore.length)];
       message.channel.send(toSmore);
     } else if (message.content.startsWith(prefix + "meme")) {
-      let toMeme = [`https://s-media-cache-ak0.pinimg.com/736x/6a/24/32/6a2432d9f8b0d57243daa7fe0c67745f.jpg`,
+      let toMeme = [`https://media0.giphy.com/media/ehc19YLR4Ptbq/giphy.gif`,
         `https://qph.ec.quoracdn.net/main-qimg-cf520202236c0a99986988706131aafb-c`,
         `https://qph.ec.quoracdn.net/main-qimg-762390f6c44fdcb31cf01657d776d181-c`,
         `https://s-media-cache-ak0.pinimg.com/originals/2b/87/17/2b8717e385f04061c8b6b78cd4c663c7.jpg`,
