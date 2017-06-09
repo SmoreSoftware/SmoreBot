@@ -568,14 +568,16 @@ client.on("message", message => {
         if (message.content === "+call answer") collector.stop("success");
       });
       collector.on("end", (collected, reason) => {
-        if (reason === "time") return msg.reply("The call timed out.");
-        if (reason === "aborted") return msg.reply("The call has been denied.");
+        if (reason === "time") return message.reply("The call timed out.");
+        if (reason === "aborted") {
+          message.reply(":x: The call has been denied.");
+          client.channels.get(supportChan).send(":x: Succesfully denied call.");
+        }
         if (reason === "success") {
-          client.channels.get(supportChan).send("Call picked up.");
-          chan.send("Your call has been picked up by a support representative!");
-          chan.send("You will be helped shortly.");
+          client.channels.get(supportChan).send(":heavy_check_mark: Call picked up!");
+          chan.send(":heavy_check_mark: Your call has been picked up by a support representative!");
+          chan.send(":hourglass: You will be helped shortly.");
           isEnabled = true;
-          client.channels.get(supportChan).send("Connected.");
           client.on("message", message => {
             function contact() {
               if (isEnabled === false) return;
