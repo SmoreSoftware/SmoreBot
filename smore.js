@@ -587,7 +587,7 @@ client.on("message", message => {
                 return isEnabled = false;
               }
               if (message.channel.id === chan.id) client.channels.get(supportChan).send(`:telephone_receiver: **${message.author.tag}**: ${message.content}`);
-              if (message.channel.id === supportChan) chan.send(`:star: **Representative**: ${message.content}`);
+              if (message.channel.id === supportChan) chan.send(`:star: ${message.content}`);
             }
             contact()
           });
