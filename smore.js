@@ -575,6 +575,7 @@ client.on("message", message => {
         }
         if (reason === "success") {
           client.channels.get(supportChan).send(":heavy_check_mark: Call picked up!");
+          chan.send(`${message.author}`);
           chan.send(":heavy_check_mark: Your call has been picked up by a support representative!");
           chan.send(":hourglass: You will be helped shortly.");
           isEnabled = true;
