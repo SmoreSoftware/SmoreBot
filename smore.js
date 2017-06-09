@@ -624,6 +624,17 @@ client.on("message", message => {
       message.channel.send({
         embed: embed
       });
+    } else if (message.content.startsWith(prefix + "activate")) {
+      message.guild.fetchMember("290228059599142913")
+        .then((member) => {
+          if (member) {
+            message.reply("Congratulations!")
+            message.channel.send(`For having <@290228059599142913> on your server, you have now unlocked extra special features on ${client.user}!
+As you may or may not know, this bot, ${client.user}, and <@290228059599142913> are both developed by the SmoreSoftware organization.
+As your reward for having both SmoreSoftware bots, the developers have decided to allow your server to have use of the ${client.user} music module!
+Enjoy and thank you for supporting SmoreSoftware!`);
+          }
+        }).catch(console.error);
     }
   }
 });
@@ -639,6 +650,11 @@ client.on("guildCreate", (server) => {
     "modrole": "FireTrap Mod",
     "modlog": "Not Set"
   }
+
+  guild.fetchMember("290228059599142913")
+    .then((member) => {
+      guild.owner.send('Hello! Thank you for having <@290228059599142913> on your server! Please run \`+activate\`.');
+    }).catch(console.error);
 
   connection.query("INSERT INTO tests SET ?", info, (err) => {
     if (err) return console.error(err);
@@ -666,6 +682,12 @@ client.on("guildDelete", (server) => {
     if (err) return console.error(err);
     console.log("Server Removed!");
   });
+});
+
+client.on("guildMemberAdd", (member) => {
+  if (member.id === "290228059599142913") {
+    member.guild.owner.send('Hello! Thank you for adding <@290228059599142913> to your server! Please run \`+activate\`.');
+  }
 });
 
 process.on("unhandledRejection", err => {
