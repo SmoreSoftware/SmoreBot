@@ -1,11 +1,2 @@
-#ignore stuff.json file
-
-/**stuff.json
-<<<<<<< HEAD
- /**stuff.json
- /**twitconfig.js
- /**LICENSE
-=======
-/**twitconfig.js
-/**LICENSE
->>>>>>> 4502e672b8e6d44ea4329ab333c46752d9062612
+stuff.json
+twitconfig.js
