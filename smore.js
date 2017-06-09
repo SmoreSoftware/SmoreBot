@@ -109,7 +109,7 @@ client.on("message", message => {
       } catch (err) {
         code = err.essage;
       }
-      let evaled = `:inbox_tray: **Input:**\`\`\`js\n${message.content.split(" ").slice(1)}\`\`\`\n\n:outbox_tray: **Output:**\n\`\`\`js\n${code}\`\`\``;
+      let evaled = `:inbox_tray: **Input:**\`\`\`js\n${message.content.split(" ").slice(1).join(" ")}\`\`\`\n\n:outbox_tray: **Output:**\n\`\`\`js\n${code}\`\`\``;
       message.channel.send("evaling...")
         .then((newMsg) => {
           newMsg.edit(evaled)
