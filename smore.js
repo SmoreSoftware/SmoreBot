@@ -479,6 +479,7 @@ client.on("message", message => {
         `https://s-media-cache-ak0.pinimg.com/236x/87/dd/9e/87dd9ed4e8edeff76f8e5a1218656e16.jpg`,
         `https://s-media-cache-ak0.pinimg.com/236x/eb/b5/d8/ebb5d8cb556236a732549ad83937546b.jpg`,
         `https://s-media-cache-ak0.pinimg.com/236x/9f/7c/42/9f7c42a12a59e2706b144d62d9b67f4e.jpg`,
+        `https://cdn.discordapp.com/attachments/304065566396645377/323264999684309002/b5ac1149b38bfeec57a6e81331b699a675a2223faa69943c15a35c9409ba463f.png`,
         `Your code can't error if you don't run it`,
         `You can't go through the stages of coding if you don't code`,
         `https://cdn.discordapp.com/attachments/283339767884677121/307266230203711489/image.jpg`,
