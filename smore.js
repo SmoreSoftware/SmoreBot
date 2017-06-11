@@ -499,7 +499,8 @@ client.on("message", message => {
         `https://s-media-cache-ak0.pinimg.com/736x/01/0b/68/010b68214bf1eeb91060732aa58bed1e.jpg`,
         `https://s-media-cache-ak0.pinimg.com/736x/34/8a/92/348a92212ef1bcd89c94555e3d8380b5.jpg`,
         `https://s-media-cache-ak0.pinimg.com/736x/88/40/22/8840225f3b254ee4ecaafa17b3cf324b.jpg`,
-        `https://s-media-cache-ak0.pinimg.com/736x/ff/56/59/ff56598016c0529acf61c70f80530456.jpg`
+        `https://s-media-cache-ak0.pinimg.com/736x/ff/56/59/ff56598016c0529acf61c70f80530456.jpg`,
+        `https://carlchenet.com/wp-content/uploads/2016/01/githubdown.png`
       ];
       toMeme = toMeme[Math.floor(Math.random() * toMeme.length)];
       message.channel.send(toMeme);
