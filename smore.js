@@ -30,7 +30,7 @@ connection.connect();
 let settings;
 client.on("ready", () => {
   console.log("logged in and connected to database!")
-  client.user.setGame("BETA SOFTWARE!");
+  client.user.setGame("js.ping | Beta");
   connection.query("SELECT * FROM tests", (err, results) => {
     if (err) return console.error(err);
     settings = results;
