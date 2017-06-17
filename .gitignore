@@ -1,2 +1,4 @@
 stuff.json
 twitconfig.js
+*.json
+/node_modules
