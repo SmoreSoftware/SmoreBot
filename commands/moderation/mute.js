@@ -1,5 +1,7 @@
 const commando = require('discord.js-commando');
 const oneLine = require('common-tags').oneLine;
+const Discord = require('discord.js');
+const ms = require('ms');
 
 module.exports = class MuteCommand extends commando.Command {
   constructor(client) {
@@ -12,10 +14,9 @@ module.exports = class MuteCommand extends commando.Command {
       details: oneLine `
 				This command mutes a specified user from text and voice chat.
         This is a great command for if a kick is not needed.
-        Permission is locked to members with the master role.
+        Permission is locked to moderators and above.
 			`,
-      guildOnly: true,
-      examples: ['mute @Bob#1234 5 being a butt'],
+      examples: ['mute @Bob 5m being a butt'],
 
       args: [{
           key: 'user',
@@ -40,7 +41,7 @@ module.exports = class MuteCommand extends commando.Command {
         }
       ],
 
-      guarded: true
+      guildOnly: true
     });
   }
 
@@ -51,6 +52,7 @@ module.exports = class MuteCommand extends commando.Command {
     if (!modrole || !adminrole || !modlog) return message.reply(`This command is not set up to work! Have someone run \`${message.guild.commandPrefix}settings\` to add the \`mod\`, \`admin\`, and \`modlod\` settings.`)
     if (!message.member.roles.has(modrole.id || adminrole.id)) return message.reply(`You do not have permission to do this! Only people with this role can access this command! \`Role Required: ${message.guild.roles.get('modrole')}\`, this is changeable with \`${message.guild.commandPrefix}set add mod @role\``)
     if (!message.guild.member(this.client.user).hasPermission('MANAGE_CHANNELS')) return message.reply('I do not have permission to mute members!')
+    let muted = []
     let validUnlocks = ['voice', 'unmute']
     if (validUnlocks.includes(args.time)) {
       message.guild.channels.map((channel) => {
@@ -73,7 +75,7 @@ module.exports = class MuteCommand extends commando.Command {
           .setTitle(`:bangbang: **Moderation action** :scales:`)
           .setAuthor(`${message.author.tag} (${message.author.id})`, `${message.author.avatarURL}`)
           .setColor(0x00FF00)
-          .setDescription(`**Action:** Unmute \n**User:** ${args.user.tag} (${args.user.id}) \n**Reason:** ${reason}`)
+          .setDescription(`**Action:** Unmute \n**User:** ${args.user.tag} (${args.user.id}) \n**Reason:** ${args.reason}`)
           .setTimestamp()
         message.delete(1);
         message.guild.channels.get(modlog).send({
@@ -98,12 +100,12 @@ module.exports = class MuteCommand extends commando.Command {
             if (count === 0) {
               count++;
               message.delete(1);
-              message.channel.send(`:mute: ${args.user.tag} muted for ${ms(ms(time), { long:true })} by ${message.author.tag}. (Do \`${message.guild.commandPrefix}mute unmute ${args.user} <reason>\` to unmute.)`).then(() => {
+              message.channel.send(`:mute: ${args.user.tag} muted for ${ms(ms(args.time), { long:true })} by ${message.author.tag}. (Do \`${message.guild.commandPrefix}mute unmute ${args.user} <reason>\` to unmute.)`).then(() => {
                 const embed = new Discord.RichEmbed()
                   .setTitle(`:bangbang: **Moderation action** :scales:`)
                   .setAuthor(`${message.author.tag} (${message.author.id})`, `${message.author.avatarURL}`)
                   .setColor(0xCC5200)
-                  .setDescription(`**Action:** Mute \n**User:** ${args.user.tag} (${args.user.id}) \n**Reason:** ${reason} \n**Time:** ${time} minutes`)
+                  .setDescription(`**Action:** Mute \n**User:** ${args.user.tag} (${args.user.id}) \n**Reason:** ${args.reason} \n**Time:** ${ms(ms(args.time), { long:true })}`)
                   .setTimestamp()
                 message.guild.channels.get(modlog).send({
                   embed: embed
@@ -132,7 +134,7 @@ module.exports = class MuteCommand extends commando.Command {
                     });
                     delete muted[args.user.id]
                   })
-                }, ms(time))
+                }, ms(args.time))
               }).catch(error => {
                 console.log(error)
               });
