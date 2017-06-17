@@ -2,3 +2,4 @@ stuff.json
 twitconfig.js
 *.json
 /node_modules
+settings.sqlite3
