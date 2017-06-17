@@ -29,6 +29,7 @@
     "oneline": "0.0.0",
     "simple-youtube-api": "^2.1.0",
     "sqlite": "^2.8.0",
+    "twit": "^2.2.9",
     "ytdl-core": "^0.14.4"
   }
 }
