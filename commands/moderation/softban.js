@@ -39,7 +39,7 @@ module.exports = class SoftbanCommand extends commando.Command {
     let adminrole = message.guild.settings.get('adminrole')
     let modlog = message.guild.settings.get('modlog')
     if (!adminrole || !modlog) return message.reply(`This command is not set up to work! Have someone run \`${message.guild.commandPrefix}settings\` to add the \`admin\` and \`modlod\` settings.`)
-    if (!message.member.roles.has(adminrole.id)) return message.reply(`You do not have permission to do this! Only people with this role can access this command! \`Role Required: ${message.guild.roles.get('adminrole')}\`, this is changeable with \`${message.guild.commandPrefix}set add admin @role\``)
+    if (!message.member.roles.has(adminrole)) return message.reply(`You do not have permission to do this! Only people with this role can access this command! \`Role Required: ${message.guild.roles.get('adminrole')}\`, this is changeable with \`${message.guild.commandPrefix}set add admin @role\``)
     if (!msg.guild.member(this.client.user).hasPermission('BAN_MEMBERS')) return msg.reply('I do not have permission to ban members!')
 
     await args.user.send(`You have been softbanned from the server "${message.guild}"!

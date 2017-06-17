@@ -39,7 +39,7 @@ module.exports = class LockdownCommand extends commando.Command {
     let adminrole = message.guild.settings.get('adminrole')
     let modlog = message.guild.settings.get('modlog')
     if (!adminrole || !modlog) return message.reply(`This command is not set up to work! Have someone run \`${message.guild.commandPrefix}settings\` to add the \`admin\` and \`modlod\` settings.`)
-    if (!message.member.roles.has(modrole.id || adminrole.id)) return message.reply(`You do not have permission to do this! Only people with this role can access this command! \`Role Required: ${message.guild.roles.get('adminrole')}\`, this is changeable with \`${message.guild.commandPrefix}set add admin @role\``)
+    if (!message.member.roles.has(modrole || adminrole)) return message.reply(`You do not have permission to do this! Only people with this role can access this command! \`Role Required: ${message.guild.roles.get('adminrole')}\`, this is changeable with \`${message.guild.commandPrefix}set add admin @role\``)
     if (!message.guild.member(this.client.user).hasPermission("MANAGE_CHANNELS")) return message.reply('I do not have permission to lockdown this channel!')
     let lockit = []
     let validUnlocks = ["release", "unlock"]
