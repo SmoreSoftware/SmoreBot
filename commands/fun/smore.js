@@ -4,10 +4,10 @@ const oneLine = require('common-tags').oneLine;
 module.exports = class SmoreCommand extends commando.Command {
   constructor(client) {
     super(client, {
-      name: 'meme',
+      name: 'smore',
       aliases: [],
       group: 'fun',
-      memberName: 'meme',
+      memberName: 'smore',
       description: 'Displays a random picture of S\'mores Pop-Tarts..',
       details: oneLine `
 				Our bot is based on S'mores Pop-Tarts.
