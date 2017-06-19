@@ -24,9 +24,9 @@ module.exports = class ActivateCommand extends commando.Command {
       .then((member) => {
         if (member) {
           message.reply("Congratulations!")
-          message.channel.send(`For having <@290228059599142913> on your server, you have now unlocked extra special features on ${client.user}!
-As you may or may not know, this bot, ${client.user}, and <@290228059599142913> are both developed by the SmoreSoftware organization.
-As your reward for having both SmoreSoftware bots, the developers have decided to allow your server to have use of the ${client.user} music module!
+          message.channel.send(`For having <@290228059599142913> on your server, you have now unlocked extra special features on ${this.client.user}!
+As you may or may not know, this bot, ${this.client.user}, and <@290228059599142913> are both developed by the SmoreSoftware organization.
+As your reward for having both SmoreSoftware bots, the developers have decided to allow your server to have use of the ${this.client.user} music module!
 Enjoy and thank you for supporting SmoreSoftware!`);
           message.guild.settings.set('activated', true)
           console.log(`Activated set to ${message.guild.settings.get('activated')} on ${message.guild.name} (${message.guild.id})`)
