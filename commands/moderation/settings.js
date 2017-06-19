@@ -36,7 +36,7 @@ module.exports = class SettingsCommand extends commando.Command {
           type: 'string',
           prompt: '',
           default: '',
-          infinite: true
+          infinite: false
         }
       ],
       guildOnly: true,
