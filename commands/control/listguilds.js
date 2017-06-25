@@ -20,10 +20,10 @@ module.exports = class ListGuildsCommand extends commando.Command {
     });
   }
 
-  async run(msg, args) {
-    if (!this.client.isOwner(msg.author)) return msg.reply('You do not have permission to use this command!')
+  async run(message, args) {
+    if (!this.client.isOwner(message.author)) return message.reply('You do not have permission to use this command!')
     this.client.guilds.map((guild) => {
-      msg.channel.send(`Guild: ${guild.id}
+      message.channel.send(`Guild: ${guild.id}
 Name: ${guild.name}
 Owner: ${guild.owner.user.tag} (${guild.owner.id})
 Default Channel: #${guild.defaultChannel.name} (${guild.defaultChannel.id})

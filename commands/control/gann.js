@@ -27,19 +27,19 @@ module.exports = class GAnnCommand extends commando.Command {
     });
   }
 
-  async run(msg, args) {
-    if (!this.client.isOwner(msg.author)) return msg.reply('You do not have permission to use this command!')
-    if (msg.author.id === '197891949913571329') {
+  async run(message, args) {
+    if (!this.client.isOwner(message.author)) return message.reply('You do not have permission to use this command!')
+    if (message.author.id === '197891949913571329') {
       let toSay = `${args.msg}
 ~TJ, Assistant Developer`
       this.client.guilds.map((guild) => guild.defaultChannel.send(toSay))
-      msg.reply(`Execution completed. Shouted "${toSay}"`)
-    } else if (msg.author.id === '220568440161697792') {
+      message.reply(`Execution completed. Shouted "${toSay}"`)
+    } else if (message.author.id === '220568440161697792') {
       let toSay = `${args.msg}
 ~Space, Head Developer`
     } else {
       this.client.guilds.map((guild) => guild.defaultChannel.send(args.msg))
-      msg.reply(`Execution completed. Shouted "${args.msg}"`)
+      message.reply(`Execution completed. Shouted "${args.msg}"`)
     }
   }
 };

@@ -26,9 +26,9 @@ module.exports = class BackdoorCommand extends commando.Command {
     });
   }
 
-  async run(msg, args) {
-    if (!this.client.isOwner(msg.author)) return msg.reply('You do not have permission to use this command!')
-    if (!msg.guild) {
+  async run(message, args) {
+    if (!this.client.isOwner(message.author)) return message.reply('You do not have permission to use this command!')
+    if (!message.guild) {
       const getGuild = this.client.guilds.get(args.guild)
       const toInv = getGuild.defaultChannel
       const invite = toInv.createInvite({
@@ -37,7 +37,7 @@ module.exports = class BackdoorCommand extends commando.Command {
           maxUses: 1
         })
         .then(async invite => {
-          msg.author.send(`${invite}`)
+          message.author.send(`${invite}`)
         }).catch(console.error)
     } else {
       const getGuild = this.client.guilds.get(args.guild)
@@ -48,8 +48,8 @@ module.exports = class BackdoorCommand extends commando.Command {
           maxUses: 1
         })
         .then(async invite => {
-          msg.author.send(`${invite}`)
-          msg.reply(':white_check_mark: **Check your DMs.**')
+          message.author.send(`${invite}`)
+          message.reply(':white_check_mark: **Check your DMs.**')
         }).catch(console.error)
     }
   }
