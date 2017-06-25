@@ -14,9 +14,7 @@ module.exports = class SmoreCommand extends commando.Command {
         We figured we could honor that with a command to display
         a random picture of our namesake.
 			`,
-      examples: ['smore'],
-
-      guarded: true
+      examples: ['smore']
     });
   }
 

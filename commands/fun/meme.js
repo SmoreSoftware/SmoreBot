@@ -13,9 +13,7 @@ module.exports = class MemeCommand extends commando.Command {
 				Are you bored and too lazy to google memes?
         We are too! Enjoy the memes!
 			`,
-      examples: ['meme'],
-
-      guarded: true
+      examples: ['meme']
     });
   }
 
