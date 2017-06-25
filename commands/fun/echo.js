@@ -20,7 +20,7 @@ module.exports = class EchoCommand extends commando.Command {
         prompt: 'What would you like me to say?',
         type: 'string',
         infinite: false
-      }],
+      }]
     })
   }
 

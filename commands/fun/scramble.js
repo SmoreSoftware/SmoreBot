@@ -13,14 +13,14 @@ module.exports = class ScrambleCommand extends commando.Command {
         This command takes what you say and scrambles it.
         Very useful if you understand garbled nonsense.
 			`,
-      examples: ['echo lol'],
+      examples: ['scramble this is very hard to understand'],
       args: [{
         key: 'toScramble',
         label: 'scramble',
         prompt: 'What would you like me to scramble?',
         type: 'string',
         infinite: false
-      }],
+      }]
     })
   }
 

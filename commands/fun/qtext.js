@@ -13,14 +13,14 @@ module.exports = class QTextCommand extends commando.Command {
         Do you like QBert's language?
         This command translates what you give it into QBert language.
 			`,
-      examples: ['qtext'],
+      examples: ['qtext hello guys this is basically like cussing'],
       args: [{
         key: 'toQtext',
         label: 'qtext',
         prompt: 'What would you like to translate?',
         type: 'string',
         infinite: false
-      }],
+      }]
     })
   }
 

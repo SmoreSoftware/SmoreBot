@@ -13,7 +13,7 @@ module.exports = class ReverseCommand extends commando.Command {
 				This command takes the text you provide and reverses it.
         What, did you expect nuclear physics?
 			`,
-      examples: ['tweet hi guys it me'],
+      examples: ['reverse hello this is reverse yay'],
 
       args: [{
         key: 'toSay',
