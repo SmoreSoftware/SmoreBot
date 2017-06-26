@@ -27,6 +27,8 @@ module.exports = class ImgAsciiCommand extends commando.Command {
   }
 
   async run(message, args) {
+    /*This commmand is currenrly non-functional.
+    Messages were too long and it spit out garbage to the console.
     ascii(args.toAscii, (err, converted) => {
       if (err) {
         message.reply('Something went wrong! Contact a developer.')
@@ -34,6 +36,7 @@ module.exports = class ImgAsciiCommand extends commando.Command {
       }
       //message.channel.send(`${converted}`).catch(message.reply('Something went wrong! Contact a developer. \nIt\'s likely that your image was too large to send.'))
       console.log(converted)
-    })
+    })*/
+    message.reply('This command is curently broken.')
   }
 };
