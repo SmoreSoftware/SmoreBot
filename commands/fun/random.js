@@ -12,8 +12,8 @@ module.exports = class RandTextCommand extends commando.Command {
       description: 'Generates a random string according to the length you specify.',
       details: oneLine `
         Do you need some random letters? Do you just like making nonsense?
-        This command generates a random string of letters according to the length
-        you specify.
+        This command generates a random string of letters and numbers according
+        to the length you specify.
 			`,
       examples: ['random 15'],
       args: [{
