@@ -29,7 +29,7 @@ module.exports = class RandTextCommand extends commando.Command {
   async run(message, args) {
     function randomtext() {
       let text = "";
-      let possible = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ.,!?@#$%^&()-_=+/|\{\}\"\'";
+      let possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789.,!?@#$%^&()-_=+/|\{\}\"\'";
 
       for (var i = 0; i < args.toRand; i++)
         text += possible.charAt(Math.floor(Math.random() * possible.length));
