@@ -2,7 +2,7 @@ const commando = require('discord.js-commando');
 const oneLine = require('common-tags').oneLine;
 const client = require(`discord.js`)
 
-module.exports = class HQCommand extends commando.Command {
+module.exports = class InviteCommand extends commando.Command {
   constructor(client) {
     super(client, {
       name: 'invite',
