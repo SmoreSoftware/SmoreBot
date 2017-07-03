@@ -1,6 +1,6 @@
+//eslint-disable-next-line
 const commando = require('discord.js-commando');
 const oneLine = require('common-tags').oneLine;
-const Discord = require('discord.js');
 
 module.exports = class RandTextCommand extends commando.Command {
   constructor(client) {
@@ -26,13 +26,14 @@ module.exports = class RandTextCommand extends commando.Command {
     })
   }
 
+  //eslint-disable-next-line class-methods-use-this
   async run(message, args) {
     function randomtext() {
-      let text = "";
-      let possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789.,!?@#$%^&()-_=+/|\{\}\"\'";
+      let text = '';
+      //eslint-disable-next-line no-useless-escape
+      let possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789.,!?@#$%^&()-_=+/|\{\}"\'';
 
-      for (var i = 0; i < args.toRand; i++)
-        text += possible.charAt(Math.floor(Math.random() * possible.length));
+      for (let i = 0;i < args.toRand;i++) text += possible.charAt(Math.floor(Math.random() * possible.length));
 
       return text;
     }

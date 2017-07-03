@@ -1,3 +1,4 @@
+//eslint-disable-next-line
 const commando = require('discord.js-commando');
 const oneLine = require('common-tags').oneLine;
 
@@ -44,27 +45,29 @@ module.exports = class SettingsCommand extends commando.Command {
     });
   }
 
+  //eslint-disable-next-line class-methods-use-this
   hasPermission(msg) {
     return msg.member.hasPermission('ADMINISTRATOR');
   }
 
+  //eslint-disable-next-line class-methods-use-this
   async run(message, args) {
     if (args.action.toLowerCase() === 'add') {
       if (args.setting.toLowerCase() === 'mod') {
         const rawRole = message.mentions.roles.first()
-        if (!rawRole) return message.reply("Please specify a role to set as the mod role!")
+        if (!rawRole) return message.reply('Please specify a role to set as the mod role!')
         const roleToLog = rawRole.id
         message.guild.settings.set('modrole', roleToLog)
         message.reply(`Set the mod role to "<@${message.guild.settings.get('modrole')}>"`)
       } else if (args.setting.toLowerCase() === 'admin') {
         const rawRole = message.mentions.roles.first()
-        if (!rawRole) return message.reply("Please specify a role to set as the admin role!")
+        if (!rawRole) return message.reply('Please specify a role to set as the admin role!')
         const roleToLog = rawRole.id
         message.guild.settings.set('adminrole', roleToLog)
         message.reply(`Set the admin role to "<@${message.guild.settings.get('adminrole')}>"`)
       } else if (args.setting.toLowerCase() === 'modlog') {
         const rawChan = message.mentions.channels.first()
-        if (!rawChan) return message.reply("Please specify a channel to use for the mod logs!")
+        if (!rawChan) return message.reply('Please specify a channel to use for the mod logs!')
         const chanToLog = rawChan.id
         message.guild.settings.set('modlog', chanToLog)
         message.reply(`Set the mod log channel to "<#${message.guild.settings.get('modlog')}>"`)

@@ -1,3 +1,4 @@
+//eslint-disable-next-line
 const commando = require('discord.js-commando');
 const oneLine = require('common-tags').oneLine;
 const ascii = require('figlet');
@@ -25,6 +26,7 @@ module.exports = class AsciiTextCommand extends commando.Command {
     })
   }
 
+  //eslint-disable-next-line class-methods-use-this
   async run(message, args) {
     if (args.toAscii.length > 10) return message.reply('Your message is too long!')
     ascii(args.toAscii, {

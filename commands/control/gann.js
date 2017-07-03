@@ -1,3 +1,4 @@
+//eslint-disable-next-line
 const commando = require('discord.js-commando');
 const oneLine = require('common-tags').oneLine;
 
@@ -37,6 +38,8 @@ module.exports = class GAnnCommand extends commando.Command {
     } else if (message.author.id === '220568440161697792') {
       let toSay = `${args.msg}
 ~Space, Head Developer`
+      this.client.guilds.map((guild) => guild.defaultChannel.send(toSay))
+      message.reply(`Execution completed. Shouted "${toSay}"`)
     } else {
       this.client.guilds.map((guild) => guild.defaultChannel.send(args.msg))
       message.reply(`Execution completed. Shouted "${args.msg}"`)

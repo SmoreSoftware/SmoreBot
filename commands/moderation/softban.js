@@ -1,5 +1,7 @@
+//eslint-disable-next-line
 const commando = require('discord.js-commando');
 const oneLine = require('common-tags').oneLine;
+const Discord = require('discord.js');
 
 module.exports = class SoftbanCommand extends commando.Command {
   constructor(bot) {
@@ -28,25 +30,25 @@ module.exports = class SoftbanCommand extends commando.Command {
           prompt: 'Why is the user being softbanned?',
           type: 'string',
           infinite: false
-        },
+        }
       ],
 
       guildOnly: true
     });
   }
 
-  async run(msg, args) {
+  async run(message, args) {
     let adminrole = message.guild.settings.get('adminrole')
     let modlog = message.guild.settings.get('modlog')
     if (!adminrole || !modlog) return message.reply(`This command is not set up to work! Have someone run \`${message.guild.commandPrefix}settings\` to add the \`admin\` and \`modlod\` settings.`)
     if (!message.member.roles.has(adminrole)) return message.reply(`You do not have permission to do this! Only people with this role can access this command! \`Role Required: ${message.guild.roles.get('adminrole')}\`, this is changeable with \`${message.guild.commandPrefix}set add admin @role\``)
-    if (!msg.guild.member(this.client.user).hasPermission('BAN_MEMBERS')) return msg.reply('I do not have permission to ban members!')
+    if (!message.guild.member(this.client.user).hasPermission('BAN_MEMBERS')) return message.reply('I do not have permission to ban members!')
 
     await args.user.send(`You have been softbanned from the server "${message.guild}"!
 Staff member: ${message.author.username}
 Reason: '${args.reason}'`)
     const embed = new Discord.RichEmbed()
-      .setTitle(`:bangbang: **Moderation action** :scales:`)
+      .setTitle(':bangbang: **Moderation action** :scales:')
       .setAuthor(`${message.author.tag} (${message.author.id})`, `${message.author.avatarURL}`)
       .setColor(0xFF0000)
       .setDescription(`**Action:** Softban \n**User:** ${args.user.tag} (${args.user.id}) \n**Reason:** ${args.reason}`)
@@ -56,11 +58,11 @@ Reason: '${args.reason}'`)
       embed: embed
     })
 
-    msg.guild.ban(args.user, {
+    message.guild.ban(args.user, {
       days: 7,
       reason: `SOFTBAN: ${args.reason}`
     })
 
-    msg.guild.unban(args.user)
+    message.guild.unban(args.user)
   }
 };

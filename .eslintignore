@@ -1,0 +1,11 @@
+*.sqlite
+*.sqlite3
+*.json
+*.JSON
+*.yml
+*.yaml
+*.md
+*.txt
+*.sh
+*.bat
+LICENSE

@@ -1,3 +1,4 @@
+//eslint-disable-next-line
 const commando = require('discord.js-commando');
 const oneLine = require('common-tags').oneLine;
 const Discord = require('discord.js');
@@ -24,6 +25,7 @@ module.exports = class EchoCommand extends commando.Command {
     })
   }
 
+  //eslint-disable-next-line class-methods-use-this
   async run(message, args) {
     const embed = new Discord.RichEmbed()
       .setAuthor(`${message.author.tag}`, `${message.author.avatarURL}`)

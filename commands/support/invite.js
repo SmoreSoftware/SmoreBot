@@ -1,6 +1,6 @@
+//eslint-disable-next-line
 const commando = require('discord.js-commando');
 const oneLine = require('common-tags').oneLine;
-const client = require(`discord.js`)
 
 module.exports = class InviteCommand extends commando.Command {
   constructor(client) {
@@ -13,13 +13,14 @@ module.exports = class InviteCommand extends commando.Command {
       details: oneLine `
         sends an invite for the bot
 			`,
-      examples: ['support'],
+      examples: ['invite'],
       guildOnly: true,
       guarded: true
     })
   }
 
-  async run(message, args) {
-    message.channel.send(`Currently, due to me being in developemt and my unstable nature, I can not be added.`)
+  //eslint-disable-next-line class-methods-use-this
+  async run(message) {
+    message.channel.send('Currently, due to me being in developemt and my unstable nature, I can not be added.')
   }
 };

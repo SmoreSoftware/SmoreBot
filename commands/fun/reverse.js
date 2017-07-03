@@ -1,3 +1,4 @@
+//eslint-disable-next-line
 const commando = require('discord.js-commando');
 const oneLine = require('common-tags').oneLine;
 
@@ -25,17 +26,17 @@ module.exports = class ReverseCommand extends commando.Command {
     });
   }
 
+  //eslint-disable-next-line class-methods-use-this
   async run(message, args) {
-    let text = message.content.substring(8);
-    let reversed = '';
-    let i = text.length;
+    let reversed = ''
+    let i = args.toSay.length
 
     while (i > 0) {
-      reversed += text.substring(i - 1, i);
-      i--;
+      reversed += args.toSay.substring(i - 1, i)
+      i--
     }
 
-    message.delete(1);
-    message.channel.send(reversed);
+    message.delete(1)
+    message.channel.send(reversed)
   }
 };

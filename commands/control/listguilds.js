@@ -1,3 +1,4 @@
+//eslint-disable-next-line
 const commando = require('discord.js-commando');
 const oneLine = require('common-tags').oneLine;
 
@@ -20,8 +21,9 @@ module.exports = class ListGuildsCommand extends commando.Command {
     });
   }
 
-  async run(message, args) {
+  async run(message) {
     if (!this.client.isOwner(message.author)) return message.reply('You do not have permission to use this command!')
+    //eslint-disable-next-line array-callback-return
     this.client.guilds.map((guild) => {
       message.channel.send(`Guild: ${guild.id}
 Name: ${guild.name}

@@ -1,6 +1,6 @@
+//eslint-disable-next-line
 const commando = require('discord.js-commando');
 const oneLine = require('common-tags').oneLine;
-const Discord = require('discord.js');
 
 module.exports = class ScrambleCommand extends commando.Command {
   constructor(client) {
@@ -24,18 +24,21 @@ module.exports = class ScrambleCommand extends commando.Command {
     })
   }
 
+  //eslint-disable-next-line class-methods-use-this
   async run(message, args) {
+    //eslint-disable-next-line no-extend-native
     String.prototype.shuffle = function() {
-      var a = this.split(""),
+      let a = this.split(''),
         n = a.length
 
-      for (var i = n - 1; i > 0; i--) {
-        var j = Math.floor(Math.random() * (i + 1))
-        var tmp = a[i]
+      for (let i = n - 1;i > 0;i--) {
+        let j = Math.floor(Math.random() * (i + 1))
+        let tmp = a[i]
         a[i] = a[j]
         a[j] = tmp
       }
-      return a.join("")
+
+      return a.join('')
     }
 
     message.delete(1);

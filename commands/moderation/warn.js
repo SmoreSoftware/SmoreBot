@@ -1,3 +1,4 @@
+//eslint-disable-next-line
 const commando = require('discord.js-commando');
 const oneLine = require('common-tags').oneLine;
 const Discord = require('discord.js');
@@ -34,6 +35,7 @@ module.exports = class WarnCommand extends commando.Command {
     })
   }
 
+  //eslint-disable-next-line class-methods-use-this
   async run(message, args) {
     let modrole = message.guild.settings.get('modrole')
     let adminrole = message.guild.settings.get('adminrole')
@@ -44,7 +46,7 @@ module.exports = class WarnCommand extends commando.Command {
 Staff member: ${message.author.tag}
 Reason: "${args.reason}"`).catch(console.error);
     const embed = new Discord.RichEmbed()
-      .setTitle(`:bangbang: **Moderation action** :scales:`)
+      .setTitle(':bangbang: **Moderation action** :scales:')
       .setAuthor(`${message.author.tag} (${message.author.id})`, `${message.author.avatarURL}`)
       .setColor(0xFFFF00)
       .setDescription(`**Action:** Warning \n**User:** ${args.user.tag} (${args.user.id}) \n**Reason:** ${args.reason}`)

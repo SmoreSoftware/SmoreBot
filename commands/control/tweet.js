@@ -1,7 +1,8 @@
+//eslint-disable-next-line
 const commando = require('discord.js-commando');
 const oneLine = require('common-tags').oneLine;
-const Twit = require("twit");
-const twitconfig = require("./twitconfig.js");
+const Twit = require('twit');
+const twitconfig = require('./twitconfig.js');
 const T = new Twit(twitconfig);
 
 module.exports = class TweetCommand extends commando.Command {
@@ -31,24 +32,27 @@ module.exports = class TweetCommand extends commando.Command {
     });
   }
 
+  //eslint-disable-next-line class-methods-use-this
   async run(message, args) {
-    let devs = ["197891949913571329", "220568440161697792", "251383432331001856", "186295030388883456", "250432205145243649", "142782417994907648"]
-    if (!devs.includes(message.author.id)) return message.channel.send("Sorry, only the SmoreSoftware Development Team can do this!")
-    if (args.message.length > 140) return message.reply("Your tweet must be 140 characters or less!")
+    let devs = ['197891949913571329', '220568440161697792', '251383432331001856', '186295030388883456', '250432205145243649', '142782417994907648']
+    if (!devs.includes(message.author.id)) return message.channel.send('Sorry, only the SmoreSoftware Development Team can do this!')
+    if (args.message.length > 140) return message.reply('Your tweet must be 140 characters or less!')
     let tweet = {
       status: `${args.message}
 -${message.author.username}`
     }
 
+    //eslint-disable-next-line no-use-before-define
     T.post('statuses/update', tweet, tweeted)
 
-    function tweeted(err, data, response) {
+    function tweeted(err) {
       if (err) {
         console.error(err)
-        message.reply("There was an error! Contact a JS dev. Was your tweet too long?")
+        message.reply('There was an error! Contact a JS dev. Was your tweet too long?')
+
         return
       }
-      message.reply("Tweet sent successfully.")
+      message.reply('Tweet sent successfully.')
     }
   }
 };

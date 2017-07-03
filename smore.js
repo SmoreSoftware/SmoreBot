@@ -1,12 +1,12 @@
+//eslint-disable-next-line
 const commando = require('discord.js-commando');
 const client = new commando.Client({
   owner: ['197891949913571329', '220568440161697792'],
   commandPrefix: 'js.',
   unknownCommandResponse: false
 });
-let Discord = require('discord.js');
 //const defclient = new Discord.Client();
-const path = require('path');;
+const path = require('path');
 const sqlite = require('sqlite');
 const oneLine = require('common-tags').oneLine;
 const config = require('./stuff.json');
@@ -67,7 +67,7 @@ client
 			${guild ? `in guild ${guild.name} (${guild.id})` : 'globally'}.
 		`);
   })
-  .on('commandRun', (command, promise, msg, args) => {
+  .on('commandRun', (command, promise, msg) => {
     if (msg.guild) {
       console.log(`Command ran
         Guild: ${msg.guild.name} (${msg.guild.id})
@@ -86,13 +86,16 @@ client
   })
   .on('guildCreate', (guild) => {
     console.log(`New guild added: ${guild.name} (${guild.id}), owned by ${guild.owner.user.tag} (${guild.owner.id}).`)
-    guild.fetchMember("290228059599142913")
-      .then((member) => {
+    guild.fetchMember('290228059599142913')
+      .then(() => {
+        //eslint-disable-next-line no-useless-escape
         guild.owner.send('Hello! Thank you for having <@290228059599142913> on your server! Please run \`+activate\`.')
+        //eslint-disable-next-line newline-per-chained-call
       }).catch(console.error)
   })
-  .on("guildMemberAdd", (member) => {
-    if (member.id === "290228059599142913") {
+  .on('guildMemberAdd', (member) => {
+    if (member.id === '290228059599142913') {
+      //eslint-disable-next-line no-useless-escape
       member.guild.owner.send('Hello! Thank you for adding <@290228059599142913> to your server! Please run \`+activate\`.')
     }
   });

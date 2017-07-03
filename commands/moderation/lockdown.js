@@ -1,3 +1,4 @@
+//eslint-disable-next-line
 const commando = require('discord.js-commando');
 const oneLine = require('common-tags').oneLine;
 const Discord = require('discord.js');
@@ -39,10 +40,10 @@ module.exports = class LockdownCommand extends commando.Command {
     let adminrole = message.guild.settings.get('adminrole')
     let modlog = message.guild.settings.get('modlog')
     if (!adminrole || !modlog) return message.reply(`This command is not set up to work! Have someone run \`${message.guild.commandPrefix}settings\` to add the \`admin\` and \`modlod\` settings.`)
-    if (!message.member.roles.has(modrole || adminrole)) return message.reply(`You do not have permission to do this! Only people with this role can access this command! \`Role Required: ${message.guild.roles.get('adminrole')}\`, this is changeable with \`${message.guild.commandPrefix}set add admin @role\``)
-    if (!message.guild.member(this.client.user).hasPermission("MANAGE_CHANNELS")) return message.reply('I do not have permission to lockdown this channel!')
+    if (!message.member.roles.has(adminrole)) return message.reply(`You do not have permission to do this! Only people with this role can access this command! \`Role Required: ${message.guild.roles.get('adminrole')}\`, this is changeable with \`${message.guild.commandPrefix}set add admin @role\``)
+    if (!message.guild.member(this.client.user).hasPermission('MANAGE_CHANNELS')) return message.reply('I do not have permission to lockdown this channel!')
     let lockit = []
-    let validUnlocks = ["release", "unlock"]
+    let validUnlocks = ['release', 'unlock']
 
     if (validUnlocks.includes(args.time)) {
       message.channel.overwritePermissions(message.guild.id, {
@@ -51,7 +52,7 @@ module.exports = class LockdownCommand extends commando.Command {
         message.delete(1);
         message.channel.send(`:loud_sound: Lockdown lifted by ${message.author.tag}.`);
         const embed = new Discord.RichEmbed()
-          .setTitle(`:bangbang: **Moderation action** :scales:`)
+          .setTitle(':bangbang: **Moderation action** :scales:')
           .setAuthor(`${message.author.tag} (${message.author.id})`, `${message.author.avatarURL}`)
           .setColor(0x00FF00)
           .setDescription(`**Action:** Lockdown lift \n**Channel:** ${message.channel.name} (${message.channel.id}) \n**Reason:** ${args.reason}`)
@@ -61,7 +62,9 @@ module.exports = class LockdownCommand extends commando.Command {
           embed: embed
         });
         clearTimeout(lockit[message.channel.id]);
+        //eslint-disable-next-line prefer-reflect
         delete lockit[message.channel.id];
+        //eslint-disable-next-line newline-per-chained-call
       }).catch(error => {
         console.log(error)
       })
@@ -69,6 +72,7 @@ module.exports = class LockdownCommand extends commando.Command {
       let count = 0;
       let count2 = 0;
       //console.log(`first ${count2}`)
+      //eslint-disable-next-line array-callback-return
       message.guild.roles.map((role) => {
         message.channel.overwritePermissions(role.id, {
             SEND_MESSAGES: false,
@@ -81,18 +85,19 @@ module.exports = class LockdownCommand extends commando.Command {
               count++
               //console.log(count)
               message.delete(1);
-              message.channel.send(`:mute: Channel locked down for ${ms(ms(args.time), { long:true })} by ${message.author.tag}. (Do \`${prefix}lockdown unlock <reason>\` to unlock.)`).then(() => {
+              message.channel.send(`:mute: Channel locked down for ${ms(ms(args.time), {long: true})} by ${message.author.tag}. (Do \`${message.guild.commandPrefix}lockdown unlock <reason>\` to unlock.)`).then(() => {
                 const embed = new Discord.RichEmbed()
-                  .setTitle(`:bangbang: **Moderation action** :scales:`)
+                  .setTitle(':bangbang: **Moderation action** :scales:')
                   .setAuthor(`${message.author.tag} (${message.author.id})`, `${message.author.avatarURL}`)
                   .setColor(0xCC5200)
-                  .setDescription(`**Action:** Lockdown \n**Channel:** ${message.channel.name} (${message.channel.id}) \n**Reason:** ${args.reason} \n**Time:** ${ms(ms(args.time), { long:true })}`)
+                  .setDescription(`**Action:** Lockdown \n**Channel:** ${message.channel.name} (${message.channel.id}) \n**Reason:** ${args.reason} \n**Time:** ${ms(ms(args.time), {long: true})}`)
                   .setTimestamp()
                 message.guild.channels.get(modlog).send({
                   embed: embed
                 });
                 lockit[message.channel.id] = setTimeout(() => {
                   //console.log(`third ${count2}`)
+                  //eslint-disable-next-line array-callback-return
                   message.guild.roles.map((role) => {
                     message.channel.overwritePermissions(role.id, {
                       SEND_MESSAGES: null,
@@ -100,10 +105,10 @@ module.exports = class LockdownCommand extends commando.Command {
                     }).then(() => {
                       if (count2 === 0) {
                         count2++
-                        message.channel.send(":loud_sound: Lockdown lifted.");
+                        message.channel.send(':loud_sound: Lockdown lifted.');
                         const embed = new Discord.RichEmbed()
-                          .setTitle(`:bangbang: **Moderation action** :scales:`)
-                          .setAuthor(`${client.user.tag} (${client.user.id})`, `${client.user.avatarURL}`)
+                          .setTitle(':bangbang: **Moderation action** :scales:')
+                          .setAuthor(`${this.client.user.tag} (${this.client.user.id})`, `${this.client.user.avatarURL}`)
                           .setColor(0x00FF00)
                           .setDescription(`**Action:** Lockdown lift \n**Channel:** ${message.channel.name} (${message.channel.id}) \n**Reason:** Time ended, lockdown expired`)
                           .setTimestamp()
@@ -112,10 +117,12 @@ module.exports = class LockdownCommand extends commando.Command {
                         });
                       }
                     });
+                    //eslint-disable-next-line prefer-reflect
                     delete lockit[message.channel.id]
                   })
                 }, ms(args.time))
 
+                //eslint-disable-next-line newline-per-chained-call
               }).catch(error => {
                 console.log(error)
               });
