@@ -74,3 +74,6 @@ typings/
 *.eslintignore
 *.eslintignore.*
 .eslintignore
+
+#other stuff
+twitconfig.js
