@@ -1,7 +1,9 @@
 //eslint-disable-next-line
 const commando = require('discord.js-commando');
 const oneLine = require('common-tags').oneLine;
-const Discord = require('discord.js');
+const {
+  RichEmbed
+} = require('discord.js');
 const ms = require('ms');
 
 module.exports = class LockdownCommand extends commando.Command {
@@ -51,7 +53,7 @@ module.exports = class LockdownCommand extends commando.Command {
       }).then(() => {
         message.delete(1);
         message.channel.send(`:loud_sound: Lockdown lifted by ${message.author.tag}.`);
-        const embed = new Discord.RichEmbed()
+        const embed = new RichEmbed()
           .setTitle(':bangbang: **Moderation action** :scales:')
           .setAuthor(`${message.author.tag} (${message.author.id})`, `${message.author.avatarURL}`)
           .setColor(0x00FF00)
@@ -86,7 +88,7 @@ module.exports = class LockdownCommand extends commando.Command {
               //console.log(count)
               message.delete(1);
               message.channel.send(`:mute: Channel locked down for ${ms(ms(args.time), {long: true})} by ${message.author.tag}. (Do \`${message.guild.commandPrefix}lockdown unlock <reason>\` to unlock.)`).then(() => {
-                const embed = new Discord.RichEmbed()
+                const embed = new RichEmbed()
                   .setTitle(':bangbang: **Moderation action** :scales:')
                   .setAuthor(`${message.author.tag} (${message.author.id})`, `${message.author.avatarURL}`)
                   .setColor(0xCC5200)
@@ -106,7 +108,7 @@ module.exports = class LockdownCommand extends commando.Command {
                       if (count2 === 0) {
                         count2++
                         message.channel.send(':loud_sound: Lockdown lifted.');
-                        const embed = new Discord.RichEmbed()
+                        const embed = new RichEmbed()
                           .setTitle(':bangbang: **Moderation action** :scales:')
                           .setAuthor(`${this.client.user.tag} (${this.client.user.id})`, `${this.client.user.avatarURL}`)
                           .setColor(0x00FF00)

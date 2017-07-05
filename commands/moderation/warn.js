@@ -1,7 +1,9 @@
 //eslint-disable-next-line
 const commando = require('discord.js-commando');
 const oneLine = require('common-tags').oneLine;
-const Discord = require('discord.js');
+const {
+  RichEmbed
+} = require('discord.js');
 
 module.exports = class WarnCommand extends commando.Command {
   constructor(client) {
@@ -45,7 +47,7 @@ module.exports = class WarnCommand extends commando.Command {
     args.user.send(`You have been warned on the server "${message.guild}"!
 Staff member: ${message.author.tag}
 Reason: "${args.reason}"`).catch(console.error);
-    const embed = new Discord.RichEmbed()
+    const embed = new RichEmbed()
       .setTitle(':bangbang: **Moderation action** :scales:')
       .setAuthor(`${message.author.tag} (${message.author.id})`, `${message.author.avatarURL}`)
       .setColor(0xFFFF00)

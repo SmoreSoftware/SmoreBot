@@ -1,7 +1,9 @@
 //eslint-disable-next-line
 const commando = require('discord.js-commando');
 const oneLine = require('common-tags').oneLine;
-const Discord = require('discord.js');
+const {
+  RichEmbed
+} = require('discord.js');
 const ms = require('ms');
 
 module.exports = class MuteCommand extends commando.Command {
@@ -77,7 +79,7 @@ module.exports = class MuteCommand extends commando.Command {
       }).then(function() {
         message.delete(1);
         message.channel.send(`:loud_sound: ${args.user.tag} unmuted by ${message.author.tag}.`);
-        const embed = new Discord.RichEmbed()
+        const embed = new RichEmbed()
           .setTitle(':bangbang: **Moderation action** :scales:')
           .setAuthor(`${message.author.tag} (${message.author.id})`, `${message.author.avatarURL}`)
           .setColor(0x00FF00)
@@ -110,7 +112,7 @@ module.exports = class MuteCommand extends commando.Command {
               count++;
               message.delete(1);
               message.channel.send(`:mute: ${args.user.tag} muted for ${ms(ms(args.time), {long: true})} by ${message.author.tag}. (Do \`${message.guild.commandPrefix}mute unmute ${args.user} <reason>\` to unmute.)`).then(() => {
-                const embed = new Discord.RichEmbed()
+                const embed = new RichEmbed()
                   .setTitle(':bangbang: **Moderation action** :scales:')
                   .setAuthor(`${message.author.tag} (${message.author.id})`, `${message.author.avatarURL}`)
                   .setColor(0xCC5200)
@@ -131,7 +133,7 @@ module.exports = class MuteCommand extends commando.Command {
                       if (count2 === 0) {
                         count2++
                         message.channel.send(`:loud_sound: ${args.user.tag} unmuted.`);
-                        const embed = new Discord.RichEmbed()
+                        const embed = new RichEmbed()
                           .setTitle(':bangbang: **Moderation action** :scales:')
                           //eslint-disable-next-line no-invalid-this
                           .setAuthor(`${this.client.user.tag} (${this.client.user.id})`, `${this.client.user.avatarURL}`)

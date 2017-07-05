@@ -1,7 +1,9 @@
 //eslint-disable-next-line
 const commando = require('discord.js-commando');
 const oneLine = require('common-tags').oneLine;
-const Discord = require('discord.js');
+const {
+  RichEmbed
+} = require('discord.js');
 
 module.exports = class SuggestCommand extends commando.Command {
   constructor(client) {
@@ -36,7 +38,7 @@ module.exports = class SuggestCommand extends commando.Command {
         maxUses: 1
       })
       .then(invite => {
-        const embed = new Discord.RichEmbed()
+        const embed = new RichEmbed()
           .setTitle(':bangbang: **New suggestion** :bangbang:')
           .setAuthor(`${message.author.tag} (${message.author.id})`, `${message.author.avatarURL}`)
           .setColor(0x0000FF)
