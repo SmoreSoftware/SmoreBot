@@ -26,7 +26,9 @@ module.exports = class TweetCommand extends commando.Command {
         type: 'string',
         prompt: 'What would you like to tweet? (Max 140 characters)',
         validate: text => {
-          if (text.length > 140) return 'Your tweet must be 140 characters or less!'
+          if (text.length < 140) return true
+          //eslint-disable-next-line newline-before-return
+          return 'Your tweet must be 140 characters or less!'
         },
         infinite: false
       }],
