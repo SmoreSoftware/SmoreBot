@@ -24,7 +24,7 @@ module.exports = class SupportCommand extends commando.Command {
   async run(message) {
     let isEnabled
     const client = this.client
-    message.reply('Thank you for contacting QuoteBot Support! If there are any available support representatives, they will contact you soon.')
+    message.reply('Thank you for contacting SmoreBot-JS Support! If there are any available support representatives, they will contact you soon.')
     let chan = message.channel
     let supportChan = '322450311597916172'
     const embed = new RichEmbed()
@@ -60,7 +60,7 @@ module.exports = class SupportCommand extends commando.Command {
         this.client.on('message', message => {
           function contact() {
             if (isEnabled === false) return
-            if (message.author.id === '322882931746013185') return
+            if (message.author.id === '319196383699795978') return
             if (message.content.startsWith('call end')) {
               message.channel.send(':x: Call has been hung up.')
               if (message.channel.id === chan.id) client.channels.get(supportChan).send(':x: The call was ended from the other side.')
