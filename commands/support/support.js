@@ -1,9 +1,7 @@
 //eslint-disable-next-line
 const commando = require('discord.js-commando');
 const oneLine = require('common-tags').oneLine;
-const {
-  RichEmbed
-} = require('discord.js');
+const { RichEmbed } = require('discord.js');
 
 module.exports = class SupportCommand extends commando.Command {
   constructor(client) {

@@ -1,9 +1,7 @@
 //eslint-disable-next-line
 const commando = require('discord.js-commando');
 const oneLine = require('common-tags').oneLine;
-const {
-  RichEmbed
-} = require('discord.js');
+const { RichEmbed } = require('discord.js');
 const ms = require('ms');
 
 module.exports = class MuteCommand extends commando.Command {
@@ -111,12 +109,12 @@ module.exports = class MuteCommand extends commando.Command {
             if (count === 0) {
               count++;
               message.delete(1);
-              message.channel.send(`:mute: ${args.user.tag} muted for ${ms(ms(args.time), {long: true})} by ${message.author.tag}. (Do \`${message.guild.commandPrefix}mute unmute ${args.user} <reason>\` to unmute.)`).then(() => {
+              message.channel.send(`:mute: ${args.user.tag} muted for ${ms(ms(args.time), { long: true })} by ${message.author.tag}. (Do \`${message.guild.commandPrefix}mute unmute ${args.user} <reason>\` to unmute.)`).then(() => {
                 const embed = new RichEmbed()
                   .setTitle(':bangbang: **Moderation action** :scales:')
                   .setAuthor(`${message.author.tag} (${message.author.id})`, `${message.author.avatarURL}`)
                   .setColor(0xCC5200)
-                  .setDescription(`**Action:** Mute \n**User:** ${args.user.tag} (${args.user.id}) \n**Reason:** ${args.reason} \n**Time:** ${ms(ms(args.time), {long: true})}`)
+                  .setDescription(`**Action:** Mute \n**User:** ${args.user.tag} (${args.user.id}) \n**Reason:** ${args.reason} \n**Time:** ${ms(ms(args.time), { long: true })}`)
                   .setTimestamp()
                 message.guild.channels.get(modlog).send({
                   embed: embed

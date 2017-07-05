@@ -12,16 +12,14 @@ module.exports = {
     "accessor-pairs": "error",
     "array-bracket-newline": "off",
     "array-bracket-spacing": [
-      "error",
-      "never"
+      "error", "never"
     ],
     "array-callback-return": "error",
     "array-element-newline": "off",
     "arrow-body-style": "error",
     "arrow-parens": "off",
     "arrow-spacing": [
-      "error",
-      {
+      "error", {
         "after": true,
         "before": true
       }
@@ -29,8 +27,7 @@ module.exports = {
     "block-scoped-var": "error",
     "block-spacing": "error",
     "brace-style": [
-      "error",
-      "1tbs"
+      "error", "1tbs"
     ],
     "callback-return": "error",
     "camelcase": "error",
@@ -38,15 +35,13 @@ module.exports = {
     "class-methods-use-this": "warn",
     "comma-dangle": "error",
     "comma-spacing": [
-      "error",
-      {
+      "error", {
         "after": true,
         "before": false
       }
     ],
     "comma-style": [
-      "error",
-      "last"
+      "error", "last"
     ],
     "complexity": "off",
     "computed-property-spacing": "error",
@@ -55,14 +50,12 @@ module.exports = {
     "curly": "off",
     "default-case": "error",
     "dot-location": [
-      "error",
-      "property",
+      "error", "property"
     ],
     "dot-notation": [
-      "error",
-      {
-        "allowKeywords": true,
-      },
+      "error", {
+        "allowKeywords": true
+      }
     ],
     "eol-last": "error",
     "eqeqeq": "error",
@@ -70,8 +63,7 @@ module.exports = {
     "func-call-spacing": "error",
     "func-name-matching": "error",
     "func-names": [
-      "error",
-      "never"
+      "error", "never"
     ],
     "func-style": "off",
     "generator-star-spacing": "error",
@@ -87,35 +79,38 @@ module.exports = {
     "jsx-quotes": "error",
     "key-spacing": "error",
     "keyword-spacing": [
-      "error",
-      {
+      "error", {
         "after": true,
         "before": true
       }
     ],
     "line-comment-position": "off",
     "linebreak-style": [
-      "error",
-      "unix"
+      "error", "unix"
     ],
-    "lines-around-comment": ["warn", {
-      "afterBlockComment": true
-    }],
+    "lines-around-comment": [
+      "warn", {
+        "afterBlockComment": true
+      }
+    ],
     "lines-around-directive": "error",
-    "max-depth": ["warn", {
-      "max": 4
-    }],
+    "max-depth": [
+      "warn", {
+        "max": 4
+      }
+    ],
     "max-len": "off",
     "max-lines": "off",
     "max-nested-callbacks": "error",
     "max-params": "off",
     "max-statements": 'off',
-    "max-statements-per-line": ["warn", {
-      "max": 1
-    }],
+    "max-statements-per-line": [
+      "warn", {
+        "max": 1
+      }
+    ],
     "multiline-ternary": [
-      "error",
-      "never"
+      "error", "never"
     ],
     "new-cap": "warn",
     "new-parens": "warn",
@@ -220,7 +215,9 @@ module.exports = {
     "no-with": "error",
     "nonblock-statement-body-position": "error",
     "object-curly-newline": "off",
-    "object-curly-spacing": "error",
+    "object-curly-spacing": [
+      "warn", "always"
+    ],
     "object-property-newline": "error",
     "object-shorthand": "off",
     "one-var": "off",
@@ -239,8 +236,7 @@ module.exports = {
     "prefer-template": "off",
     "quote-props": "off",
     "quotes": [
-      "error",
-      "single"
+      "error", "single"
     ],
     "radix": "off",
     "require-await": "off",
@@ -248,8 +244,7 @@ module.exports = {
     "rest-spread-spacing": "error",
     "semi": "off",
     "semi-spacing": [
-      "error",
-      {
+      "error", {
         "after": false,
         "before": false
       }
@@ -261,8 +256,7 @@ module.exports = {
     "space-before-blocks": "error",
     "space-before-function-paren": "off",
     "space-in-parens": [
-      "error",
-      "never"
+      "error", "never"
     ],
     "space-infix-ops": "error",
     "space-unary-ops": "error",
@@ -271,16 +265,13 @@ module.exports = {
     "switch-colon-spacing": "off",
     "symbol-description": "error",
     "template-curly-spacing": [
-      "error",
-      "never"
+      "error", "never"
     ],
     "template-tag-spacing": [
-      "error",
-      "always"
+      "error", "always"
     ],
     "unicode-bom": [
-      "error",
-      "never"
+      "error", "never"
     ],
     "unexpected-token": "off",
     "valid-jsdoc": "error",
@@ -288,9 +279,6 @@ module.exports = {
     "wrap-iife": "error",
     "wrap-regex": "error",
     "yield-star-spacing": "error",
-    "yoda": [
-      "error",
-      "never"
-    ]
+    "yoda": ["error", "never"]
   }
 };
