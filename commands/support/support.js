@@ -12,7 +12,7 @@ module.exports = class SupportCommand extends commando.Command {
       memberName: 'support',
       description: 'Calls the developer server for support.',
       details: oneLine `
-        Do you need help with SmoreJS?
+        Do you need help with SmoreBot-JS?
         Use this command to get in contact with the developers and get the help you need!
 			`,
       examples: ['support'],

@@ -11,7 +11,7 @@ module.exports = class SuggestCommand extends commando.Command {
       memberName: 'suggest',
       description: 'Suggests something to the developers',
       details: oneLine `
-        Do you like QuoteBot?
+        Do you like SmoreBot-JS?
         Do you wish that your idea was a part of it?
         Suggest your idea to the developers!
 			`,
