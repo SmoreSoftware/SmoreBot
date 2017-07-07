@@ -1,6 +1,7 @@
 # CONFIG JSON'S
-*.json
-*.JSON
+stuff.json
+stuff.JSON
+stuff.*
 
 #Settigs db
 settings.sqlite3
