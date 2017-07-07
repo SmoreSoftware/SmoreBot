@@ -21,6 +21,11 @@ module.exports = class AsciiTextCommand extends commando.Command {
         label: 'text',
         prompt: 'What would you like to turn into ascii text?',
         type: 'string',
+        validate: text => {
+          if (text.length <= 10) return true
+          //eslint-disable-next-line newline-before-return
+          return 'Your message is too long! Must be 10 characters or less.'
+        },
         infinite: false
       }]
     })
@@ -28,7 +33,6 @@ module.exports = class AsciiTextCommand extends commando.Command {
 
   //eslint-disable-next-line class-methods-use-this
   async run(message, args) {
-    if (args.toAscii.length > 10) return message.reply('Your message is too long!')
     ascii(args.toAscii, {
         horizontalLayout: 'fitted',
         verticalLayout: 'fitted'

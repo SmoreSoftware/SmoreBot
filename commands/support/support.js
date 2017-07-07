@@ -7,12 +7,12 @@ module.exports = class SupportCommand extends commando.Command {
   constructor(client) {
     super(client, {
       name: 'support',
-      aliases: ['call', 'contact', 'supportcall', 'helpme', 'howtouse'],
+      aliases: ['call', 'contact', 'supportcall', 'helpme', 'howtouse', 'bug'],
       group: 'support',
       memberName: 'support',
       description: 'Calls the developer server for support.',
       details: oneLine `
-        Do you need help with SmoreBot-JS?
+        Do you need help with SmoreBot?
         Use this command to get in contact with the developers and get the help you need!
 			`,
       examples: ['support'],
@@ -24,7 +24,7 @@ module.exports = class SupportCommand extends commando.Command {
   async run(message) {
     let isEnabled
     const client = this.client
-    message.reply('Thank you for contacting SmoreBot-JS Support! If there are any available support representatives, they will contact you soon.')
+    message.reply('Thank you for contacting SmoreBot Support! If there are any available support representatives, they will contact you soon.')
     let chan = message.channel
     let supportChan = '322450311597916172'
     const embed = new RichEmbed()
@@ -32,7 +32,7 @@ module.exports = class SupportCommand extends commando.Command {
       .setAuthor(`${message.author.tag} (${message.author.id})`, `${message.author.avatarURL}`)
       .setColor(0xFF0000)
       .setDescription(`**Guild:** ${message.guild.name} (${message.guild.id}) \n**Channel:** #${message.channel.name} (${message.channel.id}) \n**Started by:** ${message.author.tag} (${message.author.id})`)
-      .setFooter('SmoreBot-JS Support System')
+      .setFooter('SmoreBot Support System')
       .setTimestamp()
     this.client.channels.get(supportChan).send({
       embed: embed

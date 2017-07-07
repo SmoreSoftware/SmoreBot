@@ -9,9 +9,9 @@ module.exports = class HQCommand extends commando.Command {
       aliases: ['server', 'helpserver', 'officialserver', 'devsserevr'],
       group: 'support',
       memberName: 'hq',
-      description: 'Sends an invite to the official SmoreSoftware Discord!',
+      description: 'Sends an helpful links and commands for SmoreBot help.',
       details: oneLine `
-        Do you need help with SmoreBot-JS? Want to suggest a feature? Just want to drop by and meet the developers?
+        Do you need help with SmoreBot? Want to suggest a feature? Just want to drop by and meet the developers?
         This command sends an invite to the official SmoreSoftware Discord server.
 			`,
       examples: ['hq'],

@@ -1,8 +1,8 @@
 //eslint-disable-next-line
 const commando = require('discord.js-commando');
 const client = new commando.Client({
-  owner: ['197891949913571329', '220568440161697792'],
-  commandPrefix: 'js.',
+  owner: ['197891949913571329', '220568440161697792', '251383432331001856'],
+  commandPrefix: 's.',
   unknownCommandResponse: false
 });
 //const defclient = new Discord.Client();
@@ -10,6 +10,7 @@ const path = require('path');
 const sqlite = require('sqlite');
 const oneLine = require('common-tags').oneLine;
 const config = require('./stuff.json');
+console.log('Requires initialized.');
 
 client.registry
   .registerGroups([
@@ -26,6 +27,8 @@ client.registry
   .registerCommandsIn(path.join(__dirname, 'commands'));
 
 client.setProvider(sqlite.open(path.join(__dirname, 'settings.sqlite3')).then(db => new commando.SQLiteProvider(db))).catch(console.error);
+console.log('Commando set up.');
+console.log('Awaiting log in.');
 
 client
   .on('error', () => console.error)
@@ -84,21 +87,6 @@ client
         Message: "${msg.content}"`)
     }
   })
-  .on('guildCreate', (guild) => {
-    console.log(`New guild added: ${guild.name} (${guild.id}), owned by ${guild.owner.user.tag} (${guild.owner.id}).`)
-    guild.fetchMember('290228059599142913')
-      .then(() => {
-        //eslint-disable-next-line no-useless-escape
-        guild.owner.send('Hello! Thank you for having <@290228059599142913> on your server! Please run \`+activate\`.')
-        //eslint-disable-next-line newline-per-chained-call
-      }).catch(console.error)
-  })
-  .on('guildMemberAdd', (member) => {
-    if (member.id === '290228059599142913') {
-      //eslint-disable-next-line no-useless-escape
-      member.guild.owner.send('Hello! Thank you for adding <@290228059599142913> to your server! Please run \`+activate\`.')
-    }
-  });
 
 client.login(config.token).catch(console.error);
 

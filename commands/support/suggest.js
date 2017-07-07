@@ -9,9 +9,9 @@ module.exports = class SuggestCommand extends commando.Command {
       name: 'suggest',
       group: 'support',
       memberName: 'suggest',
-      description: 'Suggests something to the developers',
+      description: 'Suggests something to the developers.',
       details: oneLine `
-        Do you like SmoreBot-JS?
+        Do you like SmoreBot?
         Do you wish that your idea was a part of it?
         Suggest your idea to the developers!
 			`,
@@ -41,7 +41,7 @@ module.exports = class SuggestCommand extends commando.Command {
           .setAuthor(`${message.author.tag} (${message.author.id})`, `${message.author.avatarURL}`)
           .setColor(0x0000FF)
           .setDescription(`**Guild:** ${message.guild.name} (${message.guild.id}) \n**Channel:** #${message.channel.name} (${message.channel.id}) \n**User:** ${message.author.tag} (${message.author.id}) \n**Suggestion:** ${args.toSug} \n**Invite:** ${invite}`)
-          .setFooter('SmoreBot-JS Suggestions System')
+          .setFooter('SmoreBot Suggestions System')
           .setTimestamp()
         this.client.channels.get('304727510619389964').send({
           embed: embed

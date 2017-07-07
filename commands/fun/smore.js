@@ -9,7 +9,7 @@ module.exports = class SmoreCommand extends commando.Command {
       aliases: [],
       group: 'fun',
       memberName: 'smore',
-      description: 'Displays a random picture of S\'mores Pop-Tarts..',
+      description: 'Displays a random picture of S\'mores Pop-Tarts.',
       details: oneLine `
 				Our bot is based on S'mores Pop-Tarts.
         We figured we could honor that with a command to display
