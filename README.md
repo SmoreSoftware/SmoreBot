@@ -30,7 +30,12 @@ SmoreBot JS is the JavaScript bot written in Discord.js and Node.js it is design
   <tr>
     <td>Chrono</td>
     <td>Chronomly6#8108</td>
-    <td>JS Team Supervisor</td>
+    <td>Assistant JS Dev</td>
+  </tr>
+  <tr>
+    <td>jdender</td>
+    <td>jdenderplays#2316</td>
+    <td>Assistant JS Dev</td>
   </tr>
 </table> 
 </div>
