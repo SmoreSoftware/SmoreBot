@@ -26,7 +26,7 @@ module.exports = class InfoCommand extends commando.Command {
       .setAuthor(this.client.user.username, this.client.user.avatarURL)
       .setColor(0x0099cc)
       .setTitle(':information_source:')
-      .addField('Main information:', 'I am a Discord Bot made in **JavaScript** using the Discord API Wrapper **Discord.js** on the framework **Discord.js-Commando', true)
+      .addField('Main information:', 'I am a Discord Bot made in **JavaScript** using the Discord API Wrapper **Discord.js** on the framework **Discord.js-Commando**', true)
       .addField('Developers:', '• Chronomoly6 • TJDoesCode • SpaceX • ROM Typo • jdenderplays •', true)
       .addField('Server Count:', `${this.client.guilds.size}`, false)
       .addField('Host', '[ROM Typo](http://romtypo.com/discord)', false)
