@@ -106,6 +106,12 @@ Members: ${guild.members.size}
 Now on: ${client.guilds.size} servers`)
     client.user.setGame(`s.help | ${client.guilds.size} servers`)
   })
+  .on('guildMemberAdd', (member) => {
+    let guild = member.guild
+    let role = guild.settings.get('autorole')
+    if (!role) return
+    member.addRole(role)
+  })
 
 client.login(config.token).catch(console.error);
 
