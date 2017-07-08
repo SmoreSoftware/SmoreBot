@@ -73,12 +73,14 @@ module.exports = class SettingsCommand extends commando.Command {
         message.reply(`Set the mod log channel to "<#${message.guild.settings.get('modlog')}>"`)
       } else if (args.setting.toLowerCase() === 'announcements') {
         const state = args.value
-        if (state.toLowerCase() !== 'on') {
+        if (state.toLowerCase() === 'on') {
+          message.guild.settings.set('announcements', state)
+          message.reply(`Set the announcement state to "${message.guild.settings.get('announcements')}" \nDo \`${message.guild.commandPrefix}settings add announcements off\` to re-disable announcements.`)
+        } else if (state.toLowerCase() === 'off') {
+          message.guild.settings.set('announcements', state)
+          message.reply(`Set the announcement state to "${message.guild.settings.get('announcements')}" \nDo \`${message.guild.commandPrefix}settings add announcements on\` to re-enable announcements.`)
           //eslint-disable-next-line no-useless-escape
-          if (state.toLowerCase() !== 'off') return message.reply('Invaid state! Use \`on\` or  \`off\`.')
-        }
-        message.guild.settings.set('announcements', state)
-        message.reply(`Set the announcement state to "${message.guild.settings.get('announcements')}" \nDo \`${message.guild.commandPrefix}settings add announcements on\` to re-enable announcements.`)
+        } else return message.reply('Invaid state! Use \`on\` or  \`off\`.')
       } else if (args.setting.toLowerCase() === 'autorole') {
         const rawRole = message.mentions.roles.first()
         if (!rawRole) return message.reply('Please specify a role to set as the auto role!')
