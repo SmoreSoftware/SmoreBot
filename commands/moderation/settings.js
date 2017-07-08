@@ -89,7 +89,7 @@ module.exports = class SettingsCommand extends commando.Command {
         message.reply(`The admin role is "<@${message.guild.settings.get('adminrole')}>"`)
       } else if (args.setting.toLowerCase() === 'modlog') {
         message.reply(`The mod log channel is "<#${message.guild.settings.get('modlog')}>"`)
-      } else if (args.settings.toLowerCase() === 'announcements') {
+      } else if (args.setting.toLowerCase() === 'announcements') {
         message.reply(`The announcements state is "${message.guild.settings.get('announcements')}"`)
       } else {
         message.reply('That\'s not a setting. Please try again.');
