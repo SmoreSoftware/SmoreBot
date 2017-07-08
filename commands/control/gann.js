@@ -64,7 +64,7 @@ Want to turn these announcements off? Do \`${guild.commandPrefix}settings add an
       //eslint-disable-next-line array-callback-return
       this.client.guilds.map((guild) => {
         toSay = `${args.msg}
-~Chrono, Head of SmoreSoftware SmoreBot Team
+~Chrono, Head of SmoreSoftware
 Want to turn these announcements off? Do \`${guild.commandPrefix}settings add announcements off\` to opt out.`
         let setting = guild.settings.get('announcements')
         //eslint-disable-next-line array-callback-return
