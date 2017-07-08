@@ -31,6 +31,6 @@ module.exports = class JoinCommand extends commando.Command {
       .addField('SmoreSoftware Server:', 'https://discord.gg/6P6MNAU', true)
       .addField('SmoreSoftware Twitter:', 'https://twitter.com/smoresoftware', false)
       .setTimestamp()
-    message.channel.send({ embed })
+    message.author.send({ embed })
   }
 };
