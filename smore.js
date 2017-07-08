@@ -95,6 +95,7 @@ Owner: ${guild.owner.tag} (${guild.owner.id})
 Members: ${guild.members.size}
 Now on: ${client.guilds.size} servers`)
     client.user.setGame(`s.help | ${client.guilds.size} servers`)
+    guild.settings.set('announcements', 'on')
   })
   .on('guildDelete', (guild) => {
     console.log(`Exsisting guild left:

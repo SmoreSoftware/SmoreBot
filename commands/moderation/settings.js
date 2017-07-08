@@ -71,6 +71,14 @@ module.exports = class SettingsCommand extends commando.Command {
         const chanToLog = rawChan.id
         message.guild.settings.set('modlog', chanToLog)
         message.reply(`Set the mod log channel to "<#${message.guild.settings.get('modlog')}>"`)
+      } else if (args.setting.toLowerCase() === 'announcements') {
+        const state = args.value
+        if (state.toLowerCase() !== 'on') {
+          //eslint-disable-next-line no-useless-escape
+          if (state.toLowerCase() !== 'off') return message.reply('Invaid state! Use \`on\` or  \`off\`.')
+        }
+        message.guild.settings.set('announcements', state)
+        message.reply(`Set the announcement state to "${message.guild.settings.get('announcements')}" \nDo \`${message.guild.commandPrefix}settings add announcements on\` to re-enable announcements.`)
       } else {
         message.reply('That\'s not a setting. Please try again.');
       }

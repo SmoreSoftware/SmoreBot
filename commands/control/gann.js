@@ -33,15 +33,53 @@ module.exports = class GAnnCommand extends commando.Command {
     if (message.author.id === '197891949913571329') {
       let toSay = `${args.msg}
 ~TJ, SmoreSoftware Maintainer`
-      this.client.guilds.map((guild) => guild.defaultChannel.send(toSay))
+      //eslint-disable-next-line array-callback-return
+      this.client.guilds.map((guild) => {
+        toSay = `${args.msg}
+~TJ, SmoreSoftware Maintainer
+Want to turn these announcements off? Do \`${guild.commandPrefix}settings add announcements off\` to opt out.`
+        let setting = guild.settings.get('announcements')
+        //eslint-disable-next-line array-callback-return
+        if (setting === 'off') return
+        guild.defaultChannel.send(toSay)
+      })
       message.reply(`Execution completed. Shouted "${toSay}"`)
     } else if (message.author.id === '220568440161697792') {
       let toSay = `${args.msg}
-~Space, Head of SmoreSoftware JS Team`
-      this.client.guilds.map((guild) => guild.defaultChannel.send(toSay))
+~Space, Head of SmoreSoftware SmoreBot Team`
+      //eslint-disable-next-line array-callback-return
+      this.client.guilds.map((guild) => {
+        toSay = `${args.msg}
+~Space, Head of SmoreSoftware SmoreBot Team
+Want to turn these announcements off? Do \`${guild.commandPrefix}settings add announcements off\` to opt out.`
+        let setting = guild.settings.get('announcements')
+        //eslint-disable-next-line array-callback-return
+        if (setting === 'off') return
+        guild.defaultChannel.send(toSay)
+      })
+      message.reply(`Execution completed. Shouted "${toSay}"`)
+    } else if (message.author.id === '251383432331001856') {
+      let toSay = `${args.msg}
+~Chrono, Head of SmoreSoftware`
+      //eslint-disable-next-line array-callback-return
+      this.client.guilds.map((guild) => {
+        toSay = `${args.msg}
+~Chrono, Head of SmoreSoftware SmoreBot Team
+Want to turn these announcements off? Do \`${guild.commandPrefix}settings add announcements off\` to opt out.`
+        let setting = guild.settings.get('announcements')
+        //eslint-disable-next-line array-callback-return
+        if (setting === 'off') return
+        guild.defaultChannel.send(toSay)
+      })
       message.reply(`Execution completed. Shouted "${toSay}"`)
     } else {
-      this.client.guilds.map((guild) => guild.defaultChannel.send(args.msg))
+      //eslint-disable-next-line array-callback-return
+      this.client.guilds.map((guild) => {
+        let setting = guild.settings.get('announcements')
+        //eslint-disable-next-line array-callback-return
+        if (setting === 'off') return
+        guild.defaultChannel.send(args.msg)
+      })
       message.reply(`Execution completed. Shouted "${args.msg}"`)
     }
   }
