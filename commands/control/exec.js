@@ -23,7 +23,7 @@ module.exports = class ExecCommand extends commando.Command {
   }
 
   async run(message) {
-    if (!this.client.isOwner(message.author)) return message.channel.send('Sorry, only the JS Devs `SpaceX#0276` or `TJDoesCode#6088` can do this!')
+    if (!this.client.isOwner(message.author)) return message.channel.send('You do not have permission to use this command!')
     let toExec = message.content.split(' ').slice(1);
     childProcess.exec(toExec.join(' '), {},
       //eslint-disable-next-line no-unused-vars
