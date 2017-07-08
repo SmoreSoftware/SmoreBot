@@ -36,7 +36,7 @@ client
   .on('debug', () => console.log)
   .on('ready', () => {
     console.log(`Client ready; logged in as ${client.user.tag} (${client.user.id})`)
-    client.user.setGame('js.help | Beta')
+    client.user.setGame(`s.help | ${client.guilds.size} servers`)
   })
   .on('disconnect', () => console.warn('Disconnected!'))
   .on('reconnecting', () => console.warn('Reconnecting...'))
@@ -86,6 +86,24 @@ client
         Command: ${command.groupID}:${command.memberName}
         Message: "${msg.content}"`)
     }
+  })
+  .on('guildCreate', (guild) => {
+    console.log(`New guild added:
+Guild: ${guild.id}
+Name: ${guild.name}
+Owner: ${guild.owner.tag} (${guild.owner.id})
+Members: ${guild.members.size}
+Now on: ${client.guilds.size} servers`)
+    client.user.setGame(`s.help | ${client.guilds.size} servers`)
+  })
+  .on('guildDelete', (guild) => {
+    console.log(`Exsisting guild left:
+Guild: ${guild.id}
+Name: ${guild.name}
+Owner: ${guild.owner.tag} (${guild.owner.id})
+Members: ${guild.members.size}
+Now on: ${client.guilds.size} servers`)
+    client.user.setGame(`s.help | ${client.guilds.size} servers`)
   })
 
 client.login(config.token).catch(console.error);
