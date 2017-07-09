@@ -13,12 +13,14 @@ module.exports = class RankCommand extends commando.Command {
       aliases: ['ranks', 'role', 'roles'],
       group: 'general',
       memberName: 'rank',
-      description: 'Sends you some info about the bot.',
+      description: 'Manages a server\'s public roles.',
       details: oneLine `
-      Do you like SmoreBot? Do you want to learn more about it?
-      This command sends you important information about the bot.
+      Do you want to have an opt-in only NSFW channel? A role that you can ping to avoid pinging everyone?
+      This command allows for management of a server's public roles.
+      Note: Adding and removing public roles must be done by someone with the MANAGE_ROLES permission.
+      Giving and taking requires no permissions.
 			`,
-      examples: ['invite'],
+      examples: ['role give @ping'],
       args: [{
           key: 'action',
           label: 'action',
