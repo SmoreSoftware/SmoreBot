@@ -28,6 +28,6 @@ Need some quick help? Call the developers!
 Do \`${message.guild ? message.guild.commandPrefix : 's.'}support\`
 Want to suggest something?
 Do \`${message.guild ? message.guild.commandPrefix : 's.'}suggest\``)
-    message.reply('Check your DMs!')
+    await message.reply('Check your DMs!')
   }
 };
