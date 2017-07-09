@@ -50,6 +50,7 @@ module.exports = class RankCommand extends commando.Command {
         .then(() => {
           message.reply('Rank given.')
         })
+        .catch(message.reply('Something went wrong. Is my role above the role you\'re trying to give?'))
     } else if (args.action.toLowerCase() === 'take') {
       if (!message.guild.member(this.client.user).hasPermission('MANAGE_ROLES')) return message.reply('I do not have permission to manage roles! Contact a mod or admin.')
       if (!ranks[message.guild.id].ranks.includes(args.rank.id)) return message.reply(`That role can not be taken! Use \`${message.guild.commandPrefix}rank list\` to see a list of ranks you can add.`)
@@ -57,6 +58,7 @@ module.exports = class RankCommand extends commando.Command {
         .then(() => {
           message.reply('Rank taken.')
         })
+        .catch(message.reply('Something went wrong. Is my role above the role you\'re trying to give?'))
     } else if (args.action.toLowerCase() === 'add') {
       if (!message.guild.member(message.author).hasPermission('MANAGE_ROLES', false, true, true)) return message.reply(`You do not have permission to perform this action! Did you mean \`${message.guild.commandPrefix}rank give\`?`)
       if (!ranks[message.guild.id]) ranks[message.guild.id] = {
@@ -64,7 +66,12 @@ module.exports = class RankCommand extends commando.Command {
       }
       ranks[message.guild.id].ranks.push(args.rank.id)
       fs.writeFile('./ranks.json', JSON.stringify(ranks, null, 2), (err) => {
-        if (err) console.error(err)
+        if (err) {
+          message.reply('Something went wrong! Contact a developer.')
+          console.error(err)
+          //eslint-disable-next-line newline-before-return
+          return
+        }
         message.reply('Role added.')
       })
     } else if (args.action.toLowerCase() === 'remove') {
@@ -72,7 +79,12 @@ module.exports = class RankCommand extends commando.Command {
       let rankIndex = ranks[message.guild.id].ranks.indexOf(args.rank)
       ranks[message.guild.id].ranks.splice(rankIndex, 1)
       fs.writeFile('./ranks.json', JSON.stringify(ranks, null, 2), (err) => {
-        if (err) console.error(err)
+        if (err) {
+          message.reply('Something went wrong! Contact a developer.')
+          console.error(err)
+          //eslint-disable-next-line newline-before-return
+          return
+        }
         message.reply('Role removed.')
       })
     } else if (args.action.toLowerCase() === 'list') {
