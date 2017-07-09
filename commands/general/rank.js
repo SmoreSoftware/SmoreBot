@@ -44,19 +44,21 @@ module.exports = class RankCommand extends commando.Command {
   //eslint-disable-next-line class-methods-use-this
   async run(message, args) {
     if (args.action.toLowerCase() === 'give') {
+      if (!message.guild.member(this.client.user).hasPermission('MANAGE_ROLES')) return message.reply('I do not have permission to manage roles! Contact a mod or admin.')
       if (!ranks[message.guild.id].ranks.includes(args.rank.id)) return message.reply(`That role can not be added! Use \`${message.guild.commandPrefix}rank list\` to see a list of ranks you can add.`)
       message.guild.member(message.author).addRole(args.rank.id)
         .then(() => {
           message.reply('Rank given.')
         })
     } else if (args.action.toLowerCase() === 'take') {
+      if (!message.guild.member(this.client.user).hasPermission('MANAGE_ROLES')) return message.reply('I do not have permission to manage roles! Contact a mod or admin.')
       if (!ranks[message.guild.id].ranks.includes(args.rank.id)) return message.reply(`That role can not be taken! Use \`${message.guild.commandPrefix}rank list\` to see a list of ranks you can add.`)
       message.guild.member(message.author).removeRole(args.rank.id)
         .then(() => {
           message.reply('Rank taken.')
         })
     } else if (args.action.toLowerCase() === 'add') {
-      if (!message.guild.member(message.author).hasPermission('MANAGE_ROLES', false, true, true)) return message.reply('You do not have permission to perform this action!')
+      if (!message.guild.member(message.author).hasPermission('MANAGE_ROLES', false, true, true)) return message.reply(`You do not have permission to perform this action! Did you mean \`${message.guild.commandPrefix}rank give\`?`)
       if (!ranks[message.guild.id]) ranks[message.guild.id] = {
         ranks: []
       }
@@ -66,7 +68,7 @@ module.exports = class RankCommand extends commando.Command {
         message.reply('Role added.')
       })
     } else if (args.action.toLowerCase() === 'remove') {
-      if (!message.guild.member(message.author).hasPermission('MANAGE_ROLES', false, true, true)) return message.reply('You do not have permission to perform this action!')
+      if (!message.guild.member(message.author).hasPermission('MANAGE_ROLES', false, true, true)) return message.reply(`You do not have permission to perform this action! Did you mean\`${message.guild.commandPrefix}rank take\`?`)
       let rankIndex = ranks[message.guild.id].ranks.indexOf(args.rank)
       ranks[message.guild.id].ranks.splice(rankIndex, 1)
       fs.writeFile('./ranks.json', JSON.stringify(ranks, null, 2), (err) => {
