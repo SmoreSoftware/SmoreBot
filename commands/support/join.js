@@ -22,6 +22,7 @@ module.exports = class JoinCommand extends commando.Command {
 
   //eslint-disable-next-line class-methods-use-this
   async run(message) {
+    message.channel.startTyping()
     const embed = new RichEmbed()
       .setAuthor(this.client.user.username, this.client.user.avatarURL)
       .setColor(0x0099cc)
@@ -35,5 +36,6 @@ module.exports = class JoinCommand extends commando.Command {
       .then(() => {
         message.reply('Check your DMs!')
       })
+    message.channel.stopTyping()
   }
 };
