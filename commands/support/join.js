@@ -32,6 +32,8 @@ module.exports = class JoinCommand extends commando.Command {
       .addField('SmoreSoftware Twitter:', 'https://twitter.com/smoresoftware', false)
       .setTimestamp()
     message.author.send({ embed })
-    await message.reply('Check your DMs!')
+      .then(() => {
+        message.reply('Check your DMs!')
+      })
   }
 };
