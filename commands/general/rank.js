@@ -73,7 +73,7 @@ module.exports = class RankCommand extends commando.Command {
         ranks: []
       }
       const rankToAdd = message.guild.roles.find('name', args.rank)
-      if (rankToAdd === null) message.reply('That is not a role! Was your capatalization and spelling correct?')
+      if (rankToAdd === null) return message.reply('That is not a role! Was your capatalization and spelling correct?')
       ranks[message.guild.id].ranks.push(args.rank)
       fs.writeFile('./ranks.json', JSON.stringify(ranks, null, 2), (err) => {
         if (err) {
@@ -88,7 +88,7 @@ module.exports = class RankCommand extends commando.Command {
       if (!message.guild.member(message.author).hasPermission('MANAGE_ROLES', false, true, true)) return message.reply(`You do not have permission to perform this action! Did you mean\`${message.guild.commandPrefix}rank take\`?`)
       let rankIndex = ranks[message.guild.id].ranks.indexOf(args.rank)
       const rankToRemove = message.guild.roles.find('name', args.rank)
-      if (rankToRemove === null) message.reply('That is not a role! Was your capatalization and spelling correct?')
+      if (rankToRemove === null) return message.reply('That is not a role! Was your capatalization and spelling correct?')
       ranks[message.guild.id].ranks.splice(rankIndex, 1)
       fs.writeFile('./ranks.json', JSON.stringify(ranks, null, 2), (err) => {
         if (err) {
