@@ -47,6 +47,7 @@ module.exports = class RankCommand extends commando.Command {
   async run(message, args) {
     if (args.action.toLowerCase() === 'give') {
       if (!message.guild.member(this.client.user).hasPermission('MANAGE_ROLES')) return message.reply('I do not have permission to manage roles! Contact a mod or admin.')
+      if (!ranks[message.guild.id]) return message.reply(`There are no public roles! Maybe try adding some? Do \`${message.guild.commandPrefix}rank add @role\` to add a role.`)
       if (!ranks[message.guild.id].ranks.includes(args.rank.id)) return message.reply(`That role can not be added! Use \`${message.guild.commandPrefix}rank list\` to see a list of ranks you can add.`)
       message.guild.member(message.author).addRole(args.rank.id)
         .then(() => {
@@ -55,6 +56,7 @@ module.exports = class RankCommand extends commando.Command {
         .catch(message.reply('Something went wrong. Is my role above the role you\'re trying to give?'))
     } else if (args.action.toLowerCase() === 'take') {
       if (!message.guild.member(this.client.user).hasPermission('MANAGE_ROLES')) return message.reply('I do not have permission to manage roles! Contact a mod or admin.')
+      if (!ranks[message.guild.id]) return message.reply(`There are no public roles! Maybe try adding some? Do \`${message.guild.commandPrefix}rank add @role\` to add a role.`)
       if (!ranks[message.guild.id].ranks.includes(args.rank.id)) return message.reply(`That role can not be taken! Use \`${message.guild.commandPrefix}rank list\` to see a list of ranks you can add.`)
       message.guild.member(message.author).removeRole(args.rank.id)
         .then(() => {
@@ -90,6 +92,7 @@ module.exports = class RankCommand extends commando.Command {
         message.reply('Role removed.')
       })
     } else if (args.action.toLowerCase() === 'list') {
+      if (!ranks[message.guild.id]) return message.reply(`There are no public roles! Maybe try adding some? Do \`${message.guild.commandPrefix}rank add @role\` to add a role.`)
       ranks[message.guild.id].ranks.forEach((rank) => {
         message.reply(`<@&${rank}>`)
       })
