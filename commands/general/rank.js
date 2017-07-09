@@ -20,7 +20,7 @@ module.exports = class RankCommand extends commando.Command {
       Note: Adding and removing public roles must be done by someone with the MANAGE_ROLES permission.
       Giving and taking requires no permissions.
 			`,
-      examples: ['role give @ping'],
+      examples: ['rank give @ping'],
       args: [{
           key: 'action',
           label: 'action',
