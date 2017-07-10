@@ -34,9 +34,7 @@ module.exports = class SupportCommand extends commando.Command {
       .setDescription(`**Guild:** ${message.guild.name} (${message.guild.id}) \n**Channel:** #${message.channel.name} (${message.channel.id}) \n**Started by:** ${message.author.tag} (${message.author.id})`)
       .setFooter('SmoreBot Support System')
       .setTimestamp()
-    this.client.channels.get(supportChan).send({
-      embed: embed
-    })
+    this.client.channels.get(supportChan).send({ embed })
     const collector = this.client.channels.get(supportChan).createCollector(message => message.content.startsWith('call'), {
       time: 0
     })
