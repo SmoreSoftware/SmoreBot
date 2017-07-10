@@ -21,7 +21,7 @@ module.exports = class SettingsCommand extends commando.Command {
           key: 'action',
           label: 'action',
           type: 'string',
-          prompt: 'What would you like to do? (View/ Add)',
+          prompt: 'What would you like to do? (View / Add / List)',
           infinite: false
         },
         {
@@ -95,32 +95,48 @@ module.exports = class SettingsCommand extends commando.Command {
       }
     } else if (args.action.toLowerCase() === 'view') {
       if (args.setting.toLowerCase() === 'mod') {
-        let role = message.guild.roles.get(message.guild.settings.get('modrole'))
+        const role = message.guild.roles.get(message.guild.settings.get('modrole'))
         //eslint-disable-next-line no-undefined
         if (role === undefined || role.name === undefined || role === undefined) return message.reply('There is currently no mod role set.')
         message.reply(`The mod role is "${role.name}"`)
       } else if (args.setting.toLowerCase() === 'admin') {
-        let role = message.guild.roles.get(message.guild.settings.get('adminrole'))
+        const role = message.guild.roles.get(message.guild.settings.get('adminrole'))
         //eslint-disable-next-line no-undefined
         if (role === undefined || role.name === undefined || role === undefined) return message.reply('There is currently no admin role set.')
         message.reply(`The admin role is "${role.name}"`)
       } else if (args.setting.toLowerCase() === 'modlog') {
-        let chan = message.guild.channels.get(message.guild.settings.get('modlog'))
+        const chan = message.guild.channels.get(message.guild.settings.get('modlog'))
         //eslint-disable-next-line no-undefined
         if (chan === undefined || chan.id === undefined || chan === undefined) return message.reply('There is currently no modlog channel set.')
         message.reply(`The mod log channel is "<#${chan.id}>"`)
       } else if (args.setting.toLowerCase() === 'announcements') {
-        let state = message.guild.settings.get('announcements')
+        const state = message.guild.settings.get('announcements')
         //eslint-disable-next-line no-undefined
         if (state === undefined) return message.reply('There is currently no announcements state set.')
         message.reply(`The announcements state is "${state}"`)
       } else if (args.setting.toLowerCase() === 'autorole') {
-        let role = message.guild.roles.get(message.guild.settings.get('autorole'))
+        const role = message.guild.roles.get(message.guild.settings.get('autorole'))
         //eslint-disable-next-line no-undefined
         if (role === undefined || role.name === undefined || role === undefined) return message.reply('There is currently no auto role set.')
         message.reply(`The auto role is "${role.name}"`)
       } else {
         message.reply('That\'s not a setting. Please try again.');
+      }
+    } else if (args.action.toLowerCase() === 'list') {
+      if (args.setting.toLowerCase() === 'all') {
+        const modrole = message.guild.roles.get(message.guild.settings.get('modrole'))
+        const adminrole = message.guild.roles.get(message.guild.settings.get('adminrole'))
+        const modlog = message.guild.channels.get(message.guild.settings.get('modlog'))
+        const announcements = message.guild.settings.get('announcements')
+        const autorole = message.guild.roles.get(message.guild.settings.get('autorole'))
+        message.reply(`The settings for this server are:
+**Mod role**: "${modrole.name}"
+**Admin role**: "${adminrole.name}"
+**Modlog channel**: "${modlog.name}"
+**Global announcements**: "${announcements}"
+**Auto role**: "${autorole.name}"`)
+      } else {
+        return message.reply(`Invalid command usage! Please do \`${message.guild.commandPrefix}settings list all\`.`)
       }
     } else {
       message.reply('Invalid command usage. Please try again.');
