@@ -54,17 +54,19 @@ module.exports = class SettingsCommand extends commando.Command {
   async run(message, args) {
     if (args.action.toLowerCase() === 'add') {
       if (args.setting.toLowerCase() === 'mod') {
-        const rawRole = message.mentions.roles.first()
-        if (!rawRole) return message.reply('Please specify a role to set as the mod role!')
+        const rawRole = message.guild.roles.find('name', args.value)
+        if (rawRole === null) return message.reply('That is not a role! Was your capatalization and spelling correct?')
         const roleToLog = rawRole.id
         message.guild.settings.set('modrole', roleToLog)
-        message.reply(`Set the mod role to "<@&${message.guild.settings.get('modrole')}>"`)
+        let role = message.guild.roles.get(message.guild.settings.get('modrole'))
+        message.reply(`Set the mod role to "${role.name}"`)
       } else if (args.setting.toLowerCase() === 'admin') {
-        const rawRole = message.mentions.roles.first()
-        if (!rawRole) return message.reply('Please specify a role to set as the admin role!')
+        const rawRole = message.guild.roles.find('name', args.value)
+        if (rawRole === null) return message.reply('That is not a role! Was your capatalization and spelling correct?')
         const roleToLog = rawRole.id
         message.guild.settings.set('adminrole', roleToLog)
-        message.reply(`Set the admin role to "<@&${message.guild.settings.get('adminrole')}>"`)
+        let role = message.guild.roles.get(message.guild.settings.get('adminrole'))
+        message.reply(`Set the admin role to "${role.name}"`)
       } else if (args.setting.toLowerCase() === 'modlog') {
         const rawChan = message.mentions.channels.first()
         if (!rawChan) return message.reply('Please specify a channel to use for the mod logs!')
@@ -82,25 +84,41 @@ module.exports = class SettingsCommand extends commando.Command {
           //eslint-disable-next-line no-useless-escape
         } else return message.reply('Invaid state! Use \`on\` or  \`off\`.')
       } else if (args.setting.toLowerCase() === 'autorole') {
-        const rawRole = message.mentions.roles.first()
-        if (!rawRole) return message.reply('Please specify a role to set as the auto role!')
+        const rawRole = message.guild.roles.find('name', args.value)
+        if (rawRole === null) return message.reply('That is not a role! Was your capatalization and spelling correct?')
         const roleToLog = rawRole.id
         message.guild.settings.set('autorole', roleToLog)
-        message.reply(`Set the autorole to "<@&${message.guild.settings.get('autorole')}>"`)
+        let role = message.guild.roles.get(message.guild.settings.get('autorole'))
+        message.reply(`Set the autorole to "${role.name}"`)
       } else {
         message.reply('That\'s not a setting. Please try again.');
       }
     } else if (args.action.toLowerCase() === 'view') {
       if (args.setting.toLowerCase() === 'mod') {
-        message.reply(`The mod role is "<@&${message.guild.settings.get('modrole')}>"`)
+        let role = message.guild.roles.get(message.guild.settings.get('modrole'))
+        //eslint-disable-next-line no-undefined
+        if (role === undefined || role.name === undefined || role === undefined) return message.reply('There is currently no mod role set.')
+        message.reply(`The mod role is "${role.name}"`)
       } else if (args.setting.toLowerCase() === 'admin') {
-        message.reply(`The admin role is "<@&${message.guild.settings.get('adminrole')}>"`)
+        let role = message.guild.roles.get(message.guild.settings.get('adminrole'))
+        //eslint-disable-next-line no-undefined
+        if (role === undefined || role.name === undefined || role === undefined) return message.reply('There is currently no admin role set.')
+        message.reply(`The admin role is "${role.name}"`)
       } else if (args.setting.toLowerCase() === 'modlog') {
-        message.reply(`The mod log channel is "<#${message.guild.settings.get('modlog')}>"`)
+        let chan = message.guild.channels.get(message.guild.settings.get('modlog'))
+        //eslint-disable-next-line no-undefined
+        if (chan === undefined || chan.id === undefined || chan === undefined) return message.reply('There is currently no modlog channel set.')
+        message.reply(`The mod log channel is "<#${chan.id}>"`)
       } else if (args.setting.toLowerCase() === 'announcements') {
-        message.reply(`The announcements state is "${message.guild.settings.get('announcements')}"`)
+        let state = message.guild.settings.get('announcements')
+        //eslint-disable-next-line no-undefined
+        if (state === undefined) return message.reply('There is currently no announcements state set.')
+        message.reply(`The announcements state is "${state}"`)
       } else if (args.setting.toLowerCase() === 'autorole') {
-        message.reply(`The autorole is "<&${message.guild.settings.get('autorole')}"`)
+        let role = message.guild.roles.get(message.guild.settings.get('autorole'))
+        //eslint-disable-next-line no-undefined
+        if (role === undefined || role.name === undefined || role === undefined) return message.reply('There is currently no auto role set.')
+        message.reply(`The auto role is "${role.name}"`)
       } else {
         message.reply('That\'s not a setting. Please try again.');
       }
