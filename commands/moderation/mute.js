@@ -50,7 +50,7 @@ module.exports = class MuteCommand extends commando.Command {
     let modrole = message.guild.settings.get('modrole')
     let adminrole = message.guild.settings.get('adminrole')
     let modlog = message.guild.settings.get('modlog')
-    if (!modrole || !adminrole || !modlog) return message.reply(`This command is not set up to work! Have someone run \`${message.guild.commandPrefix}settings\` to add the \`mod\`, \`admin\`, and \`modlod\` settings.`)
+    if (!modrole || !adminrole || !modlog) return message.reply(`This command is not set up to work! Have someone run \`${message.guild.commandPrefix}settings\` to add the \`mod\`, \`admin\`, and \`modlog\` settings.`)
     if (!message.member.roles.has(modrole || adminrole)) return message.reply(`You do not have permission to do this! Only people with this role can access this command! \`Role Required: ${message.guild.roles.get('modrole')}\`, this is changeable with \`${message.guild.commandPrefix}set add mod @role\``)
     if (!message.guild.member(this.client.user).hasPermission('MANAGE_CHANNELS')) return message.reply('I do not have permission to mute members!')
     let muted = []
@@ -76,12 +76,12 @@ module.exports = class MuteCommand extends commando.Command {
           });
       }).then(function() {
         message.delete(1);
-        message.channel.send(`:loud_sound: ${args.user.tag} unmuted by ${message.author.tag}.`);
+        message.channel.send(`:loud_sound: ${args.user.user.tag} unmuted by ${message.author.tag}.`);
         const embed = new RichEmbed()
           .setTitle(':bangbang: **Moderation action** :scales:')
           .setAuthor(`${message.author.tag} (${message.author.id})`, `${message.author.avatarURL}`)
           .setColor(0x00FF00)
-          .setDescription(`**Action:** Unmute \n**User:** ${args.user.tag} (${args.user.id}) \n**Reason:** ${args.reason}`)
+          .setDescription(`**Action:** Unmute \n**User:** ${args.user.user.tag} (${args.user.id}) \n**Reason:** ${args.reason}`)
           .setTimestamp()
         message.delete(1);
         message.guild.channels.get(modlog).send({
@@ -109,12 +109,12 @@ module.exports = class MuteCommand extends commando.Command {
             if (count === 0) {
               count++;
               message.delete(1);
-              message.channel.send(`:mute: ${args.user.tag} muted for ${ms(ms(args.time), { long: true })} by ${message.author.tag}. (Do \`${message.guild.commandPrefix}mute unmute ${args.user} <reason>\` to unmute.)`).then(() => {
+              message.channel.send(`:mute: ${args.user.user.tag} muted for ${ms(ms(args.time), { long: true })} by ${message.author.tag}. (Do \`${message.guild.commandPrefix}mute unmute ${args.user} <reason>\` to unmute.)`).then(() => {
                 const embed = new RichEmbed()
                   .setTitle(':bangbang: **Moderation action** :scales:')
                   .setAuthor(`${message.author.tag} (${message.author.id})`, `${message.author.avatarURL}`)
                   .setColor(0xCC5200)
-                  .setDescription(`**Action:** Mute \n**User:** ${args.user.tag} (${args.user.id}) \n**Reason:** ${args.reason} \n**Time:** ${ms(ms(args.time), { long: true })}`)
+                  .setDescription(`**Action:** Mute \n**User:** ${args.user.user.tag} (${args.user.id}) \n**Reason:** ${args.reason} \n**Time:** ${ms(ms(args.time), { long: true })}`)
                   .setTimestamp()
                 message.guild.channels.get(modlog).send({
                   embed: embed
@@ -130,13 +130,13 @@ module.exports = class MuteCommand extends commando.Command {
                     }).then(function() {
                       if (count2 === 0) {
                         count2++
-                        message.channel.send(`:loud_sound: ${args.user.tag} unmuted.`);
+                        message.channel.send(`:loud_sound: ${args.user.user.tag} unmuted.`);
                         const embed = new RichEmbed()
                           .setTitle(':bangbang: **Moderation action** :scales:')
                           //eslint-disable-next-line no-invalid-this
                           .setAuthor(`${this.client.user.tag} (${this.client.user.id})`, `${this.client.user.avatarURL}`)
                           .setColor(0x00FF00)
-                          .setDescription(`**Action:** Unmute \n**User:** ${args.user.tag} (${args.user.id}) \n**Reason:** Time ended, mute expired`)
+                          .setDescription(`**Action:** Unmute \n**User:** ${args.user.user.tag} (${args.user.id}) \n**Reason:** Time ended, mute expired`)
                           .setTimestamp()
                         message.guild.channels.get(modlog).send({
                           embed: embed
