@@ -102,9 +102,11 @@ module.exports = class RankCommand extends commando.Command {
     } else
     if (args.action.toLowerCase() === 'list') {
       if (!ranks[message.guild.id]) return message.reply(`There are no public roles! Maybe try adding some? Do \`${message.guild.commandPrefix}rank add role\` to add a role.`)
+      let rankArray = [];
       ranks[message.guild.id].ranks.forEach((rank) => {
-        message.reply(`${rank}`)
+        rankArray.push(rank);
       })
+      message.reply(`\`\`\`${rankArray}\`\`\``)
       //eslint-disable-next-line no-useless-escape
     } else return message.reply('Invalid command usage. Please use \`give\`, \`add\`, or \`list\`.')
   }
