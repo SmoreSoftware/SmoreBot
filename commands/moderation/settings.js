@@ -47,9 +47,9 @@ module.exports = class SettingsCommand extends commando.Command {
 
   //eslint-disable-next-line class-methods-use-this
   hasPermission(msg) {
-    if (!this.client.isOwner(msg.author))
-      //eslint-disable-next-line
-      return msg.member.hasPermission('ADMINISTRATOR');
+    return !this.client.isOwner(msg.author)
+    //eslint-disable-next-line
+    return msg.member.hasPermission('ADMINISTRATOR');
   }
 
   //eslint-disable-next-line class-methods-use-this
