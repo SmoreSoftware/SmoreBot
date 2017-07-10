@@ -128,15 +128,15 @@ Now on: ${client.guilds.size} servers`)
       member.addRole(role)
     }
 
-    function greeting() {
-      let guild = member.guild
-      let greeting = guild.settings.get('greeting')
-      let channel = guild.settings.get('greetChan')
-      channel.send(`${greeting}`)
-    }
+    //function greeting() {
+    //  let guild = member.guild
+    //  let greeting = guild.settings.get('greeting')
+    //  let channel = guild.settings.get('greetChan')
+    //  channel.send(`${greeting}`)
+    //}
 
     autoRole()
-    greeting()
+    //greeting()
   })
 
 client.login(config.token).catch(console.error);
