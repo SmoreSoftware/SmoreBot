@@ -7,7 +7,7 @@ module.exports = class PurgeCommand extends commando.Command {
     super(client, {
       name: 'purge',
       aliases: ['apocalypse', 'prune'],
-      group: 'main',
+      group: 'moderation',
       memberName: 'purge',
       description: 'purges the channel',
       details: oneLine `
