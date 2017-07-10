@@ -137,7 +137,7 @@ module.exports = class SettingsCommand extends commando.Command {
         else adminrole = adminrole.name
         //eslint-disable-next-line no-undefined
         if (modlog === undefined || modlog.name === undefined) modlog = 'not set'
-        else modlog = `<#${modlog.id}`
+        else modlog = `<#${modlog.id}>`
         //eslint-disable-next-line no-undefined
         if (announcements === undefined) announcements = 'not set'
         //eslint-disable-next-line no-undefined
