@@ -124,17 +124,27 @@ module.exports = class SettingsCommand extends commando.Command {
       }
     } else if (args.action.toLowerCase() === 'list') {
       if (args.setting.toLowerCase() === 'all') {
-        const modrole = message.guild.roles.get(message.guild.settings.get('modrole'))
-        const adminrole = message.guild.roles.get(message.guild.settings.get('adminrole'))
-        const modlog = message.guild.channels.get(message.guild.settings.get('modlog'))
-        const announcements = message.guild.settings.get('announcements')
-        const autorole = message.guild.roles.get(message.guild.settings.get('autorole'))
+        let modrole = message.guild.roles.get(message.guild.settings.get('modrole'))
+        let adminrole = message.guild.roles.get(message.guild.settings.get('adminrole'))
+        let modlog = message.guild.channels.get(message.guild.settings.get('modlog'))
+        let announcements = message.guild.settings.get('announcements')
+        let autorole = message.guild.roles.get(message.guild.settings.get('autorole'))
+        //eslint-disable-next-line no-undefined
+        if (modrole === undefined || modrole.name === undefined) modrole = 'not set'
+        //eslint-disable-next-line no-undefined
+        if (adminrole === undefined || adminrole.name === undefined) adminrole = 'not set'
+        //eslint-disable-next-line no-undefined
+        if (modlog === undefined || modlog.name === undefined) modlog = 'not set'
+        //eslint-disable-next-line no-undefined
+        if (announcements === undefined) announcements = 'not set'
+        //eslint-disable-next-line no-undefined
+        if (autorole === undefined || autorole.name === undefined) autorole = 'not set'
         message.reply(`The settings for this server are:
-**Mod role**: "${modrole.name}"
-**Admin role**: "${adminrole.name}"
-**Modlog channel**: "${modlog.name}"
+**Mod role**: "${modrole}"
+**Admin role**: "${adminrole}"
+**Modlog channel**: "${modlog}"
 **Global announcements**: "${announcements}"
-**Auto role**: "${autorole.name}"`)
+**Auto role**: "${autorole}"`)
       } else {
         return message.reply(`Invalid command usage! Please do \`${message.guild.commandPrefix}settings list all\`.`)
       }
