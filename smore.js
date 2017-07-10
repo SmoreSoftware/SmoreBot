@@ -91,7 +91,7 @@ client
     console.log(`New guild added:
 Guild: ${guild.id}
 Name: ${guild.name}
-Owner: ${guild.owner.tag} (${guild.owner.id})
+Owner: ${guild.owner.user.tag} (${guild.owner.id})
 Members: ${guild.members.size}
 Bots: ${guild.members.filter(u => u.user.bot).size}
 Now on: ${client.guilds.size} servers`)
@@ -102,7 +102,7 @@ Now on: ${client.guilds.size} servers`)
       client.channels.get('330701184698679307').send(`Left bot guild:
 Guild: ${guild.id}
 Name: ${guild.name}
-Owner: ${guild.owner.tag} (${guild.owner.id})
+Owner: ${guild.owner.user.tag} (${guild.owner.id})
 Members: ${guild.members.size}
 Bots: ${guild.members.filter(u => u.user.bot === true).size} (${Math.floor(guild.members.filter(u => u.user.bot).size / guild.members.size * 100)}%)
 Now on: ${client.guilds.size - 1} servers`)
@@ -115,7 +115,7 @@ Now on: ${client.guilds.size - 1} servers`)
     console.log(`Exsisting guild left:
 Guild: ${guild.id}
 Name: ${guild.name}
-Owner: ${guild.owner.tag} (${guild.owner.id})
+Owner: ${guild.owner.user.tag} (${guild.owner.id})
 Members: ${guild.members.size}
 Now on: ${client.guilds.size} servers`)
     client.user.setGame(`s.help | ${client.guilds.size} servers `)
