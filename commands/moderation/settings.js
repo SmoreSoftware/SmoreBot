@@ -150,7 +150,7 @@ module.exports = class SettingsCommand extends commando.Command {
 **Global announcements**: "${announcements}"
 **Auto role**: "${autorole}"`)
       } else {
-        return message.reply(`Invalid command usage! Please do \`${message.guild.commandPrefix}settings list all\`.`)
+        return message.reply(`Invalid command usage! Please do \`${message.guild.commandPrefix}settings list all\` to see all settings.`)
       }
     } else {
       message.reply('Invalid command usage. Please try again.');
