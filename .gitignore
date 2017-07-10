@@ -2,6 +2,9 @@
 stuff.json
 stuff.JSON
 stuff.*
+ranks.json
+ranks.JSON
+ranks.*
 
 #Settigs db
 settings.sqlite3
