@@ -131,14 +131,18 @@ module.exports = class SettingsCommand extends commando.Command {
         let autorole = message.guild.roles.get(message.guild.settings.get('autorole'))
         //eslint-disable-next-line no-undefined
         if (modrole === undefined || modrole.name === undefined) modrole = 'not set'
+        else modrole = modrole.name
         //eslint-disable-next-line no-undefined
         if (adminrole === undefined || adminrole.name === undefined) adminrole = 'not set'
+        else adminrole = adminrole.name
         //eslint-disable-next-line no-undefined
         if (modlog === undefined || modlog.name === undefined) modlog = 'not set'
+        else modlog = `<#${modlog.id}`
         //eslint-disable-next-line no-undefined
         if (announcements === undefined) announcements = 'not set'
         //eslint-disable-next-line no-undefined
         if (autorole === undefined || autorole.name === undefined) autorole = 'not set'
+        else autorole = autorole.name
         message.reply(`The settings for this server are:
 **Mod role**: "${modrole}"
 **Admin role**: "${adminrole}"
