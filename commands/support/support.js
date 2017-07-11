@@ -52,7 +52,7 @@ module.exports = class SupportCommand extends commando.Command {
       if (reason === 'success') {
         this.client.channels.get(supportChan).send(':heavy_check_mark: Call picked up!')
         //eslint-disable-next-line no-useless-escape
-        chan.send('Do \`call end\` at any time to end the call.')
+        this.client.channels.get(supportChan).send('Do \`call end\` at any time to end the call.')
         chan.send(`${message.author}`)
         chan.send(':heavy_check_mark: Your call has been picked up by a support representative!')
         chan.send(':hourglass: You will be helped shortly.')
