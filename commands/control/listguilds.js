@@ -30,6 +30,7 @@ Name: ${guild.name}
 Owner: ${guild.owner.user.tag} (${guild.owner.id})
 Default Channel: #${guild.defaultChannel.name} (${guild.defaultChannel.id})
 Members: ${guild.members.size}
+Humans: ${guild.members.filter(u => !u.user.bot).size}
 Bots: ${guild.members.filter(u => u.user.bot).size}
 Bot percentage: ${Math.floor(guild.members.filter(u => u.user.bot).size / guild.members.size * 100)}%`)
     })
