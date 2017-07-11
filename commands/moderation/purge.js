@@ -9,16 +9,22 @@ module.exports = class PurgeCommand extends commando.Command {
       aliases: ['apocalypse', 'prune'],
       group: 'moderation',
       memberName: 'purge',
-      description: 'purges the channel',
+      description: 'Deletes a specific number of messages.',
       details: oneLine `
-        DESTROY IT!
+        This command deletes a specific number of messages.
+        Can only delete between 2 and 99 messages at a time due to Discord ratelimits.
 			`,
       examples: ['purge 25'],
       args: [{
         key: 'toPurge',
         label: 'purge',
         prompt: 'how many messages?',
-        type: 'string',
+        type: 'float',
+        validate: text => {
+          if (text <= 99 && text > 2) return true
+          //eslint-disable-next-line newline-before-return
+          return 'You can only delete 2-99 messages at a time!'
+        },
         infinite: false
       }],
       guildOnly: true,
