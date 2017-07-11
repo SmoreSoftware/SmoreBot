@@ -22,6 +22,6 @@ module.exports = class InviteCommand extends commando.Command {
 
   //eslint-disable-next-line class-methods-use-this
   async run(message) {
-    message.channel.send('Click here to add me to your server: https://discordapp.com/oauth2/authorize?client_id=290228059599142913&scope=bot&permissions=8')
+    message.channel.send('Click here to add me to your server: https://discordapp.com/oauth2/authorize?permissions=360054015&scope=bot&client_id=290228059599142913')
   }
 };
