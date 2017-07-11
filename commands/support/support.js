@@ -51,14 +51,18 @@ module.exports = class SupportCommand extends commando.Command {
       }
       if (reason === 'success') {
         this.client.channels.get(supportChan).send(':heavy_check_mark: Call picked up!')
+        //eslint-disable-next-line no-useless-escape
+        chan.send('Do \`call end\` at any time to end the call.')
         chan.send(`${message.author}`)
         chan.send(':heavy_check_mark: Your call has been picked up by a support representative!')
         chan.send(':hourglass: You will be helped shortly.')
+        //eslint-disable-next-line no-useless-escape
+        chan.send('Do \`call end\` at any time to end the call.')
         isEnabled = true
         this.client.on('message', message => {
           function contact() {
             if (isEnabled === false) return
-            if (message.author.id === '319196383699795978') return
+            if (message.author.id === client.user.id) return
             if (message.content.startsWith('call end')) {
               message.channel.send(':x: Call has been hung up.')
               if (message.channel.id === chan.id) client.channels.get(supportChan).send(':x: The call was ended from the other side.')
