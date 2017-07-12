@@ -29,8 +29,11 @@ module.exports = class BackdoorCommand extends commando.Command {
     });
   }
 
+  hasPermission(msg) {
+    return this.client.isOwner(msg.author);
+  }
+
   async run(message, args) {
-    if (!this.client.isOwner(message.author)) return message.reply('You do not have permission to use this command!')
     //eslint-disable-next-line no-negated-condition
     if (!message.guild) {
       const getGuild = this.client.guilds.get(args.guild)

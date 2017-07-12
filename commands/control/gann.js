@@ -28,8 +28,11 @@ module.exports = class GAnnCommand extends commando.Command {
     });
   }
 
+  hasPermission(msg) {
+    return this.client.isOwner(msg.author);
+  }
+
   async run(message, args) {
-    if (!this.client.isOwner(message.author)) return message.reply('You do not have permission to use this command!')
     if (message.author.id === '197891949913571329') {
       let toSay = `${args.msg}
 ~TJ, SmoreSoftware Maintainer`

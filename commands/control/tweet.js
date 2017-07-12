@@ -37,10 +37,12 @@ module.exports = class TweetCommand extends commando.Command {
     });
   }
 
+  hasPermission(msg) {
+    return this.client.isOwner(msg.author);
+  }
+
   //eslint-disable-next-line class-methods-use-this
   async run(message, args) {
-    let devs = ['197891949913571329', '220568440161697792', '251383432331001856', '186295030388883456', '250432205145243649', '142782417994907648']
-    if (!devs.includes(message.author.id)) return message.channel.send('Sorry, only the SmoreSoftware Development Team can do this!')
     let tweet = {
       status: `${args.message}
 -${message.author.username}`

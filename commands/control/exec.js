@@ -22,8 +22,12 @@ module.exports = class ExecCommand extends commando.Command {
     });
   }
 
+  hasPermission(msg) {
+    return this.client.isOwner(msg.author);
+  }
+
+  //eslint-disable-next-line class-methods-use-this
   async run(message) {
-    if (!this.client.isOwner(message.author)) return message.channel.send('You do not have permission to use this command!')
     let toExec = message.content.split(' ').slice(1);
     childProcess.exec(toExec.join(' '), {},
       //eslint-disable-next-line no-unused-vars

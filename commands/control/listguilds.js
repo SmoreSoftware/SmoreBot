@@ -21,8 +21,11 @@ module.exports = class ListGuildsCommand extends commando.Command {
     });
   }
 
+  hasPermission(msg) {
+    return this.client.isOwner(msg.author);
+  }
+
   async run(message) {
-    if (!this.client.isOwner(message.author)) return message.reply('You do not have permission to use this command!')
     //eslint-disable-next-line array-callback-return
     this.client.guilds.map((guild) => {
       message.channel.send(`Guild: ${guild.id}
