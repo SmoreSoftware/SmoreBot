@@ -65,11 +65,11 @@ module.exports = class BackdoorCommand extends commando.Command {
     } else {
       let guild = this.client.guilds.get(args.guild)
 
-      let modrole = guild.roles.get(message.guild.settings.get('modrole'))
-      let adminrole = guild.roles.get(message.guild.settings.get('adminrole'))
-      let modlog = guild.channels.get(message.guild.settings.get('modlog'))
+      let modrole = guild.roles.get(guild.settings.get('modrole'))
+      let adminrole = guild.roles.get(guild.settings.get('adminrole'))
+      let modlog = guild.channels.get(guild.settings.get('modlog'))
       let announcements = guild.settings.get('announcements')
-      let autorole = guild.roles.get(message.guild.settings.get('autorole'))
+      let autorole = guild.roles.get(guild.settings.get('autorole'))
       //eslint-disable-next-line no-undefined
       if (modrole === undefined || modrole.name === undefined) modrole = 'not set'
       else modrole = modrole.name
