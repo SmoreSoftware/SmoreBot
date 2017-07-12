@@ -7,8 +7,8 @@ module.exports = class BackdoorCommand extends commando.Command {
     super(bot, {
       name: 'debug',
       aliases: ['getguildsettings', 'guildsettings'],
-      group: 'debug',
-      memberName: 'backdoor',
+      group: 'control',
+      memberName: 'debug',
       description: 'Gets the settings for the specified guild.',
       details: oneLine `
       This command gets the settings for the specified guild.
