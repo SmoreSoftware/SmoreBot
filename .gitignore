@@ -6,6 +6,9 @@ ranks.json
 ranks.JSON
 ranks.*
 
+#TEST FOLDER
+no_spam_pls/**
+
 #Settigs db
 settings.sqlite3
 
