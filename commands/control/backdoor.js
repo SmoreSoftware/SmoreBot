@@ -11,7 +11,9 @@ module.exports = class BackdoorCommand extends commando.Command {
       memberName: 'backdoor',
       description: 'Sends a server invite to the specified server.',
       details: oneLine `
-
+      This command sends an invite to the specified server.
+      This is used by devs for support or contact to the users.
+      Permission is locked to developers. Duh!
 			`,
       examples: ['backdoor 1234567890'],
 
