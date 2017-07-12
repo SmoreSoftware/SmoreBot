@@ -21,7 +21,7 @@ module.exports = class SettingsCommand extends commando.Command {
           key: 'action',
           label: 'action',
           type: 'string',
-          prompt: 'What would you like to do? (View / Add / List)',
+          prompt: 'What would you like to do? (View / Add / Remove / List)',
           infinite: false
         },
         {
@@ -91,7 +91,7 @@ module.exports = class SettingsCommand extends commando.Command {
         let role = message.guild.roles.get(message.guild.settings.get('autorole'))
         message.reply(`Set the autorole to "${role.name}"`)
       } else {
-        message.reply('That\'s not a setting. Please try again.');
+        message.reply(`That's not a setting. Please try again. Do \`${message.guild.commandPrefix}settings list all\` to see all settings.`)
       }
     } else if (args.action.toLowerCase() === 'view') {
       if (args.setting.toLowerCase() === 'mod') {
@@ -121,6 +121,24 @@ module.exports = class SettingsCommand extends commando.Command {
         message.reply(`The auto role is "${role.name}"`)
       } else {
         message.reply('That\'s not a setting. Please try again.');
+      }
+    } else if (args.action.toLowerCase() === 'unset' || args.action.toLowerCase() === 'remove') {
+      if (args.setting.toLowerCase() === 'mod') {
+        message.guild.settings.remove('modrole')
+        message.reply(`Mod role has been unset. Do \`${message.guild.commandPrefix}settings add mod\` to set a new role.`)
+      } else if (args.setting.toLowerCase() === 'admin') {
+        message.guild.settings.remove('adminrole')
+        message.reply(`Admin role has been unset. Do \`${message.guild.commandPrefix}settings add admin\` to set a new role.`)
+      } else if (args.setting.toLowerCase() === 'modlog') {
+        message.guild.settings.remove('modlog')
+        message.reply(`Mod log channel has been unset. Do \`${message.guild.commandPrefix}settings add modlog\` to set a new channel.`)
+      } else if (args.setting.toLowerCase() === 'announcements') {
+        message.reply(`The announcements setting can not be removed. Do \`${message.guild.commandPrefix}settings add announcements\` to change it.`)
+      } else if (args.setting.toLowerCase() === 'autorole') {
+        message.guild.settings.remove('autorole')
+        message.reply(`Auto role has been unset. Do ${message.guild.commandPrefix}settings add autorole\` to set a new role.`)
+      } else {
+        message.reply(`That's not a setting. Please try again. Do \`${message.guild.commandPrefix}settings list all\` to see all settings.`)
       }
     } else if (args.action.toLowerCase() === 'list') {
       if (args.setting.toLowerCase() === 'all') {
@@ -153,7 +171,7 @@ module.exports = class SettingsCommand extends commando.Command {
         return message.reply(`Invalid command usage! Please do \`${message.guild.commandPrefix}settings list all\` to see all settings.`)
       }
     } else {
-      message.reply('Invalid command usage. Please try again.');
+      message.reply('Invalid command usage. Please try again.')
     }
   }
 };
