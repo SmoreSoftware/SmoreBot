@@ -36,7 +36,7 @@ client
   .on('debug', () => console.log)
   .on('ready', () => {
     console.log(`Client ready; logged in as ${client.user.tag} (${client.user.id})`)
-    client.user.setGame(`s.help | ${client.guilds.size} servers`)
+    client.user.setGame('#NetNeutrality: battleforthenet.com')
   })
   .on('disconnect', () => console.warn('Disconnected!'))
   .on('reconnecting', () => console.warn('Reconnecting...'))
@@ -110,7 +110,7 @@ Now on: ${client.guilds.size} servers`)
       guild.owner.send(`**ALERT:** Your guild, "${guild.name}", has been marked as an illegal guild. \nThis may be due to it being marked as a bot guild or marked as a spam guild. \nThe bot will now leave the server. \nIf you wish to speak to my developer, you may join here: https://discord.gg/t8xHbHY`)
       guild.leave()
     }
-    client.user.setGame(`s.help | ${client.guilds.size} servers`)
+    client.user.setGame('#NetNeutrality: battleforthenet.com')
     if (guild) guild.settings.set('announcements', 'on')
   })
   .on('guildDelete', (guild) => {
@@ -130,7 +130,7 @@ Members: ${guild.members.size}
 Bots: ${guild.members.filter(u => u.user.bot).size} (${Math.floor(guild.members.filter(u => u.user.bot).size / guild.members.size * 100)}%)
 Humans: ${guild.members.filter(u => !u.user.bot).size} (${Math.floor(guild.members.filter(u => !u.user.bot).size / guild.members.size * 100)}%)
 Now on: ${client.guilds.size} servers`)
-    client.user.setGame(`s.help | ${client.guilds.size} servers`)
+    client.user.setGame('#NetNeutrality: battleforthenet.com')
   })
   .on('guildMemberAdd', (member) => {
     function autoRole() {
