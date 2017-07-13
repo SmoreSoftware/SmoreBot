@@ -39,13 +39,13 @@ client
   .on('ready', () => {
     console.log(`Client ready; logged in as ${client.user.tag} (${client.user.id})`)
     const dbotsToken1 = config.dbotstoken1
-    request.post('https://discordbots.org/api/bots/290228059599142913/stats')
+    request.post(`https://discordbots.org/api/bots/${client.user.id}/stats`)
       .set('Authorization', dbotsToken1)
       .send({ 'server_count': client.guilds.size })
       .end();
     console.log('DBotsList guild count updated.')
     const dbotsToken2 = config.dbotstoken2
-    request.post('https://bots.discord.pw/api/bots/290228059599142913/stats')
+    request.post(`https://bots.discord.pw/api/bots/${client.user.id}/stats`)
       .set('Authorization', dbotsToken2)
       .send({ 'server_count': client.guilds.size })
       .end();
