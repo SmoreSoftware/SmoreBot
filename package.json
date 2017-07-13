@@ -33,9 +33,11 @@
     "node-opus": "^0.2.6",
     "nodemon": "^1.11.0",
     "oneline": "0.0.0",
+    "request": "^2.81.0",
     "simple-youtube-api": "^2.1.0",
     "sqlite": "^2.8.0",
     "sqlite3": "^3.1.8",
+    "superagent": "^3.5.2",
     "twit": "^2.2.9",
     "uws": "^0.14.5",
     "ytdl-core": "^0.14.4"

@@ -9,6 +9,8 @@ const client = new commando.Client({
 const path = require('path');
 const sqlite = require('sqlite');
 const oneLine = require('common-tags').oneLine;
+//eslint-disable-next-line no-unused-vars
+const request = require('superagent');
 const config = require('./stuff.json');
 console.log('Requires initialized.');
 
@@ -36,7 +38,21 @@ client
   .on('debug', () => console.log)
   .on('ready', () => {
     console.log(`Client ready; logged in as ${client.user.tag} (${client.user.id})`)
+    const request = require('superagent');
+    const dbotsToken1 = config.dbotstoken1
+    request.post('https://discordbots.org/api/bots/290228059599142913/stats')
+      .set('Authorization', dbotsToken1)
+      .send({ 'server_count': client.guilds.size })
+      .end();
+    console.log('DBotsList guild count updated.')
+    const dbotsToken2 = config.dbotstoken2
+    request.post('https://bots.discord.pw/api/bots/290228059599142913/stats')
+      .set('Authorization', dbotsToken2)
+      .send({ 'server_count': 48 })
+      .end();
+    console.log('DBots guild count updated.')
     client.user.setGame(`s.help | ${client.guilds.size} servers`)
+    console.log('Awaiting actions.')
   })
   .on('disconnect', () => console.warn('Disconnected!'))
   .on('reconnecting', () => console.warn('Reconnecting...'))
