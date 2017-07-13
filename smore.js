@@ -38,7 +38,6 @@ client
   .on('debug', () => console.log)
   .on('ready', () => {
     console.log(`Client ready; logged in as ${client.user.tag} (${client.user.id})`)
-    const request = require('superagent');
     const dbotsToken1 = config.dbotstoken1
     request.post('https://discordbots.org/api/bots/290228059599142913/stats')
       .set('Authorization', dbotsToken1)
