@@ -48,7 +48,7 @@ client
     const dbotsToken2 = config.dbotstoken2
     request.post('https://bots.discord.pw/api/bots/290228059599142913/stats')
       .set('Authorization', dbotsToken2)
-      .send({ 'server_count': 48 })
+      .send({ 'server_count': client.guilds.size })
       .end();
     console.log('DBots guild count updated.')
     client.user.setGame(`s.help | ${client.guilds.size} servers`)
