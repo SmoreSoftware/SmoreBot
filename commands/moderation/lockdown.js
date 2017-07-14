@@ -21,7 +21,7 @@ module.exports = class LockdownCommand extends commando.Command {
           key: 'time',
           label: 'time',
           prompt: 'How long would you like to mute the user for? (Time is in hours, minutes, or seconds)',
-          type: 'float',
+          type: 'string',
           infinite: false
         },
         {
