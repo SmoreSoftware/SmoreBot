@@ -23,7 +23,7 @@ module.exports = class HQCommand extends commando.Command {
   async run(message) {
     message.author.send(`**Need help?**
 Come join the official SmoreSoftware Discord server!
-https://discord.gg/89JttFv
+https://discord.gg/6P6MNAU
 Need some quick help? Call the developers!
 Do \`${message.guild ? message.guild.commandPrefix : 's.'}support\`
 Want to suggest something?
