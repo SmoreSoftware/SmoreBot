@@ -50,7 +50,7 @@ client
       .send({ 'server_count': client.guilds.size })
       .end();
     console.log('DBots guild count updated.')
-    client.user.setGame(`s.help | ${client.guilds.size} servers`)
+    client.user.setGame(`${config.prefix}help | ${client.guilds.size} servers`)
     console.log('Awaiting actions.')
   })
   .on('disconnect', () => console.warn('Disconnected!'))
