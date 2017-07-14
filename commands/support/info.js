@@ -27,9 +27,7 @@ module.exports = class InfoCommand extends commando.Command {
     if (os.hostname() === 'jdender-vps') {
       host = 'jdenderplays'
     } else if (os.hostname() === 'spacex') {
-      host = 'spacex'
-    } else if (os.hostname() === 'PC_IDK') {
-      host = 'god'
+      host = 'SpaceX'
     } else {
       host = 'local dev instance'
     }
