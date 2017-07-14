@@ -2,6 +2,7 @@
 const commando = require('discord.js-commando');
 const oneLine = require('common-tags').oneLine;
 const { RichEmbed } = require('discord.js');
+const os = require('os');
 
 module.exports = class InfoCommand extends commando.Command {
   constructor(client) {
@@ -22,6 +23,14 @@ module.exports = class InfoCommand extends commando.Command {
 
   //eslint-disable-next-line class-methods-use-this
   async run(message) {
+    let host
+    if (os.hostname() === 'jdender-vps') {
+      host = 'jdenderplays'
+    } else if (os.hostname() === 'spacex') {
+      host = 'spacex'
+    } else {
+      host = 'local dev instance'
+    }
     const embed = new RichEmbed()
       .setAuthor(this.client.user.username, this.client.user.avatarURL)
       .setColor(0x0099cc)
@@ -29,7 +38,7 @@ module.exports = class InfoCommand extends commando.Command {
       .addField('Main information:', 'I am a Discord Bot made in **JavaScript** using the Discord API Wrapper **Discord.js** on the framework **Discord.js-Commando**', false)
       .addField('Developers:', '• Chronomoly6 • TJDoesCode • SpaceX • ROM Typo • jdenderplays •', false)
       .addField('Server Count:', `${this.client.guilds.size}`, true)
-      .addField('Host', '[ROM Typo](http://romtypo.com/discord)', true)
+      .addField('Host', host, true)
       .setTimestamp()
     message.channel.send({ embed })
   }
