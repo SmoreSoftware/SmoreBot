@@ -28,6 +28,8 @@ module.exports = class InfoCommand extends commando.Command {
       host = 'jdenderplays'
     } else if (os.hostname() === 'spacex') {
       host = 'spacex'
+    } else if (os.hostname() === 'PC_IDK') {
+      host = 'god'
     } else {
       host = 'local dev instance'
     }
