@@ -61,10 +61,10 @@ module.exports = class BackdoorCommand extends commando.Command {
 
       let rankArray
       //eslint-disable-next-line no-negated-condition
-      if (!ranks[args.guild]) rankArray = 'no public ranks'
+      if (!ranks[message.guild.id].ranks) rankArray = 'no public ranks'
       else {
         rankArray = [];
-        ranks[args.guild].ranks.forEach((rank) => {
+        ranks[message.guild.id].ranks.forEach((rank) => {
           rankArray.push(rank);
         })
       }
