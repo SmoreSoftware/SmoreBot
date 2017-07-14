@@ -60,11 +60,14 @@ module.exports = class BackdoorCommand extends commando.Command {
       else autorole = autorole.name
 
       let rankArray
-      if (!ranks[message.guild.id]) return rankArray = 'no public ranks'
-      rankArray = [];
-      ranks[message.guild.id].ranks.forEach((rank) => {
-        rankArray.push(rank);
-      })
+      //eslint-disable-next-line no-negated-condition
+      if (!ranks[args.guild]) rankArray = 'no public ranks'
+      else {
+        rankArray = [];
+        ranks[args.guild].ranks.forEach((rank) => {
+          rankArray.push(rank);
+        })
+      }
 
       message.reply(`The settings for this server are:
 **Mod role**: "${modrole}"
@@ -97,11 +100,14 @@ module.exports = class BackdoorCommand extends commando.Command {
       else autorole = autorole.name
 
       let rankArray
-      if (!ranks[args.guild]) return rankArray = 'no public ranks'
-      rankArray = [];
-      ranks[args.guild].ranks.forEach((rank) => {
-        rankArray.push(rank);
-      })
+      //eslint-disable-next-line no-negated-condition
+      if (!ranks[args.guild]) rankArray = 'no public ranks'
+      else {
+        rankArray = [];
+        ranks[args.guild].ranks.forEach((rank) => {
+          rankArray.push(rank);
+        })
+      }
 
       message.reply(`The settings for the guild ${guild.name} (${guild.id}) are:
 **Mod role**: "${modrole}"
