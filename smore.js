@@ -1,8 +1,9 @@
 //eslint-disable-next-line
+const config = require('./stuff.json');
 const commando = require('discord.js-commando');
 const client = new commando.Client({
   owner: ['197891949913571329', '220568440161697792', '251383432331001856', '186295030388883456'],
-  commandPrefix: 's.',
+  commandPrefix: config.prefix,
   unknownCommandResponse: false
 });
 //const defclient = new Discord.Client();
@@ -11,7 +12,6 @@ const sqlite = require('sqlite');
 const oneLine = require('common-tags').oneLine;
 //eslint-disable-next-line no-unused-vars
 const request = require('superagent');
-const config = require('./stuff.json');
 console.log('Requires initialized.');
 
 client.registry
@@ -37,7 +37,7 @@ client
   .on('warn', () => console.warn)
   .on('debug', () => console.log)
   .on('ready', () => {
-    console.log(`Client ready; logged in as ${client.user.tag} (${client.user.id})`)
+    console.log(`Client ready; logged in as ${client.user.tag} (${client.user.id}) with prefix "${config.prefix}"`)
     const dbotsToken1 = config.dbotstoken1
     request.post(`https://discordbots.org/api/bots/${client.user.id}/stats`)
       .set('Authorization', dbotsToken1)
