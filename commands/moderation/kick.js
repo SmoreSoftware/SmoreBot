@@ -40,7 +40,9 @@ module.exports = class KickCommand extends commando.Command {
     let adminrole = message.guild.settings.get('adminrole')
     let modlog = message.guild.settings.get('modlog')
     if (!modrole || !adminrole || !modlog) return message.reply(`This command is not set up to work! Have someone run \`${message.guild.commandPrefix}settings\` to add the \`mod\`, \`admin\`, and \`modlog\` settings.`)
-    if (!message.member.roles.has(modrole || adminrole)) return message.reply(`You do not have permission to do this! Only people with this role can access this command! \`Role Required: ${message.guild.roles.get('modrole')}\`, this is changeable with \`${message.guild.commandPrefix}set add mod @role\``)
+    if (!message.member.roles.has(modrole)) {
+      if (!message.member.roles.has(adminrole)) return message.reply(`You do not have permission to do this! Only people with this role can access this command! \`Role Required: ${message.guild.roles.get('modrole')}\`, this is changeable with \`${message.guild.commandPrefix}set add mod @role\``)
+    }
     if (!message.guild.member(this.client.user).hasPermission('KICK_MEMBERS')) return message.reply('I do not have permission to kick members!')
     args.user.send(`You have been kicked from the server "${message.guild}"!
 Staff member: ${message.author.tag}
