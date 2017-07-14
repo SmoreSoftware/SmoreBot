@@ -125,7 +125,7 @@ module.exports = class MuteCommand extends commando.Command {
                   //console.log(`third ${count2}`)
                   //eslint-disable-next-line array-callback-return, no-unused-vars
                   message.guild.channels.map((channel) => {
-                    message.channel.overwritePermissions(args.user, {
+                    channel.overwritePermissions(args.user, {
                       SEND_MESSAGES: null,
                       ADD_REACTIONS: null,
                       SPEAK: null
