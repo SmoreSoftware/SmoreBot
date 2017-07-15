@@ -22,7 +22,7 @@ SmoreBot is a fun, lightweight, multipurpose bot packed with features. It has mo
   <tr>
     <td>ROM</td>
     <td>ROM Typo#9462</td>
-    <td>Assistant SmoreBot Dev / SmoreBot Host</td>
+    <td>Assistant SmoreBot Dev</td>
   </tr>
   <tr>
     <td>TJ</td>
@@ -37,7 +37,7 @@ SmoreBot is a fun, lightweight, multipurpose bot packed with features. It has mo
   <tr>
     <td>jdender</td>
     <td>jdenderplays#2316</td>
-    <td>Assistant SmoreBot Dev</td>
+    <td>Assistant SmoreBot Dev / SmoreBot Host</td>
   </tr>
 </table> 
 </div>
