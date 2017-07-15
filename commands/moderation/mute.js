@@ -100,6 +100,7 @@ module.exports = class MuteCommand extends commando.Command {
       let count = 0;
       let count2 = 0;
       //console.log(`first ${count2}`)
+      let client = this.client
       //eslint-disable-next-line array-callback-return
       message.guild.channels.map((channel) => {
         channel.overwritePermissions(args.user, {
@@ -136,7 +137,7 @@ module.exports = class MuteCommand extends commando.Command {
                         const embed = new RichEmbed()
                           .setTitle(':bangbang: **Moderation action** :scales:')
                           //eslint-disable-next-line no-invalid-this
-                          .setAuthor(`${this.client.user.tag} (${this.client.user.id})`, `${this.client.user.avatarURL}`)
+                          .setAuthor(`${client.user.tag} (${client.user.id})`, `${client.user.avatarURL}`)
                           .setColor(0x00FF00)
                           .setDescription(`**Action:** Unmute \n**User:** ${args.user.user.tag} (${args.user.id}) \n**Reason:** Time ended, mute expired`)
                           .setTimestamp()
