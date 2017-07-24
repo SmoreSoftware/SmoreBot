@@ -75,17 +75,47 @@
     ]
   },
   "282977399761666059": {
-    "ranks": []
+    "ranks": [
+      "Updates"
+    ]
   },
   "292872517956141056": {
     "ranks": [
       "18+",
       "Gamer",
       "Youtuber",
-      "Troller"
+      "Troller",
+      "blue",
+      "red",
+      "green",
+      "white",
+      "black",
+      "darkpurple",
+      "lightred",
+      "cyan",
+      "yellow",
+      "pink",
+      "lavender",
+      "salmon",
+      "orange",
+      "lime"
     ]
   },
   "334327528493940737": {
     "ranks": []
+  },
+  "333827106813509634": {
+    "ranks": [
+      "Member"
+    ]
+  },
+  "337688987840020490": {
+    "ranks": [
+      "Militia",
+      "Infantry",
+      "Sergent",
+      "Officer",
+      "General"
+    ]
   }
 }
