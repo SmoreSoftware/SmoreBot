@@ -10,12 +10,12 @@ module.exports = class BalCommand extends commando.Command {
       aliases: ['checkbal', 'userbal', 'money'],
       group: 'bank',
       memberName: 'bal',
-      description: 'Check a user\'s bank balance..',
+      description: 'Check a user\'s bank balance.',
       details: oneLine `
-      Do you want to have an opt-in only NSFW channel? A role that you can ping to avoid pinging everyone?
-      This command allows for management of a server's public roles.
-      Note: Adding and removing public roles must be done by someone with the MANAGE_ROLES permission.
-      Giving and taking requires no permissions.
+      Do you want to know how close you are to getting a perk?
+      Just want to prove you're more active than your friends?
+      This command allows you to check your own balance or the balance of someone else.
+      Run \`bal\` to check your own balance or \`bal @Bob#1234\` to check someone else's.
 			`,
       examples: ['bal'],
       args: [{

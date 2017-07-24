@@ -12,10 +12,9 @@ module.exports = class DailyCommand extends commando.Command {
       memberName: 'daily',
       description: 'Check a user\'s bank balance..',
       details: oneLine `
-      Do you want to have an opt-in only NSFW channel? A role that you can ping to avoid pinging everyone?
-      This command allows for management of a server's public roles.
-      Note: Adding and removing public roles must be done by someone with the MANAGE_ROLES permission.
-      Giving and taking requires no permissions.
+      Tired of earning money the hard way?
+      Want free money delivered to you every day?
+      This command gives you free 100 SBT every day.
 			`,
       examples: ['bal'],
 
