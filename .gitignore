@@ -5,6 +5,9 @@ stuff.*
 ranks.json
 ranks.JSON
 ranks.*
+bank.json
+bank.JSON
+bank.*
 
 #TEST FOLDER
 no_spam_pls/**

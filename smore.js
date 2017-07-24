@@ -1,3 +1,4 @@
+/*eslint-disable no-sync*/
 //eslint-disable-next-line
 const config = require('./stuff.json');
 const commando = require('discord.js-commando');
@@ -10,9 +11,13 @@ const client = new commando.Client({
 const path = require('path');
 const sqlite = require('sqlite');
 const oneLine = require('common-tags').oneLine;
+const ms = require('ms');
 //eslint-disable-next-line no-unused-vars
 const request = require('superagent');
-console.log('Requires initialized.');
+const fs = require('fs');
+let cooldownUsers = [];
+let waitingUsers = []
+console.log('Requires and vars initialized.');
 
 client.registry
   .registerGroups([
@@ -21,6 +26,7 @@ client.registry
     ['support', 'Support'],
     ['control', 'Bot Owners Only'],
     ['fun', 'Fun'],
+    ['bank', 'Bank'],
     ['moderation', 'Moderation']
   ])
 
@@ -164,6 +170,59 @@ Now on: ${client.guilds.size} servers`)
 
     autoRole()
     //greeting()
+  })
+  .on('message', (message) => {
+    if (message.content.startsWith(message.guild.commandPrefix)) return;
+    if (message.author.bot) return
+
+    console.log(cooldownUsers)
+    console.log(waitingUsers)
+
+    let bank = JSON.parse(fs.readFileSync('./bank.json', 'utf8'));
+    if (!bank[message.author.id]) {
+      bank[message.author.id] = {
+        balance: 0,
+        points: 0
+      }
+      fs.writeFile('./bank.json', JSON.stringify(bank, null, 2), (err) => {
+        if (err) {
+          console.error(err)
+          //eslint-disable-next-line
+          return
+        }
+      })
+    }
+    //eslint-disable-next-line no-negated-condition
+    if (!cooldownUsers.includes(message.author.id)) {
+      bank[message.author.id].points++;
+      cooldownUsers.push(message.author.id);
+      if (bank[message.author.id].points >= 100) {
+        let curBal = bank[message.author.id].balance
+        let newBal = curBal + 1
+        bank[message.author.id] = {
+          balance: newBal,
+          points: 0
+        }
+      }
+      fs.writeFile('./bank.json', JSON.stringify(bank, null, 2), (err) => {
+        if (err) {
+          console.error(err)
+          //eslint-disable-next-line
+          return
+        }
+      })
+    } else {
+      //eslint-disable-next-line no-lonely-if
+      if (!waitingUsers.includes(message.author.id)) {
+        waitingUsers.push(message.author.id)
+        setTimeout(function() {
+          let index1 = cooldownUsers.indexOf(message.author.id)
+          let index2 = waitingUsers.indexOf(message.author.id)
+          cooldownUsers.splice(index1, 1)
+          waitingUsers.splice(index2, 1)
+        }, ms('1m'))
+      }
+    }
   })
 
 client.login(config.token).catch(console.error);
