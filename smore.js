@@ -197,7 +197,7 @@ Now on: ${client.guilds.size} servers`)
       bank[message.author.id].points++;
       cooldownUsers.push(message.author.id);
       if (bank[message.author.id].points >= 100) {
-        let curBal = bank[message.author.id].balance
+        let curBal = parseInt(bank[message.author.id].balance)
         let newBal = curBal + 1
         bank[message.author.id] = {
           balance: newBal,
