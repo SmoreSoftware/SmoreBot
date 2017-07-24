@@ -175,9 +175,6 @@ Now on: ${client.guilds.size} servers`)
     if (message.content.startsWith(message.guild.commandPrefix)) return;
     if (message.author.bot) return
 
-    console.log(cooldownUsers)
-    console.log(waitingUsers)
-
     let bank = JSON.parse(fs.readFileSync('./bank.json', 'utf8'));
     if (!bank[message.author.id]) {
       bank[message.author.id] = {
