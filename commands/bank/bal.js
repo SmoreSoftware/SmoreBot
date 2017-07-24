@@ -54,7 +54,7 @@ module.exports = class BalCommand extends commando.Command {
         //eslint-disable-next-line
         return
       }
-      message.reply(`You currently have ${bank[message.author.id].balance} SBT. You also have ${bank[message.author.id].points} points.`)
+      message.reply(`You currently have ${bank[message.author.id].balance} SBT. You also have ${bank[message.author.id].points} point(s).`)
     } else {
       //eslint-disable-next-line no-sync
       let bank = JSON.parse(fs.readFileSync('./bank.json', 'utf8'));
