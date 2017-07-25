@@ -8,7 +8,7 @@ module.exports = class BankerCommand extends commando.Command {
   constructor(client) {
     super(client, {
       name: 'banker',
-      aliases: ['managebal', 'managemoney'],
+      aliases: ['managebal', 'managemoney', 'managebank', 'bankcontrol'],
       group: 'economy',
       memberName: 'banker',
       description: 'Manage the bank.',
@@ -28,14 +28,14 @@ module.exports = class BankerCommand extends commando.Command {
         {
           key: 'type',
           label: 'type',
-          prompt: 'What would you like to manage? (Balance / Poimts)',
+          prompt: 'What would you like to manage? (Balance / Poimts / All)',
           type: 'string',
           infinite: false
         },
         {
           key: 'action',
           label: 'action',
-          prompt: 'What action would you like to perform? (Give / Take)',
+          prompt: 'What action would you like to perform? (Give / Take / Remove)',
           type: 'string',
           infinite: false
         },
@@ -44,6 +44,7 @@ module.exports = class BankerCommand extends commando.Command {
           label: 'amount',
           prompt: 'What amount would you like to perform the action on?',
           type: 'float',
+          default: ' ',
           infinite: false
         }
       ],
@@ -64,7 +65,7 @@ module.exports = class BankerCommand extends commando.Command {
             //eslint-disable-next-line no-negated-condition
             if (!row) {
               message.reply(`The user ${args.user.user.tag} doesn't have a bank account! Creating one now...`)
-              sql.run('INSERT INTO bank (userId, balance, points) VALUES (?, ?, ?)', [args.user.id, 0, 0])
+              sql.run('INSERT INTO bank (userId, balance, points) VALUES (?, ?, ?)', [args.user.id, args.amount, 0])
               message.reply('Account created.')
               /*eslint-disable*/
               return
@@ -79,7 +80,7 @@ module.exports = class BankerCommand extends commando.Command {
           .catch((err) => {
             if (err) console.error(`${err} \n${err.stack}`);
             sql.run('CREATE TABLE IF NOT EXISTS bank (userId TEXT, balance INTEGER, points INTEGER)').then(() => {
-              sql.run('INSERT INTO bank (userId, balance, points) VALUES (?, ?, ?)', [args.user.id, 0, 0])
+              sql.run('INSERT INTO bank (userId, balance, points) VALUES (?, ?, ?)', [args.user.id, args.amount, 0])
               message.reply('Table did not exist, user inserted into new table.')
             })
             //eslint-disable-next-line
@@ -90,7 +91,7 @@ module.exports = class BankerCommand extends commando.Command {
             //eslint-disable-next-line no-negated-condition
             if (!row) {
               message.reply(`The user ${args.user.user.tag} doesn't have a bank account! Creating one now...`)
-              sql.run('INSERT INTO bank (userId, balance, points) VALUES (?, ?, ?)', [args.user.id, 0, 0])
+              sql.run('INSERT INTO bank (userId, balance, points) VALUES (?, ?, ?)', [args.user.id, args.amount, 0])
               message.reply('Account created.')
               /*eslint-disable*/
               return
@@ -105,7 +106,7 @@ module.exports = class BankerCommand extends commando.Command {
           .catch((err) => {
             if (err) console.error(`${err} \n${err.stack}`);
             sql.run('CREATE TABLE IF NOT EXISTS bank (userId TEXT, balance INTEGER, points INTEGER)').then(() => {
-              sql.run('INSERT INTO bank (userId, balance, points) VALUES (?, ?, ?)', [args.user.id, 0, 0])
+              sql.run('INSERT INTO bank (userId, balance, points) VALUES (?, ?, ?)', [args.user.id, args.amount, 0])
               message.reply('Table did not exist, user inserted into new table.')
             })
             //eslint-disable-next-line
@@ -118,7 +119,7 @@ module.exports = class BankerCommand extends commando.Command {
             //eslint-disable-next-line no-negated-condition
             if (!row) {
               message.reply(`The user ${args.user.user.tag} doesn't have a bank account! Creating one now...`)
-              sql.run('INSERT INTO bank (userId, balance, points) VALUES (?, ?, ?)', [args.user.id, 0, 0])
+              sql.run('INSERT INTO bank (userId, balance, points) VALUES (?, ?, ?)', [args.user.id, args.amount, 0])
               message.reply('Account created.')
               /*eslint-disable*/
               return
@@ -133,7 +134,7 @@ module.exports = class BankerCommand extends commando.Command {
           .catch((err) => {
             if (err) console.error(`${err} \n${err.stack}`);
             sql.run('CREATE TABLE IF NOT EXISTS bank (userId TEXT, balance INTEGER, points INTEGER)').then(() => {
-              sql.run('INSERT INTO bank (userId, balance, points) VALUES (?, ?, ?)', [args.user.id, 0, 0])
+              sql.run('INSERT INTO bank (userId, balance, points) VALUES (?, ?, ?)', [args.user.id, args.amount, 0])
               message.reply('Table did not exist, user inserted into new table.')
             })
             //eslint-disable-next-line
@@ -144,7 +145,7 @@ module.exports = class BankerCommand extends commando.Command {
             //eslint-disable-next-line no-negated-condition
             if (!row) {
               message.reply(`The user ${args.user.user.tag} doesn't have a bank account! Creating one now...`)
-              sql.run('INSERT INTO bank (userId, balance, points) VALUES (?, ?, ?)', [args.user.id, 0, 0])
+              sql.run('INSERT INTO bank (userId, balance, points) VALUES (?, ?, ?)', [args.user.id, args.amount, 0])
               message.reply('Account created.')
               /*eslint-disable*/
               return
@@ -159,12 +160,17 @@ module.exports = class BankerCommand extends commando.Command {
           .catch((err) => {
             if (err) console.error(`${err} \n${err.stack}`);
             sql.run('CREATE TABLE IF NOT EXISTS bank (userId TEXT, balance INTEGER, points INTEGER)').then(() => {
-              sql.run('INSERT INTO bank (userId, balance, points) VALUES (?, ?, ?)', [args.user.id, 0, 0])
+              sql.run('INSERT INTO bank (userId, balance, points) VALUES (?, ?, ?)', [args.user.id, args.amount, 0])
               message.reply('Table did not exist, user inserted into new table.')
             })
             //eslint-disable-next-line
             return
           })
+      }
+    } else if (args.type.toLowerCase() === 'all') {
+      if (args.action.toLowerCase() === 'delete' || args.action.toLowerCase() === 'remove') {
+        sql.run(`DELETE FROM bank WHERE userId = ${args.user.id}`)
+        message.reply('User removed from DB.')
       }
     }
   }
