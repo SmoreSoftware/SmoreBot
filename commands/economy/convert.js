@@ -15,10 +15,10 @@ module.exports = class ConvertCommand extends commando.Command {
       memberName: 'convert',
       description: 'Convert money in SBT to another currency with Discoin.',
       details: oneLine `
-      Do you want to have an opt-in only NSFW channel? A role that you can ping to avoid pinging everyone?
-      This command allows for management of a server's public roles.
-      Note: Adding and removing public roles must be done by someone with the MANAGE_ROLES permission.
-      Giving and taking requires no permissions.
+      Do you have a lot of money in SBT and have no use for it?
+      Do you wish you had as much money on DiscordTel as on this bot?
+      This command converts money in SBT to another bot's currency using Discoin.
+      This requires the other bot to support Discoin, duh.
 			`,
       examples: ['bal'],
       args: [{
