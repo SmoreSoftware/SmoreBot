@@ -14,7 +14,8 @@ const sql = require('sqlite')
 const oneLine = require('common-tags').oneLine;
 const ms = require('ms');
 //eslint-disable-next-line no-unused-vars
-const request = require('superagent');
+const dbots = require('superagent');
+const request = require('request');
 sql.open('./bank.sqlite');
 let cooldownUsers = [];
 let waitingUsers = []
@@ -46,13 +47,13 @@ client
   .on('ready', () => {
     console.log(`Client ready; logged in as ${client.user.tag} (${client.user.id}) with prefix "${config.prefix}"`)
     const dbotsToken1 = config.dbotstoken1
-    request.post(`https://discordbots.org/api/bots/${client.user.id}/stats`)
+    dbots.post(`https://discordbots.org/api/bots/${client.user.id}/stats`)
       .set('Authorization', dbotsToken1)
       .send({ 'server_count': client.guilds.size })
       .end();
     console.log('DBotsList guild count updated.')
     const dbotsToken2 = config.dbotstoken2
-    request.post(`https://bots.discord.pw/api/bots/${client.user.id}/stats`)
+    dbots.post(`https://bots.discord.pw/api/bots/${client.user.id}/stats`)
       .set('Authorization', dbotsToken2)
       .send({ 'server_count': client.guilds.size })
       .end();
@@ -173,8 +174,10 @@ Now on: ${client.guilds.size} servers`)
     //greeting()
   })
   .on('message', (message) => {
+    if (message.author.bot) return;
+    if (!message.guild) return;
+    if (message.channel.type !== 'text') return;
     if (message.content.startsWith(message.guild.commandPrefix)) return;
-    if (message.author.bot) return
 
     sql.get(`SELECT * FROM bank WHERE userId ="${message.author.id}"`).then(row => {
         //eslint-disable-next-line no-negated-condition
@@ -219,6 +222,48 @@ Now on: ${client.guilds.size} servers`)
         return
       })
   })
+
+setInterval(function() {
+  request({
+    url: 'http://discoin-austinhuang.rhcloud.com/transaction',
+    headers: { 'Authorization': config.discoinToken }
+  }, function(error, response, body) {
+    if (!error && response.statusCode === 200) {
+      body = JSON.parse(body);
+      body.forEach(t => {
+        sql.get(`SELECT * FROM bank WHERE userId ="${t.user}"`).then(row => {
+            //eslint-disable-next-line no-negated-condition
+            if (!row) {
+              sql.run('INSERT INTO bank (userId, balance, points) VALUES (?, ?, ?)', [t.user, 0, 0])
+              sql.run(`UPDATE bank SET balance = ${t.amount} WHERE userId = ${t.user}`)
+              client.users.get(t.user).send(`You've received ${t.amount} from Discoin (Transaction ID: ${t.id}).
+*You can check all your transactions at <http://discoin-austinhuang.rhcloud.com/record>.*`)
+              /*eslint-disable*/
+              return
+            } else {
+              /*eslint-enable*/
+              let curBal = parseInt(row.balance)
+              let newBal = curBal + t.amount
+              sql.run(`UPDATE bank SET balance = ${newBal} WHERE userId = ${t.user}`)
+              client.users.get(t.user).send(`You've received ${t.amount} from Discoin (Transaction ID: ${t.id}).
+*You can check all your transactions at <http://discoin-austinhuang.rhcloud.com/record>.*`)
+            }
+          })
+          .catch((err) => {
+            if (err) console.error(`${err} \n${err.stack}`)
+            sql.run('CREATE TABLE IF NOT EXISTS bank (userId TEXT, balance INTEGER, points INTEGER)').then(() => {
+              sql.run('INSERT INTO bank (userId, balance, points) VALUES (?, ?, ?)', [t.user, 0, 0])
+              sql.run(`UPDATE bank SET balance = ${t.amount} WHERE userId = ${t.user}`)
+              client.users.get(t.user).send(`You've received ${t.amount} from Discoin (Transaction ID: ${t.id}).
+*You can check all your transactions at <http://discoin-austinhuang.rhcloud.com/record>.*`)
+            })
+            //eslint-disable-next-line
+            return
+          })
+      })
+    }
+  })
+}, ms('30s'))
 
 client.login(config.token).catch(console.error);
 
