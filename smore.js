@@ -10,15 +10,14 @@ const client = new commando.Client({
 //const defclient = new Discord.Client();
 const path = require('path');
 const sqlite = require('sqlite');
+const sql = require('sqlite')
 const oneLine = require('common-tags').oneLine;
-/*eslint-disable no-unused-vars*/
 const ms = require('ms');
 //eslint-disable-next-line no-unused-vars
 const request = require('superagent');
-const fs = require('fs');
+sql.open('./bank.sqlite');
 let cooldownUsers = [];
 let waitingUsers = []
-/*eslint-enable no-unused-vars*/
 console.log('Requires and vars initialized.');
 
 client.registry
@@ -28,7 +27,7 @@ client.registry
     ['support', 'Support'],
     ['control', 'Bot Owners Only'],
     ['fun', 'Fun'],
-    ['bank', 'Bank'],
+    ['economy', 'Economy'],
     ['moderation', 'Moderation']
   ])
 
@@ -173,58 +172,50 @@ Now on: ${client.guilds.size} servers`)
     autoRole()
     //greeting()
   })
+  .on('message', (message) => {
+    if (message.content.startsWith(message.guild.commandPrefix)) return;
+    if (message.author.bot) return
 
-/*this was corrupting the bank json. needs sqlite migration.
-.on('message', (message) => {
-  if (message.content.startsWith(message.guild.commandPrefix)) return;
-  if (message.author.bot) return
-
-  let bank = JSON.parse(fs.readFileSync('./bank.json', 'utf8'));
-  if (!bank[message.author.id]) {
-    bank[message.author.id] = {
-      balance: 0,
-      points: 0
-    }
-    fs.writeFile('./bank.json', JSON.stringify(bank, null, 2), (err) => {
-      if (err) {
-        console.error(err)
+    sql.get(`SELECT * FROM bank WHERE userId ="${message.author.id}"`).then(row => {
+        if (!row) {
+          sql.run('INSERT INTO bank (userId, balance, points) VALUES (?, ?, ?)', [message.author.id, 0, 0])
+          //eslint-disable-next-line
+          return
+        }
+      })
+      .catch((err) => {
+        if (err) console.error(`${err} \n${err.stack}`);
+        sql.run('CREATE TABLE IF NOT EXISTS bank (userId TEXT, balance INTEGER, points INTEGER)').then(() => {
+          sql.run('INSERT INTO bank (userId, balance, points) VALUES (?, ?, ?)', [message.author.id, 0, 0])
+        })
         //eslint-disable-next-line
         return
-      }
-    })
-  }
-  //eslint-disable-next-line no-negated-condition
-  if (!cooldownUsers.includes(message.author.id)) {
-    bank[message.author.id].points++;
-    cooldownUsers.push(message.author.id);
-    if (bank[message.author.id].points >= 100) {
-      let curBal = parseInt(bank[message.author.id].balance)
-      let newBal = curBal + 1
-      bank[message.author.id] = {
-        balance: newBal,
-        points: 0
+      })
+    //eslint-disable-next-line no-negated-condition
+    if (!cooldownUsers.includes(message.author.id)) {
+      sql.get(`SELECT * FROM bank WHERE userId ="${message.author.id}"`).then(row => {
+        sql.run(`UPDATE bank SET points = ${row.points + 1} WHERE userId = ${message.author.id}`)
+        cooldownUsers.push(message.author.id);
+        if (row.points >= 100) {
+          let curBal = parseInt(row.balance)
+          let newBal = curBal + 1
+          sql.run(`UPDATE bank SET points = ${newBal} WHERE userId = ${message.author.id}`)
+          sql.run(`UPDATE bank SET points = ${0} WHERE userId = ${message.author.id}`)
+        }
+      })
+    } else {
+      //eslint-disable-next-line no-lonely-if
+      if (!waitingUsers.includes(message.author.id)) {
+        waitingUsers.push(message.author.id)
+        setTimeout(function() {
+          let index1 = cooldownUsers.indexOf(message.author.id)
+          let index2 = waitingUsers.indexOf(message.author.id)
+          cooldownUsers.splice(index1, 1)
+          waitingUsers.splice(index2, 1)
+        }, ms('1m'))
       }
     }
-    fs.writeFile('./bank.json', JSON.stringify(bank, null, 2), (err) => {
-      if (err) {
-        console.error(err)
-        //eslint-disable-next-line
-        return
-      }
-    })
-  } else {
-    //eslint-disable-next-line no-lonely-if
-    if (!waitingUsers.includes(message.author.id)) {
-      waitingUsers.push(message.author.id)
-      setTimeout(function() {
-        let index1 = cooldownUsers.indexOf(message.author.id)
-        let index2 = waitingUsers.indexOf(message.author.id)
-        cooldownUsers.splice(index1, 1)
-        waitingUsers.splice(index2, 1)
-      }, ms('1m'))
-    }
-  }
-})*/
+  })
 
 client.login(config.token).catch(console.error);
 
