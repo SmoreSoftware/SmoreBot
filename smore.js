@@ -177,10 +177,37 @@ Now on: ${client.guilds.size} servers`)
     if (message.author.bot) return
 
     sql.get(`SELECT * FROM bank WHERE userId ="${message.author.id}"`).then(row => {
+        //eslint-disable-next-line no-negated-condition
         if (!row) {
           sql.run('INSERT INTO bank (userId, balance, points) VALUES (?, ?, ?)', [message.author.id, 0, 0])
           //eslint-disable-next-line
           return
+          //eslint-disable-next-line no-else-return
+        } else {
+          //eslint-disable-next-line
+          if (!cooldownUsers.includes(message.author.id)) {
+            sql.get(`SELECT * FROM bank WHERE userId ="${message.author.id}"`).then(row => {
+              sql.run(`UPDATE bank SET points = ${row.points + 1} WHERE userId = ${message.author.id}`)
+              cooldownUsers.push(message.author.id);
+              if (row.points >= 100) {
+                let curBal = parseInt(row.balance)
+                let newBal = curBal + 1
+                sql.run(`UPDATE bank SET points = ${newBal} WHERE userId = ${message.author.id}`)
+                sql.run(`UPDATE bank SET points = ${0} WHERE userId = ${message.author.id}`)
+              }
+            })
+          } else {
+            //eslint-disable-next-line no-lonely-if
+            if (!waitingUsers.includes(message.author.id)) {
+              waitingUsers.push(message.author.id)
+              setTimeout(function() {
+                let index1 = cooldownUsers.indexOf(message.author.id)
+                let index2 = waitingUsers.indexOf(message.author.id)
+                cooldownUsers.splice(index1, 1)
+                waitingUsers.splice(index2, 1)
+              }, ms('1m'))
+            }
+          }
         }
       })
       .catch((err) => {
@@ -191,30 +218,6 @@ Now on: ${client.guilds.size} servers`)
         //eslint-disable-next-line
         return
       })
-    //eslint-disable-next-line no-negated-condition
-    if (!cooldownUsers.includes(message.author.id)) {
-      sql.get(`SELECT * FROM bank WHERE userId ="${message.author.id}"`).then(row => {
-        sql.run(`UPDATE bank SET points = ${row.points + 1} WHERE userId = ${message.author.id}`)
-        cooldownUsers.push(message.author.id);
-        if (row.points >= 100) {
-          let curBal = parseInt(row.balance)
-          let newBal = curBal + 1
-          sql.run(`UPDATE bank SET points = ${newBal} WHERE userId = ${message.author.id}`)
-          sql.run(`UPDATE bank SET points = ${0} WHERE userId = ${message.author.id}`)
-        }
-      })
-    } else {
-      //eslint-disable-next-line no-lonely-if
-      if (!waitingUsers.includes(message.author.id)) {
-        waitingUsers.push(message.author.id)
-        setTimeout(function() {
-          let index1 = cooldownUsers.indexOf(message.author.id)
-          let index2 = waitingUsers.indexOf(message.author.id)
-          cooldownUsers.splice(index1, 1)
-          waitingUsers.splice(index2, 1)
-        }, ms('1m'))
-      }
-    }
   })
 
 client.login(config.token).catch(console.error);
