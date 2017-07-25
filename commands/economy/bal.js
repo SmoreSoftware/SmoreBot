@@ -27,7 +27,7 @@ module.exports = class BalCommand extends commando.Command {
         default: ' ',
         infinite: false
       }],
-      guildOnly: true,
+
       guarded: true
     })
   }

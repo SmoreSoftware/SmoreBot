@@ -47,7 +47,7 @@ module.exports = class BankerCommand extends commando.Command {
           infinite: false
         }
       ],
-      guildOnly: true,
+
       guarded: true
     })
   }
