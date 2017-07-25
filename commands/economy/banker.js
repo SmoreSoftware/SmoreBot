@@ -13,10 +13,9 @@ module.exports = class BankerCommand extends commando.Command {
       memberName: 'banker',
       description: 'Manage the bank.',
       details: oneLine `
-      Do you want to know how close you are to getting a perk?
-      Just want to prove you're more active than your friends?
-      This command allows you to check your own balance or the balance of someone else.
-      Run \`bal\` to check your own balance or \`bal @Bob#1234\` to check someone else's.
+      This command manages a user's economy entry.
+      Useful for if a user had a failed transaction or something glitched.
+      Use in moderation and DO NOT use as a means of abusing Discoin.
 			`,
       examples: ['bal'],
       args: [{
