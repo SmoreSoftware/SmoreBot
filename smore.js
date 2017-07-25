@@ -235,7 +235,7 @@ setInterval(function() {
             //eslint-disable-next-line no-negated-condition
             if (!row) {
               sql.run('INSERT INTO bank (userId, balance, points) VALUES (?, ?, ?)', [t.user, t.amount, 0])
-              client.users.get(t.user).send(`You've received ${t.amount} from Discoin (Transaction ID: ${t.id}).
+              client.users.get(t.user).send(`You've received ${t.amount} SBT from Discoin (Transaction ID: ${t.id}).
 *You can check all your transactions at <http://discoin-austinhuang.rhcloud.com/record>.*`)
               /*eslint-disable*/
               return
@@ -244,7 +244,7 @@ setInterval(function() {
               let curBal = parseInt(row.balance)
               let newBal = curBal + t.amount
               sql.run(`UPDATE bank SET balance = ${newBal} WHERE userId = ${t.user}`)
-              client.users.get(t.user).send(`You've received ${t.amount} from Discoin (Transaction ID: ${t.id}).
+              client.users.get(t.user).send(`You've received ${t.amount} SBT from Discoin (Transaction ID: ${t.id}).
 *You can check all your transactions at <http://discoin-austinhuang.rhcloud.com/record>.*`)
             }
           })
@@ -252,7 +252,7 @@ setInterval(function() {
             if (err) console.error(`${err} \n${err.stack}`)
             sql.run('CREATE TABLE IF NOT EXISTS bank (userId TEXT, balance INTEGER, points INTEGER)').then(() => {
               sql.run('INSERT INTO bank (userId, balance, points) VALUES (?, ?, ?)', [t.user, t.amount, 0])
-              client.users.get(t.user).send(`You've received ${t.amount} from Discoin (Transaction ID: ${t.id}).
+              client.users.get(t.user).send(`You've received ${t.amount} SBT from Discoin (Transaction ID: ${t.id}).
 *You can check all your transactions at <http://discoin-austinhuang.rhcloud.com/record>.*`)
             })
             //eslint-disable-next-line
