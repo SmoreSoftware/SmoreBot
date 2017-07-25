@@ -35,7 +35,7 @@ module.exports = class BankerCommand extends commando.Command {
         {
           key: 'action',
           label: 'action',
-          prompt: 'What action would you like to perform? (Give / Take / Remove)',
+          prompt: 'What action would you like to perform? (Give / Take / Remove / List)',
           type: 'string',
           infinite: false
         },
@@ -112,6 +112,9 @@ module.exports = class BankerCommand extends commando.Command {
             //eslint-disable-next-line
             return
           })
+      } else {
+        //eslint-disable-next-line no-useless-escape
+        message.reply('Unrecognized action. Action should be \`give\` or \`take\`.')
       }
     } else if (args.type.toLowerCase() === 'points' || args.type.toLowerCase() === 'pts') {
       if (args.action.toLowerCase() === 'give') {
@@ -166,12 +169,25 @@ module.exports = class BankerCommand extends commando.Command {
             //eslint-disable-next-line
             return
           })
+      } else {
+        //eslint-disable-next-line no-useless-escape
+        message.reply('Unrecognized action. Action should be \`give\` or \`take\`.')
       }
     } else if (args.type.toLowerCase() === 'all') {
       if (args.action.toLowerCase() === 'delete' || args.action.toLowerCase() === 'remove') {
         sql.run(`DELETE FROM bank WHERE userId = ${args.user.id}`)
         message.reply('User removed from DB.')
+      } else if (args.action.toLowerCase() === 'list') {
+        sql.get('SELECT * FROM bank').then(rows => {
+          message.reply(`\`\`\`${JSON.stringify(rows, null, 2)}\`\`\``)
+        })
+      } else {
+        //eslint-disable-next-line no-useless-escape
+        message.reply('Unrecognized action. Action should be \`remove\` or \`list\`.')
       }
+    } else {
+      //eslint-disable-next-line no-useless-escape
+      message.reply('Unrecognized type. Type should be \`balance\`, \`points\`, or \`all\`.')
     }
   }
 };
