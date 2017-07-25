@@ -69,7 +69,7 @@ module.exports = class BackdoorCommand extends commando.Command {
         })
       }
 
-      message.reply(`__**Guild Info**
+      message.reply(`__**Guild Info**__
 **Guild**: ${message.guild.id}
 **Name**: ${message.guild.name}
 **Owner**: ${message.guild.owner.user.tag} (${message.guild.owner.id})
@@ -121,7 +121,7 @@ __**Settings**__
         })
       }
 
-      message.reply(`__**Guild Info**
+      message.reply(`__**Guild Info**__
 **Guild**: ${guild.id}
 **Name**: ${guild.name}
 **Owner**: ${guild.owner.user.tag} (${guild.owner.id})
