@@ -43,43 +43,71 @@ module.exports = class ConvertCommand extends commando.Command {
 
   //eslint-disable-next-line class-methods-use-this
   async run(message, args) {
-    request({
-      url: `http://discoin-austinhuang.rhcloud.com/transaction/${message.author.id}/${args.amount}/${args.toCurrency.toUpperCase()}`,
-      headers: { 'Authorization': config.discoinToken }
-    }, function(error, response, body) {
-      if (error || response.statusCode === 503) {
-        message.reply(`API Error!
-Show the following message to a developer:
-\`\`\`${body}\`\`\``);
+    sql.get(`SELECT * FROM bank WHERE userId ="${message.author.id}"`).then(row => {
+      //eslint-disable-next-line no-negated-condition
+      if (!row) {
+        message.reply('You don\'t have a bank account! Creating one now...')
+        sql.run('INSERT INTO bank (userId, balance, points) VALUES (?, ?, ?)', [message.author.id, 0, 0])
+        message.reply('Account created.')
+        /*eslint-disable*/
+        return
       } else {
-        message.reply(`API return: \`\`\`${body}\`\`\``);
-        if (body.startsWith('Approved.')) {
-          sql.get(`SELECT * FROM bank WHERE userId ="${message.author.id}"`).then(row => {
-              //eslint-disable-next-line no-negated-condition
-              if (!row) {
-                message.reply('You don\'t have a bank account! Creating one now...')
-                sql.run('INSERT INTO bank (userId, balance, points) VALUES (?, ?, ?)', [message.author.id, 0, 0])
-                message.reply('Account created.')
-                /*eslint-disable*/
-                return
-              } else {
-                /*eslint-enable*/
-                let curBal = parseInt(row.balance)
-                let newBal = curBal - args.amount
-                sql.run(`UPDATE bank SET balance = ${newBal} WHERE userId = ${message.author.id}`)
-              }
-            })
-            .catch((err) => {
-              if (err) console.error(`${err} \n${err.stack}`);
-              sql.run('CREATE TABLE IF NOT EXISTS bank (userId TEXT, balance INTEGER, points INTEGER)').then(() => {
-                sql.run('INSERT INTO bank (userId, balance, points) VALUES (?, ?, ?)', [args.user.id, 0, 0])
-                message.reply('Unknown database error. Please run command again.')
-              })
-              //eslint-disable-next-line
-              return
-            })
+        /*eslint-enable*/
+        let userBal = row.balance
+        let balAfterTransaction = userBal - args.amount
+        if (balAfterTransaction < 0) {
+          message.reply(`You can not afford this transaction!
+You only have ${userBal} SBT. You would be left with ${balAfterTransaction} SBT after the conversion.
+You need ${Math.abs(balAfterTransaction - userBal)} more SBT.`)
+          //eslint-disable-next-line
+          return
+          //eslint-disable-next-line no-else-return
+        } else {
+          //eslint-disable-next-line no-use-before-define
+          ifApproved()
         }
       }
     })
+
+    async function ifApproved() {
+      request({
+        url: `http://discoin-austinhuang.rhcloud.com/transaction/${message.author.id}/${args.amount}/${args.toCurrency.toUpperCase()}`,
+        headers: { 'Authorization': config.discoinToken }
+      }, function(error, response, body) {
+        if (error || response.statusCode === 503) {
+          message.reply(`API Error!
+Show the following message to a developer:
+\`\`\`${body}\`\`\``);
+        } else {
+          message.reply(`API return: \`\`\`${body}\`\`\``);
+          if (body.startsWith('Approved.')) {
+            sql.get(`SELECT * FROM bank WHERE userId ="${message.author.id}"`).then(row => {
+                //eslint-disable-next-line no-negated-condition
+                if (!row) {
+                  message.reply('You don\'t have a bank account! Creating one now...')
+                  sql.run('INSERT INTO bank (userId, balance, points) VALUES (?, ?, ?)', [message.author.id, 0, 0])
+                  message.reply('Account created.')
+                  /*eslint-disable*/
+                  return
+                } else {
+                  /*eslint-enable*/
+                  let curBal = parseInt(row.balance)
+                  let newBal = curBal - args.amount
+                  sql.run(`UPDATE bank SET balance = ${newBal} WHERE userId = ${message.author.id}`)
+                }
+              })
+              .catch((err) => {
+                if (err) console.error(`${err} \n${err.stack}`);
+                sql.run('CREATE TABLE IF NOT EXISTS bank (userId TEXT, balance INTEGER, points INTEGER)').then(() => {
+                  sql.run('INSERT INTO bank (userId, balance, points) VALUES (?, ?, ?)', [args.user.id, 0, 0])
+                  message.reply('Unknown database error. Please run command again.')
+                })
+                //eslint-disable-next-line
+                return
+              })
+          }
+        }
+      })
+    }
   }
 };
