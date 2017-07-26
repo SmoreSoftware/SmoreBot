@@ -58,7 +58,7 @@ module.exports = class ConvertCommand extends commando.Command {
         if (balAfterTransaction < 0) {
           message.reply(`You can not afford this transaction!
 You only have ${userBal} SBT. You would be left with ${balAfterTransaction} SBT after the conversion.
-You need ${Math.abs(balAfterTransaction - userBal)} more SBT.`)
+You need ${Math.abs(userBal - args.amount)} more SBT.`)
           //eslint-disable-next-line
           return
           //eslint-disable-next-line no-else-return
