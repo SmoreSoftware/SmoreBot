@@ -1,4 +1,4 @@
-/*The following is an examlle of currency coversion
+/*The following is an example of currency coversion
 with Discoin using Discord.js-Commando as a 
 command framework and SQLite as a database to
 store user currencies. This assumes you've 
