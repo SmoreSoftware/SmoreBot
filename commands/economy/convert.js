@@ -1,3 +1,10 @@
+/*The following is an examlle of currency coversion
+with Discoin using Discord.js-Commando as a 
+command framework and SQLite as a database to
+store user currencies. This assumes you've 
+already set up a currency DB, a way to earn
+currency, and have a basic knowledge of SQL.*/
+
 //eslint-disable-next-line
 const commando = require('discord.js-commando');
 const oneLine = require('common-tags').oneLine;
