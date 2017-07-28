@@ -2,7 +2,6 @@
 const commando = require('discord.js-commando');
 const oneLine = require('common-tags').oneLine;
 const sql = require('sqlite');
-sql.open('./bank.sqlite');
 
 module.exports = class BankerCommand extends commando.Command {
   constructor(client) {
@@ -61,6 +60,7 @@ module.exports = class BankerCommand extends commando.Command {
   async run(message, args) {
     if (args.type.toLowerCase() === 'balance' || args.type.toLowerCase() === 'bal') {
       if (args.action.toLowerCase() === 'give') {
+        sql.open('./bank.sqlite')
         sql.get(`SELECT * FROM bank WHERE userId ="${args.user.id}"`).then(row => {
             //eslint-disable-next-line no-negated-condition
             if (!row) {
@@ -86,7 +86,9 @@ module.exports = class BankerCommand extends commando.Command {
             //eslint-disable-next-line
             return
           })
+        sql.close('./bank.sqlite')
       } else if (args.action.toLowerCase() === 'take') {
+        sql.open('./bank.sqlite')
         sql.get(`SELECT * FROM bank WHERE userId ="${args.user.id}"`).then(row => {
             //eslint-disable-next-line no-negated-condition
             if (!row) {
@@ -112,12 +114,14 @@ module.exports = class BankerCommand extends commando.Command {
             //eslint-disable-next-line
             return
           })
+        sql.close('./bank.sqlite')
       } else {
         //eslint-disable-next-line no-useless-escape
         message.reply('Unrecognized action. Action should be \`give\` or \`take\`.')
       }
     } else if (args.type.toLowerCase() === 'points' || args.type.toLowerCase() === 'pts') {
       if (args.action.toLowerCase() === 'give') {
+        sql.open('./bank.sqlite')
         sql.get(`SELECT * FROM bank WHERE userId ="${args.user.id}"`).then(row => {
             //eslint-disable-next-line no-negated-condition
             if (!row) {
@@ -143,7 +147,9 @@ module.exports = class BankerCommand extends commando.Command {
             //eslint-disable-next-line
             return
           })
+        sql.close('./bank.sqlite')
       } else if (args.action.toLowerCase() === 'take') {
+        sql.open('./bank.sqlite')
         sql.get(`SELECT * FROM bank WHERE userId ="${args.user.id}"`).then(row => {
             //eslint-disable-next-line no-negated-condition
             if (!row) {
@@ -169,18 +175,23 @@ module.exports = class BankerCommand extends commando.Command {
             //eslint-disable-next-line
             return
           })
+        sql.close('./bank.sqlite')
       } else {
         //eslint-disable-next-line no-useless-escape
         message.reply('Unrecognized action. Action should be \`give\` or \`take\`.')
       }
     } else if (args.type.toLowerCase() === 'all') {
       if (args.action.toLowerCase() === 'delete' || args.action.toLowerCase() === 'remove') {
+        sql.open('./bank.sqlite')
         sql.run(`DELETE FROM bank WHERE userId = ${args.user.id}`)
         message.reply('User removed from DB.')
+        sql.close('./bank.sqlite')
       } else if (args.action.toLowerCase() === 'list') {
+        sql.open('./bank.sqlite')
         sql.get('SELECT * FROM bank').then(rows => {
           message.reply(`\`\`\`${JSON.stringify(rows, null, 2)}\`\`\``)
         })
+        sql.close('./bank.sqlite')
       } else {
         //eslint-disable-next-line no-useless-escape
         message.reply('Unrecognized action. Action should be \`remove\` or \`list\`.')

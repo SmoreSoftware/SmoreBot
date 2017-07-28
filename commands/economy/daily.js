@@ -30,6 +30,7 @@ module.exports = class DailyCommand extends commando.Command {
 
   //eslint-disable-next-line class-methods-use-this
   async run(message) {
+    sql.open('./bank.sqlite')
     sql.get(`SELECT * FROM bank WHERE userId ="${message.author.id}"`).then(async row => {
       if (!row) {
         message.reply('You don\'t have a bank account! Creating one now...')
@@ -46,5 +47,6 @@ module.exports = class DailyCommand extends commando.Command {
       await message.reply(`Daily 100 SBT awarded. Your balance is now ${row.balance + 100} SBT.
 Be sure to come back tomorrow!`)
     })
+    sql.close('./bank.sqlite')
   }
 };

@@ -16,7 +16,6 @@ const ms = require('ms');
 //eslint-disable-next-line no-unused-vars
 const dbots = require('superagent');
 const request = require('request');
-sql.open('./bank.sqlite');
 let cooldownUsers = [];
 let waitingUsers = []
 console.log('Requires and vars initialized.');
@@ -179,6 +178,7 @@ Now on: ${client.guilds.size} servers`)
     if (message.channel.type !== 'text') return;
     if (message.content.startsWith(message.guild.commandPrefix)) return;
 
+    sql.open('./bank.sqlite')
     sql.get(`SELECT * FROM bank WHERE userId ="${message.author.id}"`).then(row => {
         //eslint-disable-next-line no-negated-condition
         if (!row) {
@@ -223,6 +223,7 @@ Now on: ${client.guilds.size} servers`)
         //eslint-disable-next-line
         return
       })
+    sql.close('./bank.sqlite')
   })
 
 setInterval(function() {
@@ -233,6 +234,7 @@ setInterval(function() {
     if (!error && response.statusCode === 200) {
       body = JSON.parse(body);
       body.forEach(t => {
+        sql.open('./bank.sqlite')
         sql.get(`SELECT * FROM bank WHERE userId ="${t.user}"`).then(row => {
             //eslint-disable-next-line no-negated-condition
             if (!row) {
@@ -260,6 +262,7 @@ setInterval(function() {
             //eslint-disable-next-line
             return
           })
+        sql.close('./bank.sqlite')
       })
     }
   })

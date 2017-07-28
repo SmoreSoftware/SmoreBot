@@ -2,7 +2,6 @@
 const commando = require('discord.js-commando');
 const oneLine = require('common-tags').oneLine;
 const sql = require('sqlite');
-sql.open('./bank.sqlite');
 
 module.exports = class BalCommand extends commando.Command {
   constructor(client) {
@@ -35,6 +34,7 @@ module.exports = class BalCommand extends commando.Command {
   //eslint-disable-next-line class-methods-use-this
   async run(message, args) {
     if (args.user === ' ') {
+      sql.open('./bank.sqlite')
       sql.get(`SELECT * FROM bank WHERE userId ="${message.author.id}"`).then(row => {
           if (!row) {
             message.reply('You don\'t have a bank account! Creating one now...')
@@ -53,7 +53,9 @@ module.exports = class BalCommand extends commando.Command {
           //eslint-disable-next-line
           return
         })
+      sql.close('./bank.sqlite')
     } else {
+      sql.open('./bank.sqlite')
       sql.get(`SELECT * FROM bank WHERE userId ="${args.user.id}"`).then(row => {
         if (!row) {
           message.reply(`The user ${args.user.user.tag} doesn't have a bank account!
@@ -63,6 +65,7 @@ Have them run this command to create one.`)
         }
         message.reply(`The user ${args.user.user.tag} currently has ${row.balance} SBT and ${row.points} points.`)
       })
+      sql.close('./bank.sqlite')
     }
   }
 };

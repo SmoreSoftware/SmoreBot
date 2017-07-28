@@ -11,7 +11,7 @@ const oneLine = require('common-tags').oneLine;
 const request = require('request');
 const config = require('./stuff.json');
 const sql = require('sqlite');
-sql.open('./bank.sqlite');
+
 
 module.exports = class ConvertCommand extends commando.Command {
   constructor(client) {
@@ -50,6 +50,7 @@ module.exports = class ConvertCommand extends commando.Command {
 
   //eslint-disable-next-line class-methods-use-this
   async run(message, args) {
+    sql.open('./bank.sqlite')
     sql.get(`SELECT * FROM bank WHERE userId ="${message.author.id}"`).then(row => {
       //eslint-disable-next-line no-negated-condition
       if (!row) {
@@ -75,6 +76,7 @@ You need ${Math.abs(userBal - args.amount)} more SBT.`)
         }
       }
     })
+    sql.close('./bank.sqlite')
 
     async function ifApproved() {
       request({
@@ -88,6 +90,7 @@ Show the following message to a developer:
         } else {
           message.reply(`API return: \`\`\`${body}\`\`\``);
           if (body.startsWith('Approved.')) {
+            sql.open('./bank.sqlite')
             sql.get(`SELECT * FROM bank WHERE userId ="${message.author.id}"`).then(row => {
                 //eslint-disable-next-line no-negated-condition
                 if (!row) {
@@ -112,6 +115,7 @@ Show the following message to a developer:
                 //eslint-disable-next-line
                 return
               })
+            sql.close('./bank.sqlite')
           }
         }
       })
