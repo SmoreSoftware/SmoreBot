@@ -43,7 +43,7 @@ module.exports = class BalCommand extends commando.Command {
             //eslint-disable-next-line
             return
           }
-          message.reply(`You currently have ${row.balance} SBT and ${row.points} point(s).`)
+          message.reply(`You currently have ${row.balance} SBT and ${row.points} points.`)
         })
         .catch((err) => {
           if (err) console.error(`${err} \n${err.stack}`);
@@ -61,7 +61,7 @@ Have them run this command to create one.`)
           //eslint-disable-next-line
           return
         }
-        message.reply(`The user ${args.user.user.tag} currently has ${row.balance} SBT and ${row.points} point(s)`)
+        message.reply(`The user ${args.user.user.tag} currently has ${row.balance} SBT and ${row.points} points.`)
       })
     }
   }

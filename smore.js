@@ -190,7 +190,9 @@ Now on: ${client.guilds.size} servers`)
           //eslint-disable-next-line
           if (!cooldownUsers.includes(message.author.id)) {
             sql.get(`SELECT * FROM bank WHERE userId ="${message.author.id}"`).then(row => {
-              sql.run(`UPDATE bank SET points = ${row.points + 1} WHERE userId = ${message.author.id}`)
+              //eslint-disable-next-line no-mixed-operators
+              let newPts = Math.floor(Math.abs(Math.random() * (10 - 36) + 10))
+              sql.run(`UPDATE bank SET points = ${row.points + newPts} WHERE userId = ${message.author.id}`)
               cooldownUsers.push(message.author.id);
               if (row.points >= 100) {
                 let curBal = parseInt(row.balance)
