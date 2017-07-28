@@ -1,7 +1,7 @@
 /*The following is an example of currency coversion
-with Discoin using Discord.js-Commando as a 
+with Discoin using Discord.js-Commando as a
 command framework and SQLite as a database to
-store user currencies. This assumes you've 
+store user currencies. This assumes you've
 already set up a currency DB, a way to earn
 currency, and have a basic knowledge of SQL.*/
 
