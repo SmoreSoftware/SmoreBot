@@ -16,7 +16,7 @@ module.exports = class BankerCommand extends commando.Command {
       Useful for if a user had a failed transaction or something glitched.
       Use in moderation and DO NOT use as a means of abusing Discoin.
 			`,
-      examples: ['bal'],
+      examples: ['banker @Bob#1234 bal give 100'],
       args: [{
           key: 'user',
           label: 'user',

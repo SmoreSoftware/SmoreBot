@@ -27,7 +27,7 @@ module.exports = class ConvertCommand extends commando.Command {
       This command converts money in SBT to another bot's currency using Discoin.
       This requires the other bot to support Discoin, duh.
 			`,
-      examples: ['bal'],
+      examples: ['convert 100 DTS'],
       args: [{
           key: 'amount',
           label: 'amount',

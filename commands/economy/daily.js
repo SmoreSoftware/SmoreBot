@@ -17,7 +17,7 @@ module.exports = class DailyCommand extends commando.Command {
       Want free money delivered to you every day?
       This command gives you free 100 SBT every day.
 			`,
-      examples: ['bal'],
+      examples: ['daily'],
 
       throttling: {
         usages: 1,
