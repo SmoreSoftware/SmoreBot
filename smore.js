@@ -16,6 +16,8 @@ const ms = require('ms');
 //eslint-disable-next-line no-unused-vars
 const dbots = require('superagent');
 const request = require('request');
+const { RichEmbed } = require('discord.js');
+const fs = require('fs');
 let cooldownUsers = [];
 let waitingUsers = []
 console.log('Requires and vars initialized.');
@@ -178,97 +180,188 @@ Now on: ${client.guilds.size} servers`)
     if (message.channel.type !== 'text') return;
     if (message.content.startsWith(message.guild.commandPrefix)) return;
 
-    sql.open('./bank.sqlite')
-    sql.get(`SELECT * FROM bank WHERE userId ="${message.author.id}"`).then(row => {
+    fs.open('./db.lock', 'r', (err) => {
+      if (err) {
+        if (err.code === 'ENOENT') {
+          //eslint-disable-next-line no-use-before-define
+          onSuccess()
+        }
         //eslint-disable-next-line no-negated-condition
-        if (!row) {
-          sql.run('INSERT INTO bank (userId, balance, points) VALUES (?, ?, ?)', [message.author.id, 0, 0])
-          //eslint-disable-next-line
-          return
-          //eslint-disable-next-line no-else-return
-        } else {
+      } else if (!err) {
+        //eslint-disable-next-line no-useless-return
+        return
+      } else {
+        return console.error(err)
+      }
+    })
+    fs.closeSync(fs.openSync('./db.lock', 'w'))
 
-          /*i messed something up. hard.
-          console.log(row.points)
-          if (parseInt(row.points) >= 100) {
-            let curBal = parseInt(row.balance)
-            let newBal = curBal + 1
-            sql.run(`UPDATE bank SET points = ${newBal} WHERE userId = ${message.author.id}`)
-            sql.run(`UPDATE bank SET points = ${0} WHERE userId = ${message.author.id}`)
-          }*/
-          //eslint-disable-next-line
-          if (!cooldownUsers.includes(message.author.id)) {
-            sql.get(`SELECT * FROM bank WHERE userId ="${message.author.id}"`).then(row => {
-              //eslint-disable-next-line no-mixed-operators
-              let newPts = Math.floor(Math.abs(Math.random() * (10 - 36) + 10))
-              sql.run(`UPDATE bank SET points = ${row.points + newPts} WHERE userId = ${message.author.id}`)
-              cooldownUsers.push(message.author.id);
-            })
+    async function onSuccess() {
+      sql.open('./bank.sqlite')
+      sql.get(`SELECT * FROM bank WHERE userId ="${message.author.id}"`).then(row => {
+          //eslint-disable-next-line no-negated-condition
+          if (!row) {
+            sql.run('INSERT INTO bank (userId, balance, points) VALUES (?, ?, ?)', [message.author.id, 0, 0])
+            //eslint-disable-next-line
+            return
+            //eslint-disable-next-line no-else-return
           } else {
-            //eslint-disable-next-line no-lonely-if
-            if (!waitingUsers.includes(message.author.id)) {
-              waitingUsers.push(message.author.id)
-              setTimeout(function() {
-                let index1 = cooldownUsers.indexOf(message.author.id)
-                let index2 = waitingUsers.indexOf(message.author.id)
-                cooldownUsers.splice(index1, 1)
-                waitingUsers.splice(index2, 1)
-              }, ms('1m'))
+
+            /*i messed something up. hard.
+            console.log(row.points)
+            if (parseInt(row.points) >= 100) {
+              let curBal = parseInt(row.balance)
+              let newBal = curBal + 1
+              sql.run(`UPDATE bank SET points = ${newBal} WHERE userId = ${message.author.id}`)
+              sql.run(`UPDATE bank SET points = ${0} WHERE userId = ${message.author.id}`)
+            }*/
+            //eslint-disable-next-line
+            if (!cooldownUsers.includes(message.author.id)) {
+              sql.get(`SELECT * FROM bank WHERE userId ="${message.author.id}"`).then(row => {
+                //eslint-disable-next-line no-mixed-operators
+                let newPts = Math.floor(Math.abs(Math.random() * (10 - 36) + 10))
+                sql.run(`UPDATE bank SET points = ${row.points + newPts} WHERE userId = ${message.author.id}`)
+                cooldownUsers.push(message.author.id);
+              })
+            } else {
+              //eslint-disable-next-line no-lonely-if
+              if (!waitingUsers.includes(message.author.id)) {
+                waitingUsers.push(message.author.id)
+                setTimeout(function() {
+                  let index1 = cooldownUsers.indexOf(message.author.id)
+                  let index2 = waitingUsers.indexOf(message.author.id)
+                  cooldownUsers.splice(index1, 1)
+                  waitingUsers.splice(index2, 1)
+                }, ms('1m'))
+              }
             }
           }
-        }
-      })
-      .catch((err) => {
-        if (err) console.error(`${err} \n${err.stack}`);
-        sql.run('CREATE TABLE IF NOT EXISTS bank (userId TEXT, balance INTEGER, points INTEGER)').then(() => {
-          sql.run('INSERT INTO bank (userId, balance, points) VALUES (?, ?, ?)', [message.author.id, 0, 0])
         })
-        //eslint-disable-next-line
-        return
-      })
-    sql.close('./bank.sqlite')
+        .catch((err) => {
+          if (err) console.error(`${err} \n${err.stack}`);
+          sql.run('CREATE TABLE IF NOT EXISTS bank (userId TEXT, balance INTEGER, points INTEGER)').then(() => {
+            sql.run('INSERT INTO bank (userId, balance, points) VALUES (?, ?, ?)', [message.author.id, 0, 0])
+          })
+          //eslint-disable-next-line
+          return
+        })
+      sql.close('./bank.sqlite')
+    }
+
+    fs.unlinkSync('./db.lock')
   })
 
 setInterval(function() {
-  request({
-    url: 'http://discoin-austinhuang.rhcloud.com/transaction',
-    headers: { 'Authorization': config.discoinToken }
-  }, function(error, response, body) {
-    if (!error && response.statusCode === 200) {
-      body = JSON.parse(body);
-      body.forEach(t => {
-        sql.open('./bank.sqlite')
-        sql.get(`SELECT * FROM bank WHERE userId ="${t.user}"`).then(row => {
-            //eslint-disable-next-line no-negated-condition
-            if (!row) {
-              sql.run('INSERT INTO bank (userId, balance, points) VALUES (?, ?, ?)', [t.user, t.amount, 0])
-              client.users.get(t.user).send(`You've received ${t.amount} SBT from Discoin (Transaction ID: ${t.id}).
-*You can check all your transactions at <http://discoin-austinhuang.rhcloud.com/record>.*`)
-              /*eslint-disable*/
-              return
-            } else {
-              /*eslint-enable*/
-              let curBal = parseInt(row.balance)
-              let newBal = curBal + t.amount
-              sql.run(`UPDATE bank SET balance = ${newBal} WHERE userId = ${t.user}`)
-              client.users.get(t.user).send(`You've received ${t.amount} SBT from Discoin (Transaction ID: ${t.id}).
-*You can check all your transactions at <http://discoin-austinhuang.rhcloud.com/record>.*`)
-            }
-          })
-          .catch((err) => {
-            if (err) console.error(`${err} \n${err.stack}`)
-            sql.run('CREATE TABLE IF NOT EXISTS bank (userId TEXT, balance INTEGER, points INTEGER)').then(() => {
-              sql.run('INSERT INTO bank (userId, balance, points) VALUES (?, ?, ?)', [t.user, t.amount, 0])
-              client.users.get(t.user).send(`You've received ${t.amount} SBT from Discoin (Transaction ID: ${t.id}).
-*You can check all your transactions at <http://discoin-austinhuang.rhcloud.com/record>.*`)
-            })
-            //eslint-disable-next-line
-            return
-          })
-        sql.close('./bank.sqlite')
-      })
+  fs.open('./db.lock', 'r', (err) => {
+    if (err) {
+      if (err.code === 'ENOENT') {
+        console.log('No DB lock, polling transactions')
+        //eslint-disable-next-line no-use-before-define
+        onSuccess()
+      }
+      //eslint-disable-next-line no-negated-condition
+    } else if (!err) {
+      console.error('DB lock exists, transaction polling halted')
+      //eslint-disable-next-line newline-before-return, no-useless-return
+      return
+    } else {
+      return console.error(err)
     }
   })
+  fs.closeSync(fs.openSync('./db.lock', 'w'))
+
+  async function onSuccess() {
+    request({
+      url: 'http://discoin-austinhuang.rhcloud.com/transaction',
+      headers: {
+        'Authorization': config.discoinToken,
+        'json': 'true'
+      }
+    }, function(error, response, body) {
+      function getDateTime() {
+        let date = new Date();
+        let hour = date.getHours();
+        hour = (hour < 10 ? '0' : '') + hour;
+        let min = date.getMinutes();
+        min = (min < 10 ? '0' : '') + min;
+        let sec = date.getSeconds();
+        sec = (sec < 10 ? '0' : '') + sec;
+        let year = date.getFullYear();
+        let month = date.getMonth() + 1;
+        month = (month < 10 ? '0' : '') + month;
+        let day = date.getDate();
+        day = (day < 10 ? '0' : '') + day;
+
+        return `${year}:${month}:${day}:${hour}:${min}:${sec}`
+      }
+      if (!error && response.statusCode === 200) {
+        body = JSON.parse(body);
+        body.forEach(t => {
+          sql.open('./bank.sqlite')
+          sql.get(`SELECT * FROM bank WHERE userId ="${t.user}"`).then(row => {
+              //eslint-disable-next-line no-negated-condition
+              if (!row) {
+                sql.run('INSERT INTO bank (userId, balance, points) VALUES (?, ?, ?)', [t.user, t.amount, 0])
+                const transAuth = client.users.get(t.user)
+                const embed = new RichEmbed()
+                  .setTitle('Discoin Transaction recieved\n')
+                  .setAuthor(transAuth.tag, transAuth.avatarURL)
+                  .setColor(0x00FF00)
+                  .addField('Transaction Reciept', t.id, true)
+                  .addField('Transaction Status', 'Approved', true)
+                  .addField('Transaction Amount', `${t.amount} SBT`, true)
+                  .addField('Converted From', t.from, true)
+                  .addField('Reception Time', getDateTime(), true)
+                  .setFooter(`Transaction made at ${t.fromtime}`)
+                transAuth.send({ embed })
+                /*eslint-disable*/
+                return
+              } else {
+                /*eslint-enable*/
+                let curBal = parseInt(row.balance)
+                let newBal = curBal + t.amount
+                sql.run(`UPDATE bank SET balance = ${newBal} WHERE userId = ${t.user}`)
+                const transAuth = client.users.get(t.user)
+                const embed = new RichEmbed()
+                  .setTitle('Discoin Transaction recieved\n')
+                  .setAuthor(transAuth.tag, transAuth.avatarURL)
+                  .setColor(0x00FF00)
+                  .addField('Transaction Reciept', t.id, true)
+                  .addField('Transaction Status', 'Approved', true)
+                  .addField('Transaction Amount', `${t.amount} SBT`, true)
+                  .addField('Converted From', t.from, true)
+                  .addField('Reception Time', getDateTime(), true)
+                  .setFooter(`Transaction made at ${t.fromtime}`)
+                transAuth.send({ embed })
+              }
+            })
+            .catch((err) => {
+              if (err) return console.error(`${err} \n${err.stack}`)
+              sql.run('CREATE TABLE IF NOT EXISTS bank (userId TEXT, balance INTEGER, points INTEGER)').then(() => {
+                sql.run('INSERT INTO bank (userId, balance, points) VALUES (?, ?, ?)', [t.user, t.amount, 0])
+                const transAuth = client.users.get(t.user)
+                const embed = new RichEmbed()
+                  .setTitle('Discoin Transaction recieved\n')
+                  .setAuthor(transAuth.tag, transAuth.avatarURL)
+                  .setColor(0x00FF00)
+                  .addField('Transaction Reciept', t.id, true)
+                  .addField('Transaction Status', 'Approved', true)
+                  .addField('Transaction Amount', `${t.amount} SBT`, true)
+                  .addField('Converted From', t.from, true)
+                  .addField('Reception Time', getDateTime(), true)
+                  .setFooter(`Transaction made at ${t.fromtime}`)
+                transAuth.send({ embed })
+              })
+              //eslint-disable-next-line
+              return
+            })
+          sql.close('./bank.sqlite')
+        })
+      }
+    })
+  }
+
+  fs.unlinkSync('./db.lock')
 }, ms('30s'))
 
 client.login(config.token).catch(console.error);
