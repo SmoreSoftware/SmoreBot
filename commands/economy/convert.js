@@ -80,7 +80,7 @@ You need ${Math.abs(userBal - args.amount)} more SBT.`)
 
     async function ifApproved() {
       request({
-        url: `http://discoin-austinhuang.rhcloud.com/transaction/${message.author.id}/${args.amount}/${args.toCurrency.toUpperCase()}`,
+        url: `http://discoin.disnodeteam.com/transaction/${message.author.id}/${args.amount}/${args.toCurrency.toUpperCase()}`,
         headers: { 'Authorization': config.discoinToken }
       }, function(error, response, body) {
         if (error || response.statusCode === 503) {

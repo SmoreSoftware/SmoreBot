@@ -272,7 +272,7 @@ setInterval(function() {
 
   async function onSuccess() {
     request({
-      url: 'http://discoin-austinhuang.rhcloud.com/transaction',
+      url: 'http://discoin.disnodeteam.com/transaction',
       headers: {
         'Authorization': config.discoinToken,
         'json': 'true'
