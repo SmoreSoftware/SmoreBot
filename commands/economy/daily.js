@@ -2,7 +2,7 @@
 const commando = require('discord.js-commando');
 const oneLine = require('common-tags').oneLine;
 const sql = require('sqlite');
-sql.open('./bank.sqlite');
+const fs = require('fs');
 
 module.exports = class DailyCommand extends commando.Command {
   constructor(client) {
@@ -30,23 +30,47 @@ module.exports = class DailyCommand extends commando.Command {
 
   //eslint-disable-next-line class-methods-use-this
   async run(message) {
-    sql.open('./bank.sqlite')
-    sql.get(`SELECT * FROM bank WHERE userId ="${message.author.id}"`).then(async row => {
-      if (!row) {
-        message.reply('You don\'t have a bank account! Creating one now...')
-        sql.run('INSERT INTO bank (userId, balance, points) VALUES (?, ?, ?)', [message.author.id, 0, 0])
-        message.reply('Account created.')
-        //eslint-disable-next-line
+    fs.open('./db.lock', 'r', (err) => {
+      if (err) {
+        if (err.code === 'ENOENT') {
+          console.log('No DB lock, running daily command')
+          //eslint-disable-next-line no-use-before-define
+          onSuccess()
+        }
+        //eslint-disable-next-line no-negated-condition
+      } else if (!err) {
+        console.error('DB lock exists, daily command halted')
+        message.reply('The bank is currently busy. Please run this command again.')
+        //eslint-disable-next-line newline-before-return, no-useless-return
         return
+      } else {
+        return console.error(err)
       }
-      let curBal = parseInt(row.balance)
-      let newBal = curBal + 100
-      let curPoints = parseInt(row.points)
-      sql.run(`UPDATE bank SET balance = ${newBal} WHERE userId = ${message.author.id}`)
-      sql.run(`UPDATE bank SET points = ${curPoints} WHERE userId = ${message.author.id}`)
-      await message.reply(`Daily 100 SBT awarded. Your balance is now ${row.balance + 100} SBT.
-Be sure to come back tomorrow!`)
     })
-    sql.close('./bank.sqlite')
+    //eslint-disable-next-line no-sync
+    fs.closeSync(fs.openSync('./db.lock', 'w'))
+
+    async function onSuccess() {
+      sql.open('./bank.sqlite')
+      sql.get(`SELECT * FROM bank WHERE userId ="${message.author.id}"`).then(async row => {
+        if (!row) {
+          message.reply('You don\'t have a bank account! Creating one now...')
+          sql.run('INSERT INTO bank (userId, balance, points) VALUES (?, ?, ?)', [message.author.id, 0, 0])
+          message.reply('Account created.')
+          //eslint-disable-next-line
+          return
+        }
+        let curBal = parseInt(row.balance)
+        let newBal = curBal + 100
+        let curPoints = parseInt(row.points)
+        sql.run(`UPDATE bank SET balance = ${newBal} WHERE userId = ${message.author.id}`)
+        sql.run(`UPDATE bank SET points = ${curPoints} WHERE userId = ${message.author.id}`)
+        await message.reply(`Daily 100 SBT awarded. Your balance is now ${row.balance + 100} SBT.
+Be sure to come back tomorrow!`)
+      })
+      sql.close('./bank.sqlite')
+      //eslint-disable-next-line no-sync
+      fs.unlinkSync('./db.lock')
+    }
   }
 };
