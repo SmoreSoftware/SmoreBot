@@ -182,9 +182,9 @@ Show the following message to a developer:
             }
           }
         })
-        //eslint-disable-next-line no-sync
-        fs.unlinkSync('./db.lock')
       }
+      //eslint-disable-next-line no-sync
+      fs.unlinkSync('./db.lock')
     }
   }
 };

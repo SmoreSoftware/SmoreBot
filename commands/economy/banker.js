@@ -222,8 +222,8 @@ module.exports = class BankerCommand extends commando.Command {
         //eslint-disable-next-line no-useless-escape
         message.reply('Unrecognized type. Type should be \`balance\`, \`points\`, or \`all\`.')
       }
-      //eslint-disable-next-line no-sync
-      fs.unlinkSync('./db.lock')
     }
+    //eslint-disable-next-line no-sync
+    fs.unlinkSync('./db.lock')
   }
 };

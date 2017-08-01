@@ -89,8 +89,8 @@ Have them run this command to create one.`)
         })
         sql.close('./bank.sqlite')
       }
-      //eslint-disable-next-line no-sync
-      fs.unlinkSync('./db.lock')
     }
+    //eslint-disable-next-line no-sync
+    fs.unlinkSync('./db.lock')
   }
 };
