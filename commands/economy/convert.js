@@ -11,6 +11,7 @@ const oneLine = require('common-tags').oneLine;
 const request = require('request');
 const config = require('./stuff.json');
 const sql = require('sqlite');
+const { RichEmbed } = require('discord.js');
 
 
 module.exports = class ConvertCommand extends commando.Command {
@@ -38,7 +39,7 @@ module.exports = class ConvertCommand extends commando.Command {
         {
           key: 'toCurrency',
           label: 'currency',
-          prompt: 'What currency would you like to convert to? Please specify the currency code. (Find them here: http://discoin-austinhuang.rhcloud.com/rates)',
+          prompt: 'What currency would you like to convert to? Please specify the currency code. (Find them here: http://discoin.disnodeteam.com/rates)',
           type: 'string',
           infinite: false
         }
@@ -64,13 +65,28 @@ module.exports = class ConvertCommand extends commando.Command {
         let userBal = row.balance
         let balAfterTransaction = userBal - args.amount
         if (balAfterTransaction < 0) {
-          message.reply(`You can not afford this transaction!
+          const embed = new RichEmbed()
+            .setTitle('Transaction error!')
+            .setColor(0xFF0000)
+            .setDescription(`You can not afford this transaction!
 You only have ${userBal} SBT. You would be left with ${balAfterTransaction} SBT after the conversion.
 You need ${Math.abs(userBal - args.amount)} more SBT.`)
+          message.replyEmbed(embed)
           //eslint-disable-next-line
           return
           //eslint-disable-next-line no-else-return
+        } else if (args.toCurrency.toUpperCase() === 'SBT') {
+          const embed = new RichEmbed()
+            .setTitle('Transaction error!')
+            .setColor(0xFF0000)
+            .setDescription(`You can not convert from this currency back to this currency!
+Your transaction would end up converting SBT back into SBT.
+Please convert to a different currency. They are available [here](http://discoin.disnodeteam.com/rates)`)
+          message.replyEmbed(embed)
+          /*eslint-disable*/
+          return
         } else {
+          /*eslint-enable*/
           //eslint-disable-next-line no-use-before-define
           ifApproved()
         }
@@ -81,15 +97,40 @@ You need ${Math.abs(userBal - args.amount)} more SBT.`)
     async function ifApproved() {
       request({
         url: `http://discoin.disnodeteam.com/transaction/${message.author.id}/${args.amount}/${args.toCurrency.toUpperCase()}`,
-        headers: { 'Authorization': config.discoinToken }
+        headers: {
+          'Authorization': config.discoinToken,
+          'Json': 'true'
+        }
       }, function(error, response, body) {
+        try {
+          JSON.parse(body)
+        } catch (err) {
+          const embed = new RichEmbed()
+            .setTitle('Transaction error!')
+            .setColor(0xFF0000)
+            .setDescription(`${body}
+Please try this transaction again.`)
+          message.replyEmbed(embed)
+          //eslint-disable-next-line newline-before-return
+          return
+        }
+        const bodyObj = JSON.parse(body)
         if (error || response.statusCode === 503) {
           message.reply(`API Error!
 Show the following message to a developer:
-\`\`\`${body}\`\`\``);
+\`\`\`${JSON.stringify(body, null, 2)}\`\`\``);
         } else {
-          message.reply(`API return: \`\`\`${body}\`\`\``);
-          if (body.startsWith('Approved.')) {
+          const embed = new RichEmbed()
+            .setTitle('Discoin Transaction Created')
+            .setAuthor(message.author.tag, message.author.avatarURL)
+            .setColor(0x00FF00)
+            .addField('Transaction Reciept', `${bodyObj.receipt}`, true)
+            .addField('Transaction Amount', `${args.amount} SBT`, true)
+            .addField('Converting To', `${bodyObj.currency}`, true)
+            .addField('Transaction Status', `${bodyObj.status}`, false)
+            .addField('Remaining Daily Limit', `You can still convert ${bodyObj.limitNow} Discoins to ${bodyObj.currency} for today.`, false)
+          message.replyEmbed(embed)
+          if (bodyObj.status === 'Approved') {
             sql.open('./bank.sqlite')
             sql.get(`SELECT * FROM bank WHERE userId ="${message.author.id}"`).then(row => {
                 //eslint-disable-next-line no-negated-condition
