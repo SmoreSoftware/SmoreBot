@@ -246,9 +246,9 @@ Now on: ${client.guilds.size} servers`)
           return
         })
       sql.close('./bank.sqlite')
+      //eslint-disable-next-line no-sync
+      fs.unlinkSync('./db.lock')
     }
-
-    fs.unlinkSync('./db.lock')
   })
 
 setInterval(function() {
@@ -359,9 +359,9 @@ setInterval(function() {
         })
       }
     })
+    //eslint-disable-next-line no-sync
+    fs.unlinkSync('./db.lock')
   }
-
-  fs.unlinkSync('./db.lock')
 }, ms('30s'))
 
 client.login(config.token).catch(console.error);
