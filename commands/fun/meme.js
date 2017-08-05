@@ -20,7 +20,8 @@ module.exports = class MemeCommand extends commando.Command {
 
   //eslint-disable-next-line class-methods-use-this
   async run(message) {
-    let toMeme = ['https://media0.giphy.com/media/ehc19YLR4Ptbq/giphy.gif',
+    let toMeme = ['https://i.redd.it/0ilh488xbudz.png',
+      'https://media0.giphy.com/media/ehc19YLR4Ptbq/giphy.gif',
       'https://qph.ec.quoracdn.net/main-qimg-cf520202236c0a99986988706131aafb-c',
       'https://qph.ec.quoracdn.net/main-qimg-762390f6c44fdcb31cf01657d776d181-c',
       'https://s-media-cache-ak0.pinimg.com/originals/2b/87/17/2b8717e385f04061c8b6b78cd4c663c7.jpg',
