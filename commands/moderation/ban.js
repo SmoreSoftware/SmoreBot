@@ -54,8 +54,8 @@ module.exports = class BanCommand extends commando.Command {
           reason: `${args.reason} -${message.author.tag}`
         }).then(member => {
           args.user.send(`You have been banned from the server "${message.guild}"!
-  Staff member: ${message.author.tag}
-  Reason: "${args.reason}"`).catch(console.error)
+Staff member: ${message.author.tag}
+Reason: "${args.reason}"`).catch(console.error)
           const embed = new RichEmbed()
             .setTitle(':bangbang: **Moderation action** :scales:')
             .setAuthor(`${message.author.tag} (${message.author.id})`, `${message.author.avatarURL}`)
