@@ -66,7 +66,11 @@ Reason: "${args.reason}"`).catch(console.error);
         days: args.pruneDays,
         reason: `${args.reason} -${message.author.tag}`
       }).then(member => {
-        message.reply(`The user ${member.user.tag} was successfully banned.`).catch(console.error)
+        message.reply(`The user ${member.user.tag} was successfully banned.`).catch((err) => {
+          message.reply(`There was an error!
+\`\`\`${err}\`\`\``)
+          console.error(err)
+        })
       })
     } catch (err) {
       message.reply(`There was an error!
