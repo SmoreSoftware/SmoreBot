@@ -50,8 +50,8 @@ module.exports = class SoftbanCommand extends commando.Command {
           reason: `SOFTBAN: ${args.reason}`
         }).then(() => message.guild.unban(args.user).then(async() => {
           await args.user.send(`You have been softbanned from the server "${message.guild}"!
-    Staff member: ${message.author.username}
-    Reason: '${args.reason}'`)
+Staff member: ${message.author.username}
+Reason: '${args.reason}'`)
           const embed = new RichEmbed()
             .setTitle(':bangbang: **Moderation action** :scales:')
             .setAuthor(`${message.author.tag} (${message.author.id})`, `${message.author.avatarURL}`)

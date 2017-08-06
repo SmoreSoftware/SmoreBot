@@ -63,7 +63,7 @@ Reason: "${args.reason}"`).catch(console.error)
         })
         .catch((err) => {
           message.reply(`There was an error!
-  \`\`\`${err}\`\`\``)
+\`\`\`${err}\`\`\``)
           console.error(err)
         })
     } catch (err) {
