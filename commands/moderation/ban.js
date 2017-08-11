@@ -8,6 +8,7 @@ module.exports = class BanCommand extends commando.Command {
     super(client, {
       name: 'ban',
       group: 'moderation',
+      aliases: ['banish', 'begone'],
       memberName: 'ban',
       description: 'Bans a user.',
       details: oneLine `
