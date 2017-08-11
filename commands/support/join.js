@@ -7,6 +7,7 @@ module.exports = class JoinCommand extends commando.Command {
   constructor(client) {
     super(client, {
       name: 'join',
+      aliases: ['links', 'tos', 'twitter', 'website'],
       group: 'support',
       memberName: 'join',
       description: 'Sends you some important links.',
@@ -31,6 +32,7 @@ module.exports = class JoinCommand extends commando.Command {
       .addField('SmoreSoftware Website:', 'http://smore.romtypo.com', true)
       .addField('SmoreSoftware Server:', 'https://discord.gg/6P6MNAU', true)
       .addField('SmoreSoftware Twitter:', 'https://twitter.com/smoresoftware', false)
+      .addField('SmoreSoftware User TOS:', 'http://smore.romtypo.com/tos.html', false)
       .setTimestamp()
     message.author.send({ embed })
       .then(() => {

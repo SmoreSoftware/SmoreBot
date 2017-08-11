@@ -133,9 +133,18 @@ Now on: ${client.guilds.size} servers`)
       guild.defaultChannel.send('**ALERT:** Your guild has been marked as an illegal guild. \nThis may be due to it being marked as a bot guild or marked as a spam guild. \nThe bot will now leave this server. \nIf you wish to speak to my developer, you may join here: https://discord.gg/t8xHbHY')
       guild.owner.send(`**ALERT:** Your guild, "${guild.name}", has been marked as an illegal guild. \nThis may be due to it being marked as a bot guild or marked as a spam guild. \nThe bot will now leave the server. \nIf you wish to speak to my developer, you may join here: https://discord.gg/t8xHbHY`)
       guild.leave()
+      //eslint-disable-next-line newline-before-return
+      return
     }
     client.user.setGame(`${config.prefix}help | ${client.guilds.size} servers`)
-    if (guild) guild.settings.set('announcements', 'on')
+    guild.settings.set('announcements', 'on')
+    const embed = new RichEmbed()
+      .setAuthor(client.user.username, client.user.avatarURL)
+      .setTitle(`Hello, I'm ${client.user.username}!`)
+      .setColor(0x00FF00)
+      .setDescription(`Thanks for adding me to your server! To see commands do ${guild.commandPrefix}help. Please note: By adding me to your server and using me, you affirm that you agree to [our TOS](http://smore.romtypo.com/tos.html).`)
+    guild.defaultChannel.send({ embed })
+    guild.owner.send({ embed })
   })
   .on('guildDelete', (guild) => {
     console.log(`Existing guild left:
