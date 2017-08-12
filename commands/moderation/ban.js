@@ -12,8 +12,8 @@ module.exports = class BanCommand extends commando.Command {
       memberName: 'ban',
       description: 'Bans a user.',
       details: oneLine `
-        Kicking is a powerful moderation tool with many applications.
-        This command kicks a user and logs the moderator's reason for doing so.
+        Banning is a powerful moderation tool with many applications.
+        This command bans a user and logs the moderator's reason for doing so.
         Permission is locked to admins and above.
 			`,
       examples: ['ban @Bob being a really bad apple'],
