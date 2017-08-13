@@ -29,7 +29,7 @@ module.exports = class RankCommand extends commando.Command {
 
   //eslint-disable-next-line class-methods-use-this
   async run(message, args) {
-    let toLink = args.toSearch.replace(' ', '%20')
+    let toLink = args.toSearch.replace(/\s+/g, '%20')
     message.reply(`https://www.google.com/search?q=${toLink}`)
   }
 };

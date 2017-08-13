@@ -38,7 +38,7 @@ module.exports = class LmgtfyCommand extends commando.Command {
 
   //eslint-disable-next-line class-methods-use-this
   async run(message, args) {
-    let toLink = args.toSearch.replace(' ', '+')
+    let toLink = args.toSearch.replace(/\s+/g, '+')
     message.channel.send(`Dear ${args.member}, your friend decided to help you out in your search for finding "${args.toSearch}".
 http://lmgtfy.com/?q=${toLink}`)
   }
