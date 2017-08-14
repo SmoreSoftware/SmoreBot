@@ -9,6 +9,10 @@ const client = new commando.Client({
 });
 //const defclient = new Discord.Client();
 const path = require('path');
+const chalk = require('chalk');
+const error = chalk.bold.red;
+const warn = chalk.keyword('orange');
+const debug = chalk.cyan;
 const sqlite = require('sqlite');
 const sql = require('sqlite')
 const oneLine = require('common-tags').oneLine;
@@ -59,9 +63,9 @@ console.log('Commando set up.');
 console.log('Awaiting log in.');
 
 client
-  .on('error', console.error)
-  .on('warn', console.warn)
-  .on('debug', console.log)
+  .on('error', (e) => console.error(error(e)))
+  .on('warn', (e) => console.warn(warn(e)))
+  .on('debug', (e) => console.log(debug(e)))
   .on('ready', () => {
     console.log(`Client ready; logged in as ${client.user.tag} (${client.user.id}) with prefix "${config.prefix}"`)
     const dbotsToken1 = config.dbotstoken1
