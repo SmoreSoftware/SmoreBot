@@ -18,9 +18,26 @@ const dbots = require('superagent');
 const request = require('request');
 const { RichEmbed } = require('discord.js');
 const fs = require('fs');
+const os = require('os');
 let cooldownUsers = [];
 let waitingUsers = []
 console.log('Requires and vars initialized.');
+
+const hostname = os.hostname()
+const owners = client.options.owner
+const prefix = `The default prefix is "${client.options.commandPrefix}"`
+
+function dmTemplate() {
+  return client.users.get
+}
+const DMUser = dmTemplate()
+
+const evalObjects = {
+  hostname: hostname,
+  owners: owners,
+  prefix: prefix,
+  DMUser: DMUser
+}
 
 client.registry
   .registerGroups([
@@ -34,7 +51,7 @@ client.registry
   ])
 
   .registerDefaults()
-
+  .registerEvalObjects(evalObjects)
   .registerCommandsIn(path.join(__dirname, 'commands'));
 
 client.setProvider(sqlite.open(path.join(__dirname, 'settings.sqlite3')).then(db => new commando.SQLiteProvider(db))).catch(console.error);
