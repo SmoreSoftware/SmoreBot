@@ -21,6 +21,7 @@ module.exports = class MemeCommand extends commando.Command {
   //eslint-disable-next-line class-methods-use-this
   async run(message) {
     let toMeme = ['https://i.redd.it/0ilh488xbudz.png',
+      'http://weknowmemes.com/wp-content/uploads/2012/02/the-internet-is-a-series-of-tubes-and-theyre-full-of-cats.jpg'
       'https://media0.giphy.com/media/ehc19YLR4Ptbq/giphy.gif',
       'https://qph.ec.quoracdn.net/main-qimg-cf520202236c0a99986988706131aafb-c',
       'https://qph.ec.quoracdn.net/main-qimg-762390f6c44fdcb31cf01657d776d181-c',
@@ -74,6 +75,7 @@ module.exports = class MemeCommand extends commando.Command {
       'https://s-media-cache-ak0.pinimg.com/736x/34/8a/92/348a92212ef1bcd89c94555e3d8380b5.jpg',
       'https://s-media-cache-ak0.pinimg.com/736x/88/40/22/8840225f3b254ee4ecaafa17b3cf324b.jpg',
       'https://s-media-cache-ak0.pinimg.com/736x/ff/56/59/ff56598016c0529acf61c70f80530456.jpg',
+      'http://i0.kym-cdn.com/photos/images/original/001/256/969/543.jpg'
       'https://carlchenet.com/wp-content/uploads/2016/01/githubdown.png'
     ]
     toMeme = toMeme[Math.floor(Math.random() * toMeme.length)]
