@@ -23,7 +23,7 @@ module.exports = class MemeCommand extends commando.Command {
     let toMeme = ['https://i.redd.it/0ilh488xbudz.png',
       'http://assets8.popbuzz.com/2017/09/shooting-stars-meme-1488215847-list-handheld-0.png',
       'http://imgur.com/vG98twU',
-      'http://i0.kym-cdn.com/photos/images/newsfeed/001/144/795/b08.jpg',
+      'https://thechive.files.wordpress.com/2016/07/the-dankest-memes-of-all-time-38-photos-36.jpg?quality=85&strip=info&w=600',
       'https://media0.giphy.com/media/ehc19YLR4Ptbq/giphy.gif',
       'https://qph.ec.quoracdn.net/main-qimg-cf520202236c0a99986988706131aafb-c',
       'https://qph.ec.quoracdn.net/main-qimg-762390f6c44fdcb31cf01657d776d181-c',
