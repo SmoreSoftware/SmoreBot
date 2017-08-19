@@ -22,6 +22,9 @@ module.exports = class MemeCommand extends commando.Command {
   async run(message) {
     let toMeme = ['https://i.redd.it/0ilh488xbudz.png',
       'http://weknowmemes.com/wp-content/uploads/2012/02/the-internet-is-a-series-of-tubes-and-theyre-full-of-cats.jpg'
+      'http://assets8.popbuzz.com/2017/09/shooting-stars-meme-1488215847-list-handheld-0.png',
+      'http://imgur.com/vG98twU',
+      'https://thechive.files.wordpress.com/2016/07/the-dankest-memes-of-all-time-38-photos-36.jpg?quality=85&strip=info&w=600',
       'https://media0.giphy.com/media/ehc19YLR4Ptbq/giphy.gif',
       'https://qph.ec.quoracdn.net/main-qimg-cf520202236c0a99986988706131aafb-c',
       'https://qph.ec.quoracdn.net/main-qimg-762390f6c44fdcb31cf01657d776d181-c',
