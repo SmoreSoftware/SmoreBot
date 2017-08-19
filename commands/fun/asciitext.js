@@ -39,7 +39,7 @@ module.exports = class AsciiTextCommand extends commando.Command {
       },
       function(err, data) {
         if (err) {
-          message.reply('Something went wrong! Contact a developer.')
+          message.reply('Something went wrong! Contact a developer. https://discord.gg/6P6MNAU')
           console.error(err)
         }
         message.delete(1)

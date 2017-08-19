@@ -77,7 +77,7 @@ module.exports = class RankCommand extends commando.Command {
       ranks[message.guild.id].ranks.push(args.rank)
       fs.writeFile('./ranks.json', JSON.stringify(ranks, null, 2), (err) => {
         if (err) {
-          message.reply('Something went wrong! Contact a developer.')
+          message.reply('Something went wrong! Contact a developer. https://discord.gg/6P6MNAU')
           console.error(err)
           //eslint-disable-next-line newline-before-return
           return
