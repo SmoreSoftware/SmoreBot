@@ -40,7 +40,7 @@ module.exports = class ConvertCommand extends commando.Command {
         {
           key: 'toCurrency',
           label: 'currency',
-          prompt: 'What currency would you like to convert to? Please specify the currency code. (Find them here: http://discoin.disnodeteam.com/rates)',
+          prompt: 'What currency would you like to convert to? Please specify the currency code. (Find them here: http://discoin.sidetrip.xyz/rates)',
           type: 'string',
           infinite: false
         }
@@ -117,49 +117,44 @@ Please convert to a different currency. They are available [here](http://discoin
       sql.close('./bank.sqlite')
 
       async function ifApproved() {
-        request({
-          url: `http://discoin.disnodeteam.com/transaction/${message.author.id}/${args.amount}/${args.toCurrency.toUpperCase()}`,
+        request.post({
+          url: 'http://discoin.sidetrip.xyz/transaction',
           headers: {
-            'Authorization': config.discoinToken,
-            'Json': 'true'
+            'Authorization': config.discoinToken
+          },
+          json: {
+            'user': `${message.author.id}`,
+            'amount': args.amount,
+            'exchangeTo': args.toCurrency.toUpperCase()
           }
         }, function(error, response, body) {
-          try {
-            JSON.parse(body)
-          } catch (err) {
+          if (error || response.statusCode === 403 || response.statusCode === 401 || response.statusCode === 400) {
             const embed = new RichEmbed()
               .setTitle('Transaction error!')
               .setColor(0xFF0000)
               .setDescription(`${body}
 Please try this transaction again.`)
             message.replyEmbed(embed)
-            //eslint-disable-next-line newline-before-return
-            return
-          }
-          const bodyObj = JSON.parse(body)
-          if (error || response.statusCode === 503) {
-            message.reply(`API Error!
-Show the following message to a developer:
-\`\`\`${JSON.stringify(body, null, 2)}\`\`\``);
           } else {
             const embed = new RichEmbed()
               .setTitle('Discoin Transaction Created')
               .setAuthor(message.author.tag, message.author.avatarURL)
               .setColor(0x00FF00)
-              .addField('Transaction Reciept', `${bodyObj.receipt}`, true)
-              .addField('Transaction Amount', `${args.amount} SBT`, true)
-              .addField('Converting To', `${bodyObj.currency}`, true)
-              .addField('Transaction Status', `${bodyObj.status}`, false)
-              .addField('Remaining Daily Limit', `You can still convert ${bodyObj.limitNow} Discoins to ${bodyObj.currency} for today.`, false)
+              .addField('Transaction Reciept:', `${body.receipt}`, true)
+              .addField('Transaction Amount:', `${args.amount} SBT`, true)
+              .addField('Converting To:', `${args.toCurrency.toUpperCase()}`, true)
+              .addField('Transaction Status:', 'Approved', true)
+              .addField('Resulting Amount:', `${body.resultAmount} ${args.toCurrency.toUpperCase()}`, true)
+              .addField('Remaining Daily Limit:', `You can still convert ${body.limitNow} Discoins to ${args.toCurrency.toUpperCase()} for today.`, false)
             message.replyEmbed(embed)
-            if (bodyObj.status === 'Approved') {
+            if (body.status === 'approved' && response.statusCode === 200) {
               sql.open('./bank.sqlite')
               sql.get(`SELECT * FROM bank WHERE userId ="${message.author.id}"`).then(row => {
                   //eslint-disable-next-line no-negated-condition
                   if (!row) {
                     message.reply('You don\'t have a bank account! Creating one now...')
                     sql.run('INSERT INTO bank (userId, balance, points) VALUES (?, ?, ?)', [message.author.id, 0, 0])
-                    message.reply('Account created.')
+                    message.reply('Account created. Please run command again.')
                     /*eslint-disable*/
                     return
                   } else {

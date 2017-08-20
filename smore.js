@@ -80,7 +80,12 @@ client
       .send({ 'server_count': client.guilds.size })
       .end();
     console.log('DBots guild count updated.')
-    client.user.setGame(`${config.prefix}help | ${client.guilds.size} servers`)
+    client.user.setPresence({
+      game: {
+        name: `${config.prefix}help | ${client.guilds.size} servers`,
+        type: 0
+      }
+    })
     console.log('Awaiting actions.')
   })
   .on('disconnect', () => console.warn('Disconnected!'))
@@ -157,7 +162,12 @@ Now on: ${client.guilds.size} servers`)
       //eslint-disable-next-line newline-before-return
       return
     }
-    client.user.setGame(`${config.prefix}help | ${client.guilds.size} servers`)
+    client.user.setPresence({
+      game: {
+        name: `${config.prefix}help | ${client.guilds.size} servers`,
+        type: 0
+      }
+    })
     guild.settings.set('announcements', 'on')
     const embed = new RichEmbed()
       .setAuthor(client.user.username, client.user.avatarURL)
@@ -184,7 +194,12 @@ Members: ${guild.members.size}
 Bots: ${guild.members.filter(u => u.user.bot).size} (${Math.floor(guild.members.filter(u => u.user.bot).size / guild.members.size * 100)}%)
 Humans: ${guild.members.filter(u => !u.user.bot).size} (${Math.floor(guild.members.filter(u => !u.user.bot).size / guild.members.size * 100)}%)
 Now on: ${client.guilds.size} servers`)
-    client.user.setGame(`${config.prefix}help | ${client.guilds.size} servers`)
+    client.user.setPresence({
+      game: {
+        name: `${config.prefix}help | ${client.guilds.size} servers`,
+        type: 0
+      }
+    })
   })
   .on('guildMemberAdd', (member) => {
     function autoRole() {
@@ -301,7 +316,7 @@ setInterval(function() {
 
   async function onSuccess() {
     request({
-      url: 'http://discoin.disnodeteam.com/transaction',
+      url: 'http://discoin.sidetrip.xyz/transactions',
       headers: {
         'Authorization': config.discoinToken,
         'json': 'true'
@@ -325,6 +340,7 @@ setInterval(function() {
       }
       if (!error && response.statusCode === 200) {
         body = JSON.parse(body);
+        console.log(JSON.stringify(body, null, 2))
         body.forEach(t => {
           sql.open('./bank.sqlite')
           sql.get(`SELECT * FROM bank WHERE userId ="${t.user}"`).then(row => {
@@ -336,12 +352,12 @@ setInterval(function() {
                   .setTitle('Discoin Transaction recieved\n')
                   .setAuthor(transAuth.tag, transAuth.avatarURL)
                   .setColor(0x0000FF)
-                  .addField('Transaction Reciept', t.id, true)
-                  .addField('Transaction Status', 'Approved', true)
-                  .addField('Transaction Amount', `${t.amount} SBT`, true)
-                  .addField('Converted From', t.from, true)
-                  .addField('Reception Time', getDateTime(), true)
-                  .setFooter(`Transaction made at ${t.fromtime}`)
+                  .addField('Transaction Reciept:', t.receipt, true)
+                  .addField('Transaction Status:', 'Approved', true)
+                  .addField('Transaction Amount:', `${t.amount} SBT`, true)
+                  .addField('Converted From:', t.source, true)
+                  .addField('Reception Time:', getDateTime(), true)
+                  .setFooter(`Transaction made at ${t.timestamp}`)
                 transAuth.send({ embed })
                 /*eslint-disable*/
                 return
@@ -355,12 +371,12 @@ setInterval(function() {
                   .setTitle('Discoin Transaction recieved\n')
                   .setAuthor(transAuth.tag, transAuth.avatarURL)
                   .setColor(0x0000FF)
-                  .addField('Transaction Reciept', t.id, true)
-                  .addField('Transaction Status', 'Approved', true)
-                  .addField('Transaction Amount', `${t.amount} SBT`, true)
-                  .addField('Converted From', t.from, true)
-                  .addField('Reception Time', getDateTime(), true)
-                  .setFooter(`Transaction made at ${t.fromtime}`)
+                  .addField('Transaction Reciept:', t.receipt, true)
+                  .addField('Transaction Status:', 'Approved', true)
+                  .addField('Transaction Amount:', `${t.amount} SBT`, true)
+                  .addField('Converted From:', t.source, true)
+                  .addField('Reception Time:', getDateTime(), true)
+                  .setFooter(`Transaction made at ${t.timestamp}`)
                 transAuth.send({ embed })
               }
             })
@@ -373,12 +389,12 @@ setInterval(function() {
                   .setTitle('Discoin Transaction recieved\n')
                   .setAuthor(transAuth.tag, transAuth.avatarURL)
                   .setColor(0x0000FF)
-                  .addField('Transaction Reciept:', t.id, true)
+                  .addField('Transaction Reciept:', t.receipt, true)
                   .addField('Transaction Status:', 'Approved', true)
                   .addField('Transaction Amount:', `${t.amount} SBT`, true)
-                  .addField('Converted From:', t.from, true)
+                  .addField('Converted From:', t.source, true)
                   .addField('Reception Time:', getDateTime(), true)
-                  .setFooter(`Transaction made at ${t.fromtime}`)
+                  .setFooter(`Transaction made at ${t.timestamp}`)
                 transAuth.send({ embed })
               })
               //eslint-disable-next-line
