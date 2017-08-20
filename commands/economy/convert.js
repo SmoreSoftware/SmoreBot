@@ -132,7 +132,7 @@ Please convert to a different currency. They are available [here](http://discoin
             const embed = new RichEmbed()
               .setTitle('Transaction error!')
               .setColor(0xFF0000)
-              .setDescription(`${JSON.strinfigy(body)}
+              .setDescription(`${JSON.stringify(body)}
 Please try this transaction again.`)
             message.replyEmbed(embed)
           } else {
