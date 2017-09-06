@@ -9,7 +9,7 @@ module.exports = class EchoCommand extends commando.Command {
       name: 'echo',
       group: 'fun',
       memberName: 'echo',
-      description: 'Echos what you say.',
+      description: 'Echoes what you say.',
       details: oneLine `
         Want to make the bot say something?
         Use this!
