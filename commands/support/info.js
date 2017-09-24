@@ -24,10 +24,8 @@ module.exports = class InfoCommand extends commando.Command {
   //eslint-disable-next-line class-methods-use-this
   async run(message) {
     let host
-    if (os.hostname() === 'jdender-vps') {
-      host = 'jdenderplays'
-    } else if (os.hostname() === 'spacex') {
-      host = 'SpaceX'
+    if (os.hostname() === 'sky-vps') {
+      host = '空 Sai Sky Sables 空'
     } else {
       host = 'local dev instance'
     }
