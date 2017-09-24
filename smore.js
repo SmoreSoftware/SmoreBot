@@ -214,7 +214,7 @@ Now on: ${client.guilds.size} servers`)
       let guild = member.guild
       let role = guild.settings.get('autorole')
       if (!role) return
-      member.addRole(role)
+      if (member.bot) { return } else { autoRole() }
     }
 
     //function greeting() {
