@@ -26,7 +26,7 @@ SmoreBot is a fun, lightweight, multipurpose bot packed with features. It has mo
   </tr>
   <tr>
     <td>Space</td>
-    <td>SpaceX#0276</td>
+    <td>cZollo#0276</td>
     <td>SmoreBot Dev</td>
   </tr>
   <tr>
