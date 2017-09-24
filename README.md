@@ -15,19 +15,19 @@ SmoreBot is a fun, lightweight, multipurpose bot packed with features. It has mo
     <th>Job</th>
   </tr>
   <tr>
-    <td>Space</td>
-    <td>SpaceX#0276</td>
-    <td>Head of SmoreBot Team</td>
-  </tr>
-  <tr>
     <td>TJ</td>
     <td>TJDoesCode#6088</td>
-    <td>Assistant SmoreBot Dev</td>
+    <td>SmoreBot Dev</td>
   </tr>
   <tr>
     <td>Chrono</td>
     <td>Chronomly6#8108</td>
-    <td>Assistant SmoreBot Dev</td>
+    <td>SmoreBot Dev</td>
+  </tr>
+  <tr>
+    <td>Space</td>
+    <td>SpaceX#0276</td>
+    <td>SmoreBot Dev</td>
   </tr>
   <tr>
     <td>Sky</td>
