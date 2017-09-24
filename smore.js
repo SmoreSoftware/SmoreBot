@@ -412,7 +412,8 @@ setInterval(function() {
         })
       }
     })
-  }
+	}
+	//eslint-disable-next-line no-sync
   fs.unlinkSync('./db.lock')
 }, ms('30s'))
 
