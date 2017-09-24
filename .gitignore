@@ -1,19 +1,26 @@
-# CONFIG JSON'S
+# CONFIGS
 stuff.json
-stuff.JSON
-stuff.*
+stuff.json.save
+stuff.json.save.*
 ranks.json
-ranks.JSON
-ranks.*
-bank.json
-bank.JSON
-bank.*
+config.json
+twitconfig.js
 
 #TEST FOLDER
 no_spam_pls/**
 
-#Settigs db
-settings.sqlite3
+# DATABASES
+*.sqlite3
+*.sqlite
+
+# SWAPFILES
+.smore.js.swp
+.stuff.json.swp
+commands/economy/.convert.js.swp
+*.swp
+*.*.swp
+.*.swp
+*.*.swp
 
 #ignore ffmpeg
 ffmpeg.exe
@@ -77,7 +84,7 @@ typings/
 # dotenv environment variables file
 .env
 
-#eslint stuff
+# ESLINT CONFIGS
 *.eslintrc
 *.eslintrc.*
 .eslintrc
@@ -85,5 +92,3 @@ typings/
 *.eslintignore.*
 .eslintignore
 
-#other stuff
-twitconfig.js
