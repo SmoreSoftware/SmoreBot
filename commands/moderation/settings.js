@@ -107,7 +107,16 @@ module.exports = class SettingsCommand extends commando.Command {
                 let role = message.guild.roles.get(message.guild.settings.get('autorole'))
                 message.reply(`Set the autorole to "${role.name}"`)
                 break;
-              }
+							}
+						case 'starboard':
+							{
+									const rawChan = message.mentions.channels.first()
+									if (!rawChan) return message.reply('Please specify a channel to use for the starboard!')
+									const chanToLog = rawChan.id
+									message.guild.settings.set('starboard', chanToLog)
+									message.reply(`Set the starboard channel to "<#${message.guild.settings.get('starboard')}>"`)
+									break;
+							}
             default:
               {
                 message.reply(`That's not a setting. Please try again. Do \`${message.guild.commandPrefix}settings list all\` to see all settings.`)
@@ -146,7 +155,13 @@ module.exports = class SettingsCommand extends commando.Command {
                 message.guild.settings.remove('autorole')
                 message.reply(`Auto role has been unset. Do ${message.guild.commandPrefix}settings add autorole\` to set a new role.`)
                 break;
-              }
+							}
+						case 'starboard':
+							{
+								message.guild.settings.remove('starboard')
+								message.reply(`Starboard has been unset. Do ${message.guild.commandPrefix}settings add starboard\` to set a new starboard channel.`)
+								break;
+							}
             default:
               {
                 message.reply(`That's not a setting. Please try again. Do \`${message.guild.commandPrefix}settings list all\` to see all settings.`)
@@ -196,7 +211,15 @@ module.exports = class SettingsCommand extends commando.Command {
                 if (role === undefined || role.name === undefined || role === undefined) return message.reply('There is currently no auto role set.')
                 message.reply(`The auto role is "${role.name}"`)
                 break;
-              }
+							}
+						case 'starboard':
+							{
+								const chan = message.guild.channels.get(message.guild.settings.get('starboard'))
+                //eslint-disable-next-line no-undefined
+                if (chan === undefined || chan.name === undefined) return message.reply('There is currently no starboard channel set.')
+								message.reply(`The starboard channel is "<#${message.guild.settings.get('starboard')}>"`)
+								break;
+							}
             default:
               {
                 message.reply(`That's not a setting. Please try again. Do \`${message.guild.commandPrefix}settings list all\` to see all settings.`)
@@ -213,7 +236,8 @@ module.exports = class SettingsCommand extends commando.Command {
                 let adminrole = message.guild.roles.get(message.guild.settings.get('adminrole'))
                 let modlog = message.guild.channels.get(message.guild.settings.get('modlog'))
                 let announcements = message.guild.settings.get('announcements')
-                let autorole = message.guild.roles.get(message.guild.settings.get('autorole'))
+								let autorole = message.guild.roles.get(message.guild.settings.get('autorole'))
+								let starboard = message.guild.channels.get(message.guild.settings.get('starboard'))
                 //eslint-disable-next-line no-undefined
                 if (modrole === undefined || modrole.name === undefined) modrole = 'not set'
                 else modrole = modrole.name
@@ -227,13 +251,17 @@ module.exports = class SettingsCommand extends commando.Command {
                 if (announcements === undefined) announcements = 'not set'
                 //eslint-disable-next-line no-undefined
                 if (autorole === undefined || autorole.name === undefined) autorole = 'not set'
-                else autorole = autorole.name
+								else autorole = autorole.name
+								//eslint-disable-next-line no-undefined
+								if (starboard === undefined || starboard.name === undefined) starboard = 'not set'
+								else starboard = `<#${starboard.id}>`
                 message.reply(`The settings for this server are:
 **Mod role**: "${modrole}"
 **Admin role**: "${adminrole}"
 **Modlog channel**: "${modlog}"
 **Global announcements**: "${announcements}"
-**Auto role**: "${autorole}"`)
+**Auto role**: "${autorole}"
+**Starboard Channel:** "${starboard}`)
                 break;
               }
             default:
