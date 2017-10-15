@@ -23,7 +23,6 @@ const request = require('request');
 const { RichEmbed } = require('discord.js');
 const fs = require('fs');
 //eslint-disable-next-line no-sync
-let blacklist = JSON.parse(fs.readFileSync('./blacklist.json', 'utf8'));
 const os = require('os');
 let cooldownUsers = [];
 let waitingUsers = []
@@ -63,10 +62,12 @@ client.registry
 
 client.setProvider(sqlite.open(path.join(__dirname, 'settings.sqlite3')).then(db => new commando.SQLiteProvider(db))).catch(console.error);
 client.dispatcher.addInhibitor(msg => {
-	if (blacklist.guilds.includes(msg.guild.id)) return 'This guild has been blacklisted. Appeal here: https://discord.gg/6P6MNAU';
+	let blacklist = JSON.parse(fs.readFileSync('./blacklist.json', 'utf8'));
+	if (blacklist.guilds.includes(msg.guild.id)) return [`Guild ${msg.guild.id} is blacklisted`, msg.channel.send('This guild has been blacklisted. Appeal here: https://discord.gg/6P6MNAU')];
 });
 client.dispatcher.addInhibitor(msg => {
-	if (blacklist.users.includes(msg.author.id)) return `${msg.author}, You have been blacklisted. Appeal here: https://discord.gg/6P6MNAU`;
+	let blacklist = JSON.parse(fs.readFileSync('./blacklist.json', 'utf8'));
+	if (blacklist.users.includes(msg.author.id)) return [`User ${msg.author.id} is blacklisted`, msg.reply('You have been blacklisted. Appeal here: https://discord.gg/6P6MNAU')];
 });
 console.log('Commando set up.');
 console.log('Awaiting log in.');
