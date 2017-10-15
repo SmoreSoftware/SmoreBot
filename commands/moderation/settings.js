@@ -261,7 +261,7 @@ module.exports = class SettingsCommand extends commando.Command {
 **Modlog channel**: "${modlog}"
 **Global announcements**: "${announcements}"
 **Auto role**: "${autorole}"
-**Starboard Channel:** "${starboard}`)
+**Starboard Channel:** "${starboard}"`)
                 break;
               }
             default:
