@@ -217,7 +217,7 @@ Now on: ${client.guilds.size} servers`)
 			if (!role) return
 			//eslint-disable-next-line no-useless-return
 			if (member.bot) return
-			member.addRole(role.id, 'SmoreBot Autorole')
+			member.addRole(role, 'SmoreBot Autorole')
     }
 
     //function greeting() {
@@ -441,7 +441,7 @@ setInterval(function() {
         })
       }
     })
-	}
+  }
 	//eslint-disable-next-line no-sync
   fs.unlinkSync('./db.lock')
 }, ms('30s'))
