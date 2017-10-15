@@ -216,7 +216,8 @@ Now on: ${client.guilds.size} servers`)
       let role = guild.settings.get('autorole')
 			if (!role) return
 			//eslint-disable-next-line no-useless-return
-			if (member.bot) return;
+			if (member.bot) return
+			member.addRole(role.id, 'SmoreBot Autorole')
     }
 
     //function greeting() {
