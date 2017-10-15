@@ -51,7 +51,8 @@ client.registry
     ['misc', 'Miscellaneous'],
     ['support', 'Support'],
     ['control', 'Bot Owners Only'],
-    ['fun', 'Fun'],
+		['fun', 'Fun'],
+		['quote', 'Quote'],
     ['economy', 'Economy'],
     ['moderation', 'Moderation']
   ])
