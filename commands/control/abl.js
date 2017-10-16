@@ -64,7 +64,7 @@ module.exports = class ABLCommand extends commando.Command {
 					//eslint-disable-next-line newline-before-return
 					return
 				}
-				message.reply(`The guild ${guildToBlack.name} (${guildToBlack.id}) has been blaclisted from all aspects of the bot.`)
+				message.reply(`The guild ${guildToBlack.name} (${guildToBlack.id}) has been blacklisted from all aspects of the bot.`)
 			})
 		} else if (args.type.toLowerCase() === 'user') {
 			if (this.client.users.find('id', args.id) === null) return message.reply('That user does not exist, is not in the bot\'s cache, or is not available to the bot.')
@@ -84,7 +84,7 @@ module.exports = class ABLCommand extends commando.Command {
 					//eslint-disable-next-line newline-before-return
 					return
 				}
-				message.reply(`The user ${userToBlack.tag} (${userToBlack.id}) has been blaclisted from all aspects of the bot.`)
+				message.reply(`The user ${userToBlack.tag} (${userToBlack.id}) has been blacklisted from all aspects of the bot.`)
 			})
 		} else {
 			return message.reply('Invalid type! Use guild or user.')
