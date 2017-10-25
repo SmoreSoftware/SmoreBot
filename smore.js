@@ -23,6 +23,8 @@ const request = require('request');
 const { RichEmbed } = require('discord.js');
 const fs = require('fs');
 const os = require('os');
+//const Discoin = require('discoin');
+//const discoin = new Discoin(client.discoinToken);
 let cooldownUsers = [];
 let waitingUsers = []
 console.log('Requires and vars initialized.');
@@ -357,10 +359,11 @@ setInterval(function() {
     request({
       url: 'http://discoin.sidetrip.xyz/transactions',
       headers: {
-        'Authorization': config.discoinToken,
-        'json': 'true'
+        'Authorization': config.discoinToken
       }
     }, function(error, response, body) {
+			console.log(`Body: ${body}`)
+			if (error && error !== null) console.log(`Error: ${error}`)
       function getDateTime() {
         let date = new Date();
         let hour = date.getHours();
