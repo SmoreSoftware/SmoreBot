@@ -12,9 +12,7 @@ const request = require('request');
 const config = require('./stuff.json');
 const sql = require('sqlite');
 const fs = require('fs');
-const {
-	RichEmbed
-} = require('discord.js');
+const { RichEmbed } = require('discord.js');
 
 
 module.exports = class ConvertCommand extends commando.Command {
@@ -106,7 +104,7 @@ You need ${Math.abs(userBal - args.amount)} more SBT.`)
 							.setColor(0xFF0000)
 							.setDescription(`You can not convert from this currency back to this currency!
 Your transaction would end up converting SBT back into SBT.
-Please convert to a different currency. They are available [here](http://discoin.disnodeteam.com/rates)`)
+Please convert to a different currency. They are available [here.](http://discoin.disnodeteam.com/rates)`)
 						message.replyEmbed(embed)
 						/*eslint-disable*/
 						return
@@ -149,7 +147,7 @@ Please convert to a different currency. They are available [here](http://discoin
 							errorMsg = 'The amount entered was invalid.'
 						}
 						if (parsedBody.includes('"reason":"invalid destination currency"')) {
-							errorMsg = 'Could not find that currency! \nA list of all currency codes can be found [here](http://discoin.sidetrip.xyz/rates)'
+							errorMsg = 'Could not find that currency! \nA list of all currency codes can be found [here.](http://discoin.sidetrip.xyz/rates)'
 						}
 						if (parsedBody.includes('"reason":"amount NaN"')) {
 							errorMsg = 'The amount entered was not a number.'
