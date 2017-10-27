@@ -28,6 +28,7 @@ const os = require('os');
 sql.open('./bank.sqlite');
 let cooldownUsers = [];
 let waitingUsers = [];
+let afkUsers = require('./afk.json');
 console.log('Requires and vars initialized.');
 
 const hostname = os.hostname()
@@ -75,6 +76,15 @@ client.dispatcher.addInhibitor(msg => {
 });
 console.log('Commando set up.');
 console.log('Awaiting log in.');
+
+setInterval(() => {
+  function log() {
+    console.log('Wrote afk users to file.')
+  }
+  fs.writeFile('./afk.json', JSON.stringify(afkUsers, null, 2), {
+    encoding: 'utf8'
+  }, log)
+}, ms('30s'))
 
 client
 	.on('error', (e) => console.error(error(e)))
@@ -248,6 +258,24 @@ Now on: ${client.guilds.size} servers`)
 		if (!message.guild) return;
 		if (message.channel.type !== 'text') return;
 		if (message.content.startsWith(message.guild.commandPrefix)) return;
+
+		if (afkUsers[message.author.id]) {
+			if (afkUsers[message.author.id].afk === true) {
+				message.reply('Welcome back! I have removed your AFK status.');
+				afkUsers[message.author.id].afk = false;
+			}
+		}
+
+		if (message.mentions) {
+			//eslint-disable-next-line array-callback-return
+			message.mentions.users.map((user) => {
+				if (afkUsers[user.id]) {
+					if (afkUsers[user.id].afk === true) {
+						message.reply(`${user.username} is AFK: ${JSON.stringify(afkUsers[user.id].status.msg)}`);
+					}
+				}
+			})
+		}
 
 		fs.open('./db.lock', 'r', (err) => {
 			if (err) {
