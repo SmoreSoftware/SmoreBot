@@ -207,6 +207,5 @@ Please try this transaction again.`)
 			fs.unlinkSync('./db.lock')
 		}
 		message.channel.stopTyping()
-		sql.close('./bank.sqlite')
 	}
 };

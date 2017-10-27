@@ -86,7 +86,6 @@ Have them run this command to create one.`)
 					message.reply(`The user ${args.user.user.tag} currently has ${row.balance} SBT and ${row.points} points.`)
 				})
 			}
-			sql.close('./bank.sqlite')
 		}
 		//eslint-disable-next-line no-sync
 		fs.unlinkSync('./db.lock')

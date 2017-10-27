@@ -68,7 +68,6 @@ module.exports = class DailyCommand extends commando.Command {
         await message.reply(`Daily 100 SBT awarded. Your balance is now ${row.balance + 100} SBT.
 Be sure to come back tomorrow!`)
       })
-      sql.close('./bank.sqlite')
     }
     //eslint-disable-next-line no-sync
     fs.unlinkSync('./db.lock')
