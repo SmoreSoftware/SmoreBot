@@ -82,7 +82,7 @@ module.exports = class BankerCommand extends commando.Command {
 		async function onSuccess() {
 			sql.open('./bank.sqlite')
 			if (args.type.toLowerCase() === 'balance' || args.type.toLowerCase() === 'bal') {
-				if (args.action.toLowerCase() === 'give') {
+				if (args.action.toLowerCase() === 'give' || args.action.toLowerCase() === 'add') {
 					sql.get(`SELECT * FROM bank WHERE userId ="${args.user.id}"`).then(row => {
 							//eslint-disable-next-line no-negated-condition
 							if (!row) {
@@ -108,7 +108,7 @@ module.exports = class BankerCommand extends commando.Command {
 							//eslint-disable-next-line
 							return
 						})
-				} else if (args.action.toLowerCase() === 'take') {
+				} else if (args.action.toLowerCase() === 'take' || args.action.toLowerCase() === 'remove') {
 					sql.get(`SELECT * FROM bank WHERE userId ="${args.user.id}"`).then(row => {
 							//eslint-disable-next-line no-negated-condition
 							if (!row) {
@@ -139,7 +139,7 @@ module.exports = class BankerCommand extends commando.Command {
 					message.reply('Unrecognized action. Action should be \`give\` or \`take\`.')
 				}
 			} else if (args.type.toLowerCase() === 'points' || args.type.toLowerCase() === 'pts') {
-				if (args.action.toLowerCase() === 'give') {
+				if (args.action.toLowerCase() === 'give' || args.action.toLowerCase() === 'add') {
 					sql.get(`SELECT * FROM bank WHERE userId ="${args.user.id}"`).then(row => {
 							//eslint-disable-next-line no-negated-condition
 							if (!row) {
@@ -165,7 +165,7 @@ module.exports = class BankerCommand extends commando.Command {
 							//eslint-disable-next-line
 							return
 						})
-				} else if (args.action.toLowerCase() === 'take') {
+				} else if (args.action.toLowerCase() === 'take' || args.action.toLowerCase() === 'remove') {
 					sql.get(`SELECT * FROM bank WHERE userId ="${args.user.id}"`).then(row => {
 							//eslint-disable-next-line no-negated-condition
 							if (!row) {

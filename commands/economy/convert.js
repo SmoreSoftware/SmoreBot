@@ -117,7 +117,6 @@ Please convert to a different currency. They are available [here](http://discoin
 					}
 				}
 			})
-			sql.close('./bank.sqlite')
 
 			async function ifApproved() {
 				request.post({
@@ -200,7 +199,6 @@ Please try this transaction again.`)
 									//eslint-disable-next-line
 									return
 								})
-							sql.close('./bank.sqlite')
 						}
 					}
 				})
@@ -209,5 +207,6 @@ Please try this transaction again.`)
 			fs.unlinkSync('./db.lock')
 		}
 		message.channel.stopTyping()
+		sql.close('./bank.sqlite')
 	}
 };

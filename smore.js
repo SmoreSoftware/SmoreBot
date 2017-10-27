@@ -20,15 +20,14 @@ const ms = require('ms');
 //eslint-disable-next-line no-unused-vars
 const dbots = require('superagent');
 const request = require('request');
-const {
-	RichEmbed
-} = require('discord.js');
+const { RichEmbed } = require('discord.js');
 const fs = require('fs');
 const os = require('os');
 //const Discoin = require('discoin');
 //const discoin = new Discoin(client.discoinToken);
+sql.open('./bank.sqlite');
 let cooldownUsers = [];
-let waitingUsers = []
+let waitingUsers = [];
 console.log('Requires and vars initialized.');
 
 const hostname = os.hostname()
@@ -267,7 +266,6 @@ Now on: ${client.guilds.size} servers`)
 		fs.closeSync(fs.openSync('./db.lock', 'w'))
 
 		async function onSuccess() {
-			sql.open('./bank.sqlite')
 			sql.get(`SELECT * FROM bank WHERE userId ="${message.author.id}"`).then(row => {
 					//eslint-disable-next-line no-negated-condition
 					if (!row) {
@@ -312,7 +310,6 @@ Now on: ${client.guilds.size} servers`)
 					//eslint-disable-next-line
 					return
 				})
-			sql.close('./bank.sqlite')
 		}
 		fs.unlinkSync('./db.lock')
 	})
@@ -459,7 +456,6 @@ setInterval(function () {
 				})
 			}
 		})
-		sql.close('./bank.sqlite')
 	}
 	//eslint-disable-next-line no-sync
 	fs.unlinkSync('./db.lock')
