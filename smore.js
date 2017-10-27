@@ -279,7 +279,7 @@ Now on: ${client.guilds.size} servers`)
 						if (parseInt(row.points) >= 100) {
 							let curBal = parseInt(row.balance)
 							let newBal = curBal + 1
-							sql.run(`UPDATE bank SET points = ${newBal} WHERE userId = ${message.author.id}`)
+							sql.run(`UPDATE bank SET balance = ${newBal} WHERE userId = ${message.author.id}`)
 							sql.run(`UPDATE bank SET points = ${0} WHERE userId = ${message.author.id}`)
 						}
 						//eslint-disable-next-line
