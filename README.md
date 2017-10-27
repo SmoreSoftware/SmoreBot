@@ -27,11 +27,11 @@ SmoreBot is a fun, lightweight, multipurpose bot packed with features. It has mo
   <tr>
     <td>Space</td>
     <td>cZollo#0276</td>
-    <td>SmoreBot Dev</td>
+    <td>SmoreBot Dev (On leave)</td>
   </tr>
   <tr>
     <td>Sky</td>
-    <td>空 Sai Sky Sables 空#0228</td>
+    <td>空 Ciel Effrayant 空#0228</td>
     <td>SmoreBot Host</td>
   </tr>
 </table> 
