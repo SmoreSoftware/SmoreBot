@@ -201,7 +201,7 @@ Now on: ${client.guilds.size} servers`)
 			.setAuthor(client.user.username, client.user.avatarURL)
 			.setTitle(`Hello, I'm ${client.user.username}!`)
 			.setColor(0x00FF00)
-			.setDescription(`Thanks for adding me to your server! To see commands do ${guild.commandPrefix}help. Please note: By adding me to your server and using me, you affirm that you agree to [our TOS](http://smore.romtypo.com/tos.html).`)
+			.setDescription(`Thanks for adding me to your server! To see commands do ${guild.commandPrefix}help. Please note: By adding me to your server and using me, you affirm that you agree to [our TOS](https://smoresoft.uk/tos.html).`)
 		guild.defaultChannel.send({
 			embed
 		})
