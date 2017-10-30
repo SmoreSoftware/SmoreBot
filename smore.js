@@ -77,6 +77,20 @@ client.dispatcher.addInhibitor(msg => {
 console.log('Commando set up.');
 console.log('Awaiting log in.');
 
+client.notes = require('./notes.json');
+
+function writeNotes() {
+  fs.writeFile('./notes.json', JSON.stringify(client.notes, null, 2), (err) => {
+    if (err) console.error(err)
+    console.log('Wrote notes to JSON');
+  });
+}
+
+setInterval(function() {
+  writeNotes();
+}, ms('60s'))
+console.log('Note DB ready.')
+
 setInterval(() => {
   function log() {
     console.log('Wrote afk users to file.')
