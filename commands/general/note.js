@@ -35,7 +35,7 @@ module.exports = class NoteCommand extends commando.Command {
       this.client.notes[message.author.id] = {
         'notes': [{
           'title': 'Hello World!',
-          'content': 'Thanks for using Utilities.js!'
+          'content': 'Thanks for using SmoreBot!'
         }]
       }
       writeFileSync('./notes.json', JSON.stringify(this.client.notes, null, 2))
