@@ -3,7 +3,7 @@
 const config = require('./stuff.json');
 const commando = require('discord.js-commando');
 const client = new commando.Client({
-	owner: ['197891949913571329', '220568440161697792', '251383432331001856', '186295030388883456', '156019409658314752'],
+	owner: ['197891949913571329', '220568440161697792', '251383432331001856', '156019409658314752'],
 	commandPrefix: config.prefix,
 	unknownCommandResponse: false
 });
@@ -215,13 +215,8 @@ Now on: ${client.guilds.size} servers`)
 			.setAuthor(client.user.username, client.user.avatarURL)
 			.setTitle(`Hello, I'm ${client.user.username}!`)
 			.setColor(0x00FF00)
-			.setDescription(`Thanks for adding me to your server! To see commands do ${guild.commandPrefix}help. Please note: By adding me to your server and using me, you affirm that you agree to [our TOS](http://smore.romtypo.com/tos.html).`)
-		guild.defaultChannel.send({
-			embed
-		})
-		guild.owner.send({
-			embed
-		})
+			.setDescription(`Thanks for adding me to your server, "${guild.name}"! To see commands do ${guild.commandPrefix}help. Please note: By adding me to your server and using me, you affirm that you agree to [our TOS](https://smoresoft.uk/tos.html).`)
+		guild.owner.send({ embed })
 	})
 	.on('guildDelete', (guild) => {
 		console.log(`Existing guild left:
