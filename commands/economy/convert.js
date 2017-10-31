@@ -12,9 +12,7 @@ const request = require('request');
 const config = require('./stuff.json');
 const sql = require('sqlite');
 const fs = require('fs');
-const {
-	RichEmbed
-} = require('discord.js');
+const { RichEmbed } = require('discord.js');
 
 
 module.exports = class ConvertCommand extends commando.Command {

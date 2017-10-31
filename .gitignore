@@ -5,6 +5,7 @@ stuff.json.save.*
 ranks.json
 config.json
 twitconfig.js
+afk.json
 
 #TEST FOLDER
 no_spam_pls/**

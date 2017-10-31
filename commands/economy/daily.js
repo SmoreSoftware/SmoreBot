@@ -8,7 +8,6 @@ module.exports = class DailyCommand extends commando.Command {
   constructor(client) {
     super(client, {
       name: 'daily',
-      aliases: ['dailymoney', 'getmoney', 'freemoney'],
       group: 'economy',
       memberName: 'daily',
       description: 'Check a user\'s bank balance..',
