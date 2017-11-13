@@ -6,6 +6,7 @@ ranks.json
 config.json
 twitconfig.js
 afk.json
+notes.json
 
 #TEST FOLDER
 no_spam_pls/**
