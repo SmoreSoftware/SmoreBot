@@ -42,7 +42,7 @@ module.exports = class PurgeCommand extends commando.Command {
       if (!message.member.roles.has(adminrole)) return message.reply(`You do not have permission to do this! Only people with this role can access this command! \`Role Required: ${message.guild.roles.get('modrole')}\`, this is changeable with \`${message.guild.commandPrefix}set add mod @role\``)
     }
     message.channel.send('PURGING')
-    message.channel.bulkDelete(args.toPurge)
+    message.channel.bulkDelete(args.toPurge + 1)
       .then(() => {
         message.channel.send('🔥 PURGE COMPLETE 🔥')
       })
