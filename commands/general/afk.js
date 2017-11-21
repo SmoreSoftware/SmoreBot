@@ -42,7 +42,7 @@ module.exports = class AFKCommand extends commando.Command {
 				'afk': false,
 				'status': 'Online'
 			};
-			message.reply('This message is normal to see if this is your first time using this command. If so, rerun the command. However, if this is not your first time running this command, then please contact Chronomly on the SmoreSoftware server. https://discord.gg/6P6MNAU');
+			message.reply('This message is normal to see if this is your first time using this command. If so, rerun the command. However, if this is not your first time running this command, then please contact a Developer on the SmoreSoftware server. https://discord.gg/6P6MNAU');
 		}
 	}
 };
