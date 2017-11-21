@@ -80,24 +80,24 @@ console.log('Awaiting log in.');
 client.notes = require('./notes.json');
 
 function writeNotes() {
-  fs.writeFile('./notes.json', JSON.stringify(client.notes, null, 2), (err) => {
-    if (err) console.error(err)
-    console.log('Wrote notes to JSON');
-  });
+	fs.writeFile('./notes.json', JSON.stringify(client.notes, null, 2), (err) => {
+		if (err) console.error(err)
+		console.log('Wrote notes to JSON');
+	});
 }
 
-setInterval(function() {
-  writeNotes();
+setInterval(function () {
+	writeNotes();
 }, ms('60s'))
 console.log('Note DB ready.')
 
 setInterval(() => {
-  function log() {
-    console.log('Wrote afk users to file.')
-  }
-  fs.writeFile('./afk.json', JSON.stringify(afkUsers, null, 2), {
-    encoding: 'utf8'
-  }, log)
+	function log() {
+		console.log('Wrote afk users to file.')
+	}
+	fs.writeFile('./afk.json', JSON.stringify(afkUsers, null, 2), {
+		encoding: 'utf8'
+	}, log)
 }, ms('30s'))
 
 client
@@ -230,21 +230,21 @@ Now on: ${client.guilds.size} servers`)
 			.setTitle(`Hello, I'm ${client.user.username}!`)
 			.setColor(0x00FF00)
 			.setDescription(`Thanks for adding me to your server, "${guild.name}"! To see commands do ${guild.commandPrefix}help. Please note: By adding me to your server and using me, you affirm that you agree to [our TOS](https://smoresoft.uk/tos.html).`)
-			guild.owner.send({ embed })
-			//eslint-disable-next-line array-callback-return
-			guild.channels.map((c) => {
-				let found = 0
-				if (found === 0) {
-					if (c.type === 'text') {
-						if (c.permissionsFor(client.user).has('VIEW_CHANNEL') === true) {
-							if (c.permissionsFor(client.user).has('SEND_MESSAGES') === true) {
-								c.send({ embed })
-								found = 1
-							}
+		guild.owner.send({ embed })
+		//eslint-disable-next-line array-callback-return
+		guild.channels.map((c) => {
+			let found = 0
+			if (found === 0) {
+				if (c.type === 'text') {
+					if (c.permissionsFor(client.user).has('VIEW_CHANNEL') === true) {
+						if (c.permissionsFor(client.user).has('SEND_MESSAGES') === true) {
+							c.send({ embed })
+							found = 1
 						}
 					}
 				}
-			})
+			}
+		})
 	})
 	.on('guildDelete', (guild) => {
 		console.log(`Existing guild left:
