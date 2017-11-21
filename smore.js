@@ -230,6 +230,7 @@ Now on: ${client.guilds.size} servers`)
 			.setTitle(`Hello, I'm ${client.user.username}!`)
 			.setColor(0x00FF00)
 			.setDescription(`Thanks for adding me to your server, "${guild.name}"! To see commands do ${guild.commandPrefix}help. Please note: By adding me to your server and using me, you affirm that you agree to [our TOS](https://smoresoft.uk/tos.html).`)
+			guild.owner.send({ embed })
 			//eslint-disable-next-line array-callback-return
 			guild.channels.map((c) => {
 				let found = 0
@@ -244,7 +245,6 @@ Now on: ${client.guilds.size} servers`)
 					}
 				}
 			})
-			guild.owner.send({ embed })
 	})
 	.on('guildDelete', (guild) => {
 		console.log(`Existing guild left:
