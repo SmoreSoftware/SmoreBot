@@ -198,7 +198,21 @@ Humans: ${guild.members.filter(u => !u.user.bot).size} (${Math.floor(guild.membe
 Now on: ${client.guilds.size} servers`)
 		let botPercentage = Math.floor(guild.members.filter(u => u.user.bot).size / guild.members.size * 100)
 		if (botPercentage >= 80) {
-			guild.defaultChannel.send('**ALERT:** Your guild has been marked as an illegal guild. \nThis may be due to it being marked as a bot guild or marked as a spam guild. \nThe bot will now leave this server. \nIf you wish to speak to my developer, you may join here: https://discord.gg/t8xHbHY')
+			let found = 0
+			//eslint-disable-next-line array-callback-return
+			guild.channels.map((c) => {
+				if (found === 0) {
+					if (c.type === 'text') {
+						if (c.permissionsFor(client.user).has('VIEW_CHANNEL') === true) {
+							if (c.permissionsFor(client.user).has('SEND_MESSAGES') === true) {
+								c.send('**ALERT:** Your guild has been marked as an illegal guild. \nThis may be due to it being marked as a bot guild or marked as a spam guild. \nThe bot will now leave this server.')
+								c.send('If you wish to speak to my developers, you may find them here: https://discord.gg/6P6MNAU')
+								found = 1
+							}
+						}
+					}
+				}
+			})
 			guild.owner.send(`**ALERT:** Your guild, "${guild.name}", has been marked as an illegal guild. \nThis may be due to it being marked as a bot guild or marked as a spam guild. \nThe bot will now leave the server. \nIf you wish to speak to my developer, you may join here: https://discord.gg/t8xHbHY`)
 			guild.leave()
 			//eslint-disable-next-line newline-before-return
@@ -216,7 +230,21 @@ Now on: ${client.guilds.size} servers`)
 			.setTitle(`Hello, I'm ${client.user.username}!`)
 			.setColor(0x00FF00)
 			.setDescription(`Thanks for adding me to your server, "${guild.name}"! To see commands do ${guild.commandPrefix}help. Please note: By adding me to your server and using me, you affirm that you agree to [our TOS](https://smoresoft.uk/tos.html).`)
-		guild.owner.send({ embed })
+			//eslint-disable-next-line array-callback-return
+			guild.channels.map((c) => {
+				let found = 0
+				if (found === 0) {
+					if (c.type === 'text') {
+						if (c.permissionsFor(client.user).has('VIEW_CHANNEL') === true) {
+							if (c.permissionsFor(client.user).has('SEND_MESSAGES') === true) {
+								c.send({ embed })
+								found = 1
+							}
+						}
+					}
+				}
+			})
+			guild.owner.send({ embed })
 	})
 	.on('guildDelete', (guild) => {
 		console.log(`Existing guild left:
