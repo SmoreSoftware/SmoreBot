@@ -25,7 +25,7 @@ module.exports = class InfoCommand extends commando.Command {
   async run(message) {
     let host
     if (os.hostname() === 'sky-vps') {
-      host = '空 Sai Sky Sables 空'
+      host = 'Ciel'
     } else {
       host = 'local dev instance'
     }
@@ -34,7 +34,7 @@ module.exports = class InfoCommand extends commando.Command {
       .setColor(0x0099cc)
       .setTitle(':information_source:')
       .addField('Main information:', 'I am a Discord Bot made in **JavaScript** using the Discord API Wrapper **Discord.js** on the framework **Discord.js-Commando**', false)
-      .addField('Developers:', '• Chronomly • TJDoesCode • SpaceX • ROM Typo • jdenderplays • Sky •', false)
+      .addField('Developers:', '• Chronomly • TJDoesCode • Ciel •', false)
       .addField('Server Count:', `${this.client.guilds.size}`, true)
       .addField('Host', host, true)
       .setTimestamp()
