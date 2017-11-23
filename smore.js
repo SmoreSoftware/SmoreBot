@@ -231,9 +231,9 @@ Now on: ${client.guilds.size} servers`)
 			.setColor(0x00FF00)
 			.setDescription(`Thanks for adding me to your server, "${guild.name}"! To see commands do ${guild.commandPrefix}help. Please note: By adding me to your server and using me, you affirm that you agree to [our TOS](https://smoresoft.uk/tos.html).`)
 		guild.owner.send({ embed })
+		let found = 0
 		//eslint-disable-next-line array-callback-return
 		guild.channels.map((c) => {
-			let found = 0
 			if (found === 0) {
 				if (c.type === 'text') {
 					if (c.permissionsFor(client.user).has('VIEW_CHANNEL') === true) {
