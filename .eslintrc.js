@@ -85,7 +85,9 @@ module.exports = {
       }
     ],
     "line-comment-position": "off",
-    "linebreak-style": "off",
+    "linebreak-style": [
+      "error", "windows"
+    ],
     "lines-around-comment": [
       "warn", {
         "afterBlockComment": true
