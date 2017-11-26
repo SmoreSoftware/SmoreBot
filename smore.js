@@ -3,7 +3,7 @@
 const config = require('./stuff.json');
 const commando = require('discord.js-commando');
 const client = new commando.Client({
-	owner: ['197891949913571329', '220568440161697792', '251383432331001856', '156019409658314752'],
+	owner: ['197891949913571329', '251383432331001856', '156019409658314752'],
 	commandPrefix: config.prefix,
 	unknownCommandResponse: false
 });
