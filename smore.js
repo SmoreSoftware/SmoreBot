@@ -184,6 +184,7 @@ client
 Guild: ${guild.id}
 Name: ${guild.name}
 Owner: ${guild.owner.user.tag} (${guild.owner.id})
+Created At: ${guild.createdAt}
 Members: ${guild.members.size}
 Bots: ${guild.members.filter(u => u.user.bot).size} (${Math.floor(guild.members.filter(u => u.user.bot).size / guild.members.size * 100)}%)
 Humans: ${guild.members.filter(u => !u.user.bot).size} (${Math.floor(guild.members.filter(u => !u.user.bot).size / guild.members.size * 100)}%)
@@ -192,6 +193,7 @@ Now on: ${client.guilds.size} servers`)
 Guild: ${guild.id}
 Name: ${guild.name}
 Owner: ${guild.owner.user.tag} (${guild.owner.id})
+Created At: ${guild.createdAt}
 Members: ${guild.members.size}
 Bots: ${guild.members.filter(u => u.user.bot).size} (${Math.floor(guild.members.filter(u => u.user.bot).size / guild.members.size * 100)}%)
 Humans: ${guild.members.filter(u => !u.user.bot).size} (${Math.floor(guild.members.filter(u => !u.user.bot).size / guild.members.size * 100)}%)
@@ -251,6 +253,7 @@ Now on: ${client.guilds.size} servers`)
 Guild: ${guild.id}
 Name: ${guild.name}
 Owner: ${guild.owner.user.tag} (${guild.owner.id})
+Created At: ${guild.createdAt}
 Members: ${guild.members.size}
 Bots: ${guild.members.filter(u => u.user.bot).size} (${Math.floor(guild.members.filter(u => u.user.bot).size / guild.members.size * 100)}%)
 Humans: ${guild.members.filter(u => !u.user.bot).size} (${Math.floor(guild.members.filter(u => !u.user.bot).size / guild.members.size * 100)}%)
@@ -259,6 +262,7 @@ Now on: ${client.guilds.size} servers`)
 Guild: ${guild.id}
 Name: ${guild.name}
 Owner: ${guild.owner.user.tag} (${guild.owner.id})
+Created At: ${guild.createdAt}
 Members: ${guild.members.size}
 Bots: ${guild.members.filter(u => u.user.bot).size} (${Math.floor(guild.members.filter(u => u.user.bot).size / guild.members.size * 100)}%)
 Humans: ${guild.members.filter(u => !u.user.bot).size} (${Math.floor(guild.members.filter(u => !u.user.bot).size / guild.members.size * 100)}%)
