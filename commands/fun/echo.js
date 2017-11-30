@@ -11,8 +11,8 @@ module.exports = class EchoCommand extends commando.Command {
       memberName: 'echo',
       description: 'Echoes what you say.',
       details: oneLine `
-        Want to make the bot say something?
-        Use this!
+	Do you want SmoreBot to say whatever you want?
+	This is the command for you.
 			`,
       examples: ['echo lol'],
       args: [{
