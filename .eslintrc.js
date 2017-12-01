@@ -115,7 +115,7 @@ module.exports = {
     "new-cap": "warn",
     "new-parens": "warn",
     "newline-after-var": "off",
-    "newline-before-return": "warn",
+    "newline-before-return": "off",
     "newline-per-chained-call": "warn",
     "no-alert": "error",
     "no-array-constructor": "error",
