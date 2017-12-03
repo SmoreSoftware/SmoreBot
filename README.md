@@ -22,16 +22,10 @@ SmoreBot is a fun, lightweight, multipurpose bot packed with features. It has mo
   <tr>
     <td>Chrono</td>
     <td>Chronomly6#8108</td>
-    <td>SmoreBot Dev</td>
-  </tr>
-  <tr>
-    <td>Space</td>
-    <td>cZollo#0276</td>
-    <td>SmoreBot Dev (On leave)</td>
-  </tr>
+    <td>(Retired) SmoreBot Dev</td>
   <tr>
     <td>Ciel</td>
-    <td>Ciel#5771</td>
+    <td>I Am Ciel#6018</td>
     <td>SmoreBot Host</td>
   </tr>
 </table> 
