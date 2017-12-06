@@ -7,6 +7,7 @@ config.json
 twitconfig.js
 afk.json
 notes.json
+commands/economy/config.json
 
 #TEST FOLDER
 no_spam_pls/**
