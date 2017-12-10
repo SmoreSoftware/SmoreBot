@@ -7,7 +7,7 @@ module.exports = class AnnounceCommand extends commando.Command {
   constructor(bot) {
     super(bot, {
         name: 'announce',
-        aliases: ['update'],
+        aliases: ['update', 'lann', 'sendupdate'],
         group: 'control',
         memberName: 'announce',
         description: 'Sends an announcemnt to #announcements in SmoreSoftware',
@@ -17,9 +17,9 @@ module.exports = class AnnounceCommand extends commando.Command {
 			`,
         examples: ['announce'],
         args: [{
-        key: 'toAnnounce',
+        key: 'toAnn',
         label: 'announce',
-        prompt: 'What would you like me to announce?',
+        prompt: 'What would you like to announce?',
         type: 'string',
         infinite: false
         }],
@@ -30,16 +30,19 @@ module.exports = class AnnounceCommand extends commando.Command {
   hasPermission(msg) {
     return this.client.isOwner(msg.author);
   }
-//'<@&338046233765478401>'
+
   async run(message, args) {
-    //eslint-disable-next-line array-callback-return
+		const annChan = this.client.channels.get('324656649665118209')
+		const annRole = message.guild.roles.get('338046233765478401')
+		annRole.setMentionable(true)
     const embed = new RichEmbed()
-    .setAuthor('New Announcement!', this.client.user.avatarURL)
-    .setDescription(args.toAnnounce)
-    .setFooter(`From: ${message.author.tag}`)
+    .setAuthor(message.author.username, message.author.avatarURL)
+		.setDescription(args.toAnn)
+		.setColor('0xFF0000')
     .setTimestamp();
-    this.client.channels.get('282977399761666059').send('<@&338046233765478401>', {embed: embed}).then((msg) => {
+    annChan.send('<@&338046233765478401>', { embed }).then((msg) => {
         message.reply('Announcement sent!')
-    })
+		})
+		annRole.setMentionable(false)
   }
 };
