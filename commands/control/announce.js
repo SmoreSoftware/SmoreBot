@@ -32,7 +32,7 @@ module.exports = class AnnounceCommand extends commando.Command {
   }
 
   async run(message, args) {
-		const annChan = this.client.channels.get('324656649665118209')
+		const annChan = this.client.channels.get('282977399761666059')
 		const annRole = message.guild.roles.get('338046233765478401')
 		annRole.setMentionable(true)
     const embed = new RichEmbed()
