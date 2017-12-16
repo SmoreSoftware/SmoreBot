@@ -6,7 +6,7 @@ module.exports = class UserInfoCommand extends commando.Command {
 		super(client, {
 			name: 'user-info',
 			aliases: ['user'],
-			group: 'main',
+			group: 'general',
 			memberName: 'user-info',
 			description: 'Gets information about a user.',
 			examples: ['user-info @Chronomly#8108 ', 'user-info Chronomly'],
