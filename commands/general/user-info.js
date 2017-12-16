@@ -5,7 +5,7 @@ module.exports = class UserInfoCommand extends commando.Command {
 	constructor(client) {
 		super(client, {
 			name: 'user-info',
-			aliases: ['user'],
+			aliases: ['user', 'uinfo'],
 			group: 'general',
 			memberName: 'user-info',
 			description: 'Gets information about a user.',
