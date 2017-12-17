@@ -41,6 +41,7 @@ module.exports = class UserInfoCommand extends commando.Command {
 			})
 			message.channel.stopTyping()
 		} else if (user.bot === true) {
+			message.channel.startTyping()
 			request.get(`https://discordbots.org/api/bots/${user.id}`, function (err, res, body) {
 				if (err) return console.error
 				body = JSON.parse(body)
