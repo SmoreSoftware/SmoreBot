@@ -31,3 +31,5 @@ SmoreBot is a fun, lightweight, multipurpose bot packed with features. It has mo
 </table> 
 </div>
 </html>
+
+[![Discord Bots](https://discordbots.org/api/widget/290228059599142913.svg)](https://discordbots.org/bot/290228059599142913)
