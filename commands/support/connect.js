@@ -3,7 +3,7 @@ const commando = require('discord.js-commando');
 const oneLine = require('common-tags').oneLine;
 const allowed = require('./techsupport.json');
 
-module.exports = class SupportCommand extends commando.Command {
+module.exports = class ConnectCommand extends commando.Command {
 	constructor(client) {
 		super(client, {
 			name: 'connect',

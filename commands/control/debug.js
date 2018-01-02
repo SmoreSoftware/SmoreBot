@@ -5,7 +5,7 @@ const fs = require('fs');
 //eslint-disable-next-line no-sync
 let ranks = JSON.parse(fs.readFileSync('./ranks.json', 'utf8'));
 
-module.exports = class BackdoorCommand extends commando.Command {
+module.exports = class DebugCommand extends commando.Command {
   constructor(bot) {
     super(bot, {
       name: 'debug',

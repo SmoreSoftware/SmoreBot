@@ -3,7 +3,7 @@ const commando = require('discord.js-commando');
 const oneLine = require('common-tags').oneLine;
 const { RichEmbed } = require('discord.js');
 
-module.exports = class SoftbanCommand extends commando.Command {
+module.exports = class SoftBanCommand extends commando.Command {
   constructor(bot) {
     super(bot, {
       name: 'softban',

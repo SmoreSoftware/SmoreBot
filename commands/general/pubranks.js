@@ -6,7 +6,7 @@ const fs = require('fs');
 let ranks = JSON.parse(fs.readFileSync('./ranks.json', 'utf8'));
 //const rawJSON = require('./ranks.json');
 
-module.exports = class RankCommand extends commando.Command {
+module.exports = class PubRanksCommand extends commando.Command {
   constructor(client) {
     super(client, {
       name: 'pubranks',

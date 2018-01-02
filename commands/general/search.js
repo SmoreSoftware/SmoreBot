@@ -2,7 +2,7 @@
 const commando = require('discord.js-commando');
 const oneLine = require('common-tags').oneLine;
 
-module.exports = class RankCommand extends commando.Command {
+module.exports = class SearchCommand extends commando.Command {
   constructor(client) {
     super(client, {
       name: 'search',

@@ -2,14 +2,14 @@
 const commando = require('discord.js-commando');
 const oneLine = require('common-tags').oneLine;
 
-module.exports = class PurgeCommand extends commando.Command {
+module.exports = class PruneCommand extends commando.Command {
   constructor(client) {
     super(client, {
       name: 'prune',
       aliases: ['clean'],
       group: 'moderation',
       memberName: 'prune',
-      description: 'Deletes messages sent by the user.',
+      description: 'Deletes messages sent by the bot.',
       details: oneLine `
         Deletes a specified number of messages sent by the bot.
         Faily self-explanitory, yes?
