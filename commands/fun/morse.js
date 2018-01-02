@@ -2,8 +2,7 @@
 const commando = require('discord.js-commando');
 const oneLine = require('common-tags').oneLine;
 const { RichEmbed } = require('discord.js');
-const morse = require('morjs');
-morse.defaults.mode = 'simple';
+const morse = require('morse-node').create('ITU');
 
 module.exports = class MorseCommand extends commando.Command {
   constructor(client) {
