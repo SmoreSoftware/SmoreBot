@@ -1,8 +1,6 @@
 //eslint-disable-next-line
 const commando = require('discord.js-commando');
 const oneLine = require('common-tags').oneLine;
-const fs = require('fs');
-//eslint-disable-next-line no-sync
 let ranks = require('../../ranks.json');
 //const rawJSON = require('./ranks.json');
 
