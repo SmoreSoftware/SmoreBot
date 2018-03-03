@@ -1,7 +1,6 @@
 //eslint-disable-next-line
 const commando = require('discord.js-commando');
 const oneLine = require('common-tags').oneLine;
-const fs = require('fs');
 const rankFile = require('../../ranks.json');
 let ranks = rankFile;
 
@@ -62,7 +61,7 @@ module.exports = class DebugCommand extends commando.Command {
 
       let rankArray
       //eslint-disable-next-line no-negated-condition
-      if (!ranks[message.guild.id].ranks) rankArray = 'no public ranks'
+      if (!ranks[message.guild.id]) rankArray = 'no public ranks'
       else {
         rankArray = [];
         ranks[message.guild.id].ranks.forEach((rank) => {
