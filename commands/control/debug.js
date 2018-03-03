@@ -2,8 +2,9 @@
 const commando = require('discord.js-commando');
 const oneLine = require('common-tags').oneLine;
 const fs = require('fs');
-//eslint-disable-next-line no-sync
-let ranks = JSON.parse(fs.readFileSync('./ranks.json', 'utf8'));
+const rankFile = require('./ranks.json');
+let ranks = rankFile;
+
 
 module.exports = class DebugCommand extends commando.Command {
   constructor(bot) {
