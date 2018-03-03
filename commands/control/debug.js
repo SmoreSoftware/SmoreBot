@@ -2,7 +2,7 @@
 const commando = require('discord.js-commando');
 const oneLine = require('common-tags').oneLine;
 const fs = require('fs');
-const rankFile = require('./ranks.json');
+const rankFile = require('../../ranks.json');
 let ranks = rankFile;
 
 

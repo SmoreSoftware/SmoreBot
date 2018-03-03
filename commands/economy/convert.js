@@ -9,7 +9,7 @@ currency, and have a basic knowledge of SQL.*/
 const commando = require('discord.js-commando');
 const oneLine = require('common-tags').oneLine;
 const request = require('request');
-const config = require('./config.json');
+const config = require('../../stuff.json');
 const sql = require('sqlite');
 const fs = require('fs');
 const { RichEmbed } = require('discord.js');
