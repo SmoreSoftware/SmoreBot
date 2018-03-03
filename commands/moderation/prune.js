@@ -6,7 +6,6 @@ module.exports = class PruneCommand extends commando.Command {
   constructor(client) {
     super(client, {
       name: 'prune',
-      aliases: ['clean'],
       group: 'moderation',
       memberName: 'prune',
       description: 'Deletes messages sent by the bot.',
