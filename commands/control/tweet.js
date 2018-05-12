@@ -2,8 +2,7 @@
 const commando = require('discord.js-commando');
 const oneLine = require('common-tags').oneLine;
 const Twit = require('twit');
-const twitconfig = require('./twitconfig.js');
-const T = new Twit(twitconfig);
+const T = new Twit(process.env.twitconfig);
 
 module.exports = class TweetCommand extends commando.Command {
   constructor(client) {

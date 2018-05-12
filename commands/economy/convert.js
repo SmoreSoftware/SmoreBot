@@ -9,7 +9,6 @@ currency, and have a basic knowledge of SQL.*/
 const commando = require('discord.js-commando');
 const oneLine = require('common-tags').oneLine;
 const request = require('request');
-const config = require('../../stuff.json');
 const sql = require('sqlite');
 const fs = require('fs');
 const { RichEmbed } = require('discord.js');
@@ -120,7 +119,7 @@ Please convert to a different currency. They are available [here](http://discoin
 				request.post({
 					url: 'http://discoin.sidetrip.xyz/transaction',
 					headers: {
-						'Authorization': config.discoinToken
+						'Authorization': process.env.discoinToken
 					},
 					json: {
 						'user': `${message.author.id}`,

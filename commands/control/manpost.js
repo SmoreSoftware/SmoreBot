@@ -2,8 +2,6 @@
 const commando = require('discord.js-commando');
 const oneLine = require('common-tags').oneLine;
 const request = require('superagent');
-const config = require('../../stuff.json');
-
 module.exports = class ManpostCommand extends commando.Command {
   constructor(bot) {
     super(bot, {
@@ -29,15 +27,13 @@ module.exports = class ManpostCommand extends commando.Command {
 
   //eslint-disable-next-line class-methods-use-this
   async run(message) {
-    const dbotsToken1 = config.dbotstoken1
     request.post(`https://discordbots.org/api/bots/${this.client.user.id}/stats`)
-      .set('Authorization', dbotsToken1)
+      .set('Authorization', process.env.dbotsToken1)
       .send({ 'server_count': this.client.guilds.size })
       .end();
     message.reply('DBotsList guild count updated.')
-    const dbotsToken2 = config.dbotstoken2
     request.post(`https://bots.discord.pw/api/bots/${this.client.user.id}/stats`)
-      .set('Authorization', dbotsToken2)
+      .set('Authorization', process.env.dbotsToken2)
       .send({ 'server_count': this.client.guilds.size })
       .end();
     message.reply('DBots guild count updated.')
