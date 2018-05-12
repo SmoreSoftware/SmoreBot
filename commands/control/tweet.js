@@ -1,5 +1,11 @@
 //eslint-disable-next-line
 /*eslint-disable camelcase*/
+/*FUCK THIS. FUCK EVERYTHING. FUCK HEROKU.
+THIS WAS FUCKED BY HEROKU. I AXED IT. DONE.
+FUCK THIS SHIT.
+FUCKING AUTH BULLSHIT.
+https://i.imgur.com/oiqrt2N.png
+
 const commando = require('discord.js-commando');
 const oneLine = require('common-tags').oneLine;
 const Twit = require('twit');
@@ -11,7 +17,7 @@ const T = new Twit({
 	access_token: process.env.TWIT_ACCESS_TOKEN,
 	access_token_secret: process.env.TWIT_ACCESS_TOKEN_SECRET
 });
-/*eslint-enable camelcase*/
+/*eslint-enable camelcase
 
 module.exports = class TweetCommand extends commando.Command {
 	constructor(client) {
@@ -70,3 +76,4 @@ module.exports = class TweetCommand extends commando.Command {
 		}
 	}
 };
+*/
