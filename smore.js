@@ -1,10 +1,9 @@
 /*eslint-disable no-sync*/
 //eslint-disable-next-line
-const config = require('./stuff.json');
 const commando = require('discord.js-commando');
 const client = new commando.Client({
 	owner: ['197891949913571329', '251383432331001856', '156019409658314752', '142782417994907648'],
-	commandPrefix: config.prefix,
+	commandPrefix: process.env.prefix,
 	unknownCommandResponse: false
 });
 //const defclient = new Discord.Client();
@@ -107,18 +106,16 @@ client
 	.on('warn', (e) => console.warn(warn(e)))
 	.on('debug', (e) => console.log(debug(e)))
 	.on('ready', () => {
-		console.log(`Client ready; logged in as ${client.user.tag} (${client.user.id}) with prefix "${config.prefix}"`)
-		const dbotsToken1 = config.dbotstoken1
+		console.log(`Client ready; logged in as ${client.user.tag} (${client.user.id}) with prefix "${process.env.prefix}"`)
 		dbots.post(`https://discordbots.org/api/bots/${client.user.id}/stats`)
-			.set('Authorization', dbotsToken1)
+			.set('Authorization', process.env.dbotsToken1)
 			.send({
 				'server_count': client.guilds.size
 			})
 			.end();
 		console.log('DBotsList guild count updated.')
-		const dbotsToken2 = config.dbotstoken2
 		dbots.post(`https://bots.discord.pw/api/bots/${client.user.id}/stats`)
-			.set('Authorization', dbotsToken2)
+			.set('Authorization', process.env.dbotsToken2)
 			.send({
 				'server_count': client.guilds.size
 			})
@@ -126,7 +123,7 @@ client
 		console.log('DBots guild count updated.')
 		client.user.setPresence({
 			game: {
-				name: `${config.prefix}help | ${client.guilds.size} servers`,
+				name: `${process.env.prefix}help | ${client.guilds.size} servers`,
 				type: 0
 			}
 		})
@@ -224,7 +221,7 @@ Now on: ${client.guilds.size} servers`)
 		}
 		client.user.setPresence({
 			game: {
-				name: `${config.prefix}help | ${client.guilds.size} servers`,
+				name: `${process.env.prefix}help | ${client.guilds.size} servers`,
 				type: 0
 			}
 		})
@@ -271,7 +268,7 @@ Humans: ${guild.members.filter(u => !u.user.bot).size} (${Math.floor(guild.membe
 Now on: ${client.guilds.size} servers`)
 		client.user.setPresence({
 			game: {
-				name: `${config.prefix}help | ${client.guilds.size} servers`,
+				name: `${process.env.prefix}help | ${client.guilds.size} servers`,
 				type: 0
 			}
 		})
@@ -435,7 +432,7 @@ setInterval(function () {
 		request({
 			url: 'http://discoin.sidetrip.xyz/transactions',
 			headers: {
-				'Authorization': config.discoinToken
+				'Authorization': process.env.discoinToken
 			}
 		}, function (error, response, body) {
 			console.log(`Body: ${body}`)
@@ -532,7 +529,7 @@ setInterval(function () {
 	fs.unlinkSync('./db.lock')
 }, ms('30s'))
 
-client.login(config.token).catch(console.error);
+client.login(process.env.token).catch(console.error);
 
 process.on('unhandledRejection', err => {
 	console.error('Uncaught Promise Error: \n' + err.stack);
