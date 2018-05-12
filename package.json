@@ -22,6 +22,7 @@
     "common-tags": "^1.4.0",
     "discord.js": "^11.2.1",
     "discord.js-commando": "^0.9.0",
+    "dotenv": "^5.0.1",
     "erlpack": "github:hammerandchisel/erlpack",
     "figlet": "^1.2.0",
     "indev": "^3.0.10",
