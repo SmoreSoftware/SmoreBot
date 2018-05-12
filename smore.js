@@ -1,5 +1,6 @@
 /*eslint-disable no-sync*/
 //eslint-disable-next-line
+require('dotenv').load();
 const commando = require('discord.js-commando');
 const client = new commando.Client({
 	owner: ['197891949913571329', '251383432331001856', '156019409658314752', '142782417994907648'],
