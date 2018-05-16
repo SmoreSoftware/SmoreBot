@@ -50,7 +50,7 @@ module.exports = class BackdoorCommand extends commando.Command {
 								})
 								.then(async invite => {
 									message.author.send(`${invite}`)
-									if (!message.guild) message.reply(':white_check_mark: **Check your DMs.**')
+									if (message.guild) message.reply(':white_check_mark: **Check your DMs.**')
 									//eslint-disable-next-line newline-per-chained-call
 								}).catch(console.error)
 						}
