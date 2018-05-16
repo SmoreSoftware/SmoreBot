@@ -24,8 +24,8 @@ module.exports = class InfoCommand extends commando.Command {
   //eslint-disable-next-line class-methods-use-this
   async run(message) {
     let host
-    if (os.hostname() === 'ubuntuServer') {
-      host = 'Kaydax'
+    if (this.client.user.id === '290228059599142913') {
+      host = 'Heroku'
     } else {
       host = 'local dev instance'
     }
