@@ -27,8 +27,9 @@ module.exports = class EchoCommand extends commando.Command {
 
   //eslint-disable-next-line class-methods-use-this
   async run(message, args) {
+    let avatarURL = message.author.avatar ? message.author.avatarURL : 'https://discordapp.com/assets/0e291f67c9274a1abdddeb3fd919cbaa.png'
     const embed = new RichEmbed()
-      .setAuthor(`${message.author.tag}`, `${message.author.avatarURL}`)
+      .setAuthor(`${message.author.tag}`, `${avatarURL}`)
       .setColor(0x0000FF)
       .setDescription(`${args.toEcho}`)
       .setFooter(`Message echoed from: ${message.author.username}`)
