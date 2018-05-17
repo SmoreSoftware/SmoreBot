@@ -80,7 +80,7 @@ console.log('Awaiting log in.');
 client.notes = require('./notes.json');
 
 function writeNotes() {
-	if (os.hostname() !== 'ubuntuServer') return console.log('Not on native host, notes not written to JSON')
+	if (client.user.id !== '290228059599142913') return console.log('In development environment, notes not written to JSON')
 	fs.writeFile('./notes.json', JSON.stringify(client.notes, null, 2), (err) => {
 		if (err) console.error(err)
 		console.log('Wrote notes to JSON');
@@ -93,7 +93,7 @@ setInterval(function () {
 console.log('Note DB ready.')
 
 setInterval(() => {
-	if (os.hostname() !== 'ubuntuServer') return console.log('Not on native host, notes not written to JSON')
+	if (client.user.id !== '290228059599142913') return console.log('In development environment, notes not written to JSON')
 	function log() {
 		console.log('Wrote afk users to file.')
 	}
