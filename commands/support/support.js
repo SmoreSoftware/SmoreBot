@@ -23,14 +23,13 @@ module.exports = class SupportCommand extends commando.Command {
 
   async run(message) {
     let isEnabled
-    let avatarURL = message.author.avatar ? message.author.avatarURL : 'https://discordapp.com/assets/0e291f67c9274a1abdddeb3fd919cbaa.png'
     const client = this.client
     message.reply('Thank you for contacting SmoreBot Support! If there are any available support representatives, they will contact you soon.')
     let chan = message.channel
     let supportChan = '322450311597916172'
     const embed = new RichEmbed()
       .setTitle(':bangbang: **New support call** :bangbang:')
-      .setAuthor(`${message.author.tag} (${message.author.id})`, `${avatarURL}`)
+      .setAuthor(`${message.author.tag} (${message.author.id})`, `${message.author.avatarURL}`)
       .setColor(0xFF0000)
       .setDescription(`**Guild:** ${message.guild.name} (${message.guild.id}) \n**Channel:** #${message.channel.name} (${message.channel.id}) \n**Started by:** ${message.author.tag} (${message.author.id})`)
       .setFooter('SmoreBot Support System')
