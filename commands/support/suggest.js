@@ -37,9 +37,10 @@ module.exports = class SuggestCommand extends commando.Command {
           maxUses: 1
         })
         .then(invite => {
+          let avatarURL = message.author.avatar ? message.author.avatarURL : 'https://discordapp.com/assets/0e291f67c9274a1abdddeb3fd919cbaa.png'
           const embed = new RichEmbed()
             .setTitle(':bangbang: **New suggestion** :bangbang:')
-            .setAuthor(`${message.author.tag} (${message.author.id})`, `${message.author.avatarURL}`)
+            .setAuthor(`${message.author.tag} (${message.author.id})`, `${avatarURL}`)
             .setColor(0x0000FF)
             .setDescription(`**Guild:** ${message.guild.name} (${message.guild.id}) \n**Channel:** #${message.channel.name} (${message.channel.id}) \n**User:** ${message.author.tag} (${message.author.id}) \n**Suggestion:** ${args.toSug} \n**Invite:** ${invite}`)
             .setFooter('SmoreBot Suggestions System')
