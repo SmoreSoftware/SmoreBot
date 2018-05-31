@@ -25,10 +25,10 @@ const fs = require('fs');
 const os = require('os');
 //const Discoin = require('discoin');
 //const discoin = new Discoin(client.discoinToken);
-sql.open('./bank.sqlite');
+sql.open('./bin/bank.sqlite');
 let cooldownUsers = [];
 let waitingUsers = [];
-let afkUsers = require('./afk.json');
+let afkUsers = require('./bin/afk.json');
 console.log('Requires and vars initialized.');
 
 const hostname = os.hostname()
@@ -63,25 +63,25 @@ client.registry
 	.registerEvalObjects(evalObjects)
 	.registerCommandsIn(path.join(__dirname, 'commands'));
 
-client.setProvider(sqlite.open(path.join(__dirname, 'settings.sqlite3')).then(db => new commando.SQLiteProvider(db))).catch(console.error);
+client.setProvider(sqlite.open('./bin/settings.sqlite').then(db => new commando.SQLiteProvider(db))).catch(console.error);
 client.dispatcher.addInhibitor(msg => {
 	//eslint-disable-next-line no-sync
-	let blacklist = require('./blacklist.json');
+	let blacklist = require('./bin/blacklist.json');
 	if (blacklist.guilds.includes(msg.guild.id)) return [`Guild ${msg.guild.id} is blacklisted`, msg.channel.send('This guild has been blacklisted. Appeal here: https://discord.gg/6P6MNAU')];
 });
 client.dispatcher.addInhibitor(msg => {
 	//eslint-disable-next-line no-sync
-	let blacklist = require('./blacklist.json');
+	let blacklist = require('./bin/blacklist.json');
 	if (blacklist.users.includes(msg.author.id)) return [`User ${msg.author.id} is blacklisted`, msg.reply('You have been blacklisted. Appeal here: https://discord.gg/6P6MNAU')];
 });
 console.log('Commando set up.');
 console.log('Awaiting log in.');
 
-client.notes = require('./notes.json');
+client.notes = require('./bin/notes.json');
 
 function writeNotes() {
-	if (client.user.id !== '290228059599142913') return console.log('In development environment, notes not written to JSON')
-	fs.writeFile('./notes.json', JSON.stringify(client.notes, null, 2), (err) => {
+	if (os.hostname() !== 'ubuntuServer') return console.log('Not in production , notes not written to JSON')
+	fs.writeFile('./bin/notes.json', JSON.stringify(client.notes, null, 2), (err) => {
 		if (err) console.error(err)
 		console.log('Wrote notes to JSON');
 	});
@@ -93,11 +93,11 @@ setInterval(function () {
 console.log('Note DB ready.')
 
 setInterval(() => {
-	if (client.user.id !== '290228059599142913') return console.log('In development environment, notes not written to JSON')
+	if (os.hostname() !== 'ubuntuServer') return console.log('Not in production , notes not written to JSON')
 	function log() {
 		console.log('Wrote afk users to file.')
 	}
-	fs.writeFile('./afk.json', JSON.stringify(afkUsers, null, 2), {
+	fs.writeFile('./bin/afk.json', JSON.stringify(afkUsers, null, 2), {
 		encoding: 'utf8'
 	}, log)
 }, ms('30s'))
@@ -429,7 +429,7 @@ setInterval(function () {
 	fs.closeSync(fs.openSync('./db.lock', 'w'))
 
 	async function onSuccess() {
-		sql.open('./bank.sqlite')
+		sql.open('./bin/bank.sqlite')
 		request({
 			url: 'http://discoin.sidetrip.xyz/transactions',
 			headers: {

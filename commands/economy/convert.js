@@ -73,7 +73,7 @@ module.exports = class ConvertCommand extends commando.Command {
 		fs.closeSync(fs.openSync('./db.lock', 'w'))
 
 		async function onSuccess() {
-			sql.open('./bank.sqlite')
+			sql.open('./bin/bank.sqlite')
 			sql.get(`SELECT * FROM bank WHERE userId ="${message.author.id}"`).then(row => {
 				//eslint-disable-next-line no-negated-condition
 				if (!row) {
@@ -171,7 +171,7 @@ Please try this transaction again.`)
 							.addField('Remaining Daily Limit:', `You can still convert ${body.limitNow} Discoins to ${args.toCurrency.toUpperCase()} for today.`, false)
 						message.replyEmbed(embed)
 						if (body.status === 'approved' && response.statusCode === 200) {
-							sql.open('./bank.sqlite')
+							sql.open('./bin/bank.sqlite')
 							sql.get(`SELECT * FROM bank WHERE userId ="${message.author.id}"`).then(row => {
 									//eslint-disable-next-line no-negated-condition
 									if (!row) {

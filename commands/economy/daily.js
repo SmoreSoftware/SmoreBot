@@ -50,7 +50,7 @@ module.exports = class DailyCommand extends commando.Command {
     fs.closeSync(fs.openSync('./db.lock', 'w'))
 
     async function onSuccess() {
-      sql.open('./bank.sqlite')
+      sql.open('./bin/bank.sqlite')
       sql.get(`SELECT * FROM bank WHERE userId ="${message.author.id}"`).then(async row => {
         if (!row) {
           message.reply('You don\'t have a bank account! Creating one now...')

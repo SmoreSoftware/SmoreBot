@@ -1,7 +1,7 @@
 //eslint-disable-next-line
 const commando = require('discord.js-commando');
 const oneLine = require('common-tags').oneLine;
-let ranks = require('../../ranks.json');
+let ranks = require('../../bin/ranks.json');
 //const rawJSON = require('./ranks.json');
 
 module.exports = class RankCommand extends commando.Command {

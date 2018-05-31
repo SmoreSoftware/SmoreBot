@@ -1,7 +1,7 @@
 //eslint-disable-next-line
 const commando = require('discord.js-commando');
 const oneLine = require('common-tags').oneLine;
-let afkUsers = require('../../afk.json');
+let afkUsers = require('../../bin/afk.json');
 
 module.exports = class AFKCommand extends commando.Command {
 	constructor(client) {

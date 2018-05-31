@@ -1,14 +1,5 @@
 # CONFIGS
-stuff.json
-stuff.json.save
-stuff.json.save.*
-ranks.json
-config.json
-twitconfig.js
-ranks.json
-afk.json
-notes.json
-commands/economy/config.json
+bin/
 
 #TEST FOLDER
 no_spam_pls/**

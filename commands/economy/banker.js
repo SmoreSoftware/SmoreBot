@@ -80,7 +80,7 @@ module.exports = class BankerCommand extends commando.Command {
 		fs.closeSync(fs.openSync('./db.lock', 'w'))
 
 		async function onSuccess() {
-			sql.open('./bank.sqlite')
+			sql.open('./bin/bank.sqlite')
 			if (args.type.toLowerCase() === 'balance' || args.type.toLowerCase() === 'bal') {
 				if (args.action.toLowerCase() === 'give' || args.action.toLowerCase() === 'add') {
 					sql.get(`SELECT * FROM bank WHERE userId ="${args.user.id}"`).then(row => {

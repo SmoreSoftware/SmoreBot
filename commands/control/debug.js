@@ -1,7 +1,7 @@
 //eslint-disable-next-line
 const commando = require('discord.js-commando');
 const oneLine = require('common-tags').oneLine;
-const rankFile = require('../../ranks.json');
+const rankFile = require('../../bin/ranks.json');
 let ranks = rankFile;
 
 

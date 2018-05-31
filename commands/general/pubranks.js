@@ -2,7 +2,7 @@
 const commando = require('discord.js-commando');
 const oneLine = require('common-tags').oneLine;
 const fs = require('fs');
-let ranks = require('../../ranks.json');
+let ranks = require('../../bin/ranks.json');
 //const rawJSON = require('./ranks.json');
 
 module.exports = class PubRanksCommand extends commando.Command {
@@ -51,7 +51,7 @@ module.exports = class PubRanksCommand extends commando.Command {
       const rankToAdd = message.guild.roles.find('name', args.rank)
       if (rankToAdd === null) return message.reply('That is not a role! Was your capatalization and spelling correct?')
       ranks[message.guild.id].ranks.push(args.rank)
-      fs.writeFile('./ranks.json', JSON.stringify(ranks, null, 2), (err) => {
+      fs.writeFile('./bin/ranks.json', JSON.stringify(ranks, null, 2), (err) => {
         if (err) {
           message.reply('Something went wrong! Contact a developer. https://discord.gg/6P6MNAU')
           console.error(err)
@@ -66,7 +66,7 @@ module.exports = class PubRanksCommand extends commando.Command {
       const rankToRemove = message.guild.roles.find('name', args.rank)
       if (rankToRemove === null) return message.reply('That is not a role! Was your capatalization and spelling correct?')
       ranks[message.guild.id].ranks.splice(rankIndex, 1)
-      fs.writeFile('./ranks.json', JSON.stringify(ranks, null, 2), (err) => {
+      fs.writeFile('./bin/ranks.json', JSON.stringify(ranks, null, 2), (err) => {
         if (err) {
           message.reply('Something went wrong! Contact a developer.')
           console.error(err)
