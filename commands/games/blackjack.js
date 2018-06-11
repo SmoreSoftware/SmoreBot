@@ -130,8 +130,8 @@ module.exports = class BlackjackCommand extends Command {
 				? 'broke even' : `${winnings > 0
 					? 'won' : 'lost'} ${Math.abs(winnings)}`}`;
 
-			if (Math.sign(winnings) === 1) Currency.addBalance(msg.author.id, winnings);
-			else if (Math.sign(winnings) === -1) Currency.removeBalance(msg.author.id, winnings);
+			if (result !== 'bust') Currency.addBalance(msg.author.id, winnings);
+			else Currency.removeBalance(msg.author.id, winnings);
 
 			return msg.embed(embed);
 		});
