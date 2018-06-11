@@ -4,7 +4,7 @@ const sql = require('sqlite');
 class Currency {
 	static changeBalance(user, amount) {
 		let msg
-		sql.open('../../bin/bank.sqlite')
+		sql.open('./bank.sqlite')
 		sql.get(`SELECT * FROM bank WHERE userId ="${user}"`).then(row => {
 				if (!row) {
 					sql.run('INSERT INTO bank (userId, balance, points) VALUES (?, ?, ?)', [user, amount, 0])
@@ -31,7 +31,7 @@ class Currency {
 
 	static addBalance(user, amount) {
 		let msg
-		sql.open('../../bin/bank.sqlite')
+		sql.open('./bank.sqlite')
 		sql.get(`SELECT * FROM bank WHERE userId ="${user}"`).then(row => {
 				//eslint-disable-next-line no-negated-condition
 				if (!row) {
@@ -61,7 +61,7 @@ class Currency {
 
 	static removeBalance(user, amount) {
 		let msg
-		sql.open('../../bin/bank.sqlite')
+		sql.open('./bank.sqlite')
 		sql.get(`SELECT * FROM bank WHERE userId ="${user}"`).then(row => {
 				//eslint-disable-next-line no-negated-condition
 				if (!row) {
@@ -90,7 +90,7 @@ class Currency {
 	}
 
 	static async getBalance(user) {
-		sql.open('../../bin/bank.sqlite')
+		sql.open('./bank.sqlite')
 		sql.get(`SELECT * FROM bank WHERE userId ="${user}"`).then(row => {
 				//eslint-disable-next-line no-negated-condition
 				if (!row) {

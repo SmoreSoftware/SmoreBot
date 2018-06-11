@@ -48,7 +48,7 @@ module.exports = class BlackjackCommand extends Command {
 
 	async run(msg, { bet }) {
 		if (Blackjack.gameExists(msg.author.id)) {
-			return msg.reply(`you can't start 2 games of blackjack at the same time.`);
+			return msg.reply(`You can't start 2 games of blackjack at the same time.`);
 		}
 
 		const blackjack = new Blackjack(msg);
@@ -130,7 +130,8 @@ module.exports = class BlackjackCommand extends Command {
 				? 'broke even' : `${winnings > 0
 					? 'won' : 'lost'} ${Math.abs(winnings)}`}`;
 
-			if (winnings !== 0) Currency.changeBalance(msg.author.id, winnings);
+			if (Math.sign(winnings) === 1) Currency.addBalance(msg.author.id, winnings);
+			else if (Math.sign(winnings) === -1) Currency.removeBalance(msg.author.id, winnings);
 
 			return msg.embed(embed);
 		});
