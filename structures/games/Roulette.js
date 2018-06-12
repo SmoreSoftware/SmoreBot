@@ -42,7 +42,7 @@ class Roulette {
 		return !!this.players.find(player => player.user.id === userID);
 	}
 
-	awaitPlayers(time) {
+	static awaitPlayers(time) {
 		return new Promise(resolve => {
 			setTimeout(() => {
 				games.delete(this.guildID);

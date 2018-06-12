@@ -24,16 +24,26 @@ class Currency {
 
 	static _writeBalance(user, amount) {
 		Currency._queryBalance(user).then((row) => {
-			if (Math.sign(parseInt(amount)) === 1) {
+			const sign = Math.sign(parseInt(amount));
+			if (sign === 1) {
 				const curBal = parseInt(row.balance);
 				const newBal = curBal + amount;
 				sql.run(`UPDATE bank SET balance = ${newBal} WHERE userId = ${user}`);
-			} else if (Math.sign(parseInt(amount)) === -1) {
+			} else if (sign === -1) {
 				const curBal = parseInt(row.balance);
 				const newBal = curBal - amount;
 				sql.run(`UPDATE bank SET balance = ${newBal} WHERE userId = ${user}`);
 			}
 		});
+	}
+
+	static changeBalance(user, amount) {
+		const sign = Math.sign(parseInt(amount));
+		if (sign === 1) {
+			Currency._writeBalance(user, amount)
+		} else if (sign === -1) {
+			Currency._writeBalance(user, -amount)
+		}
 	}
 
 	static addBalance(user, amount) {
