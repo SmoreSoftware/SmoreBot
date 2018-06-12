@@ -66,7 +66,7 @@ module.exports = class BlackjackCommand extends Command {
 			if (Blackjack.handValue(playerHand) !== 'Blackjack') {
 				playerHands = await this.getFinalHand(msg, playerHand, dealerHand, balance, bet, blackjack);
 				//eslint-disable-next-line no-use-before-define
-				const result = this.gameResult(Blackjack.handValue(playerHands[0]), 0, winnings, msg);
+				const result = this.gameResult(Blackjack.handValue(playerHands[0]), 0);
 				const noHit = playerHands.length === 1 && result === 'bust';
 
 				while ((Blackjack.isSoft(dealerHand) ||
@@ -94,7 +94,7 @@ module.exports = class BlackjackCommand extends Command {
 			playerHands.forEach((hand, i) => {
 				const playerValue = Blackjack.handValue(hand);
 				this.playerValue = playerValue;
-				const result = this.gameResult(playerValue, dealerValue, winnings, msg);
+				const result = this.gameResultBal(playerValue, dealerValue, winnings, msg);
 
 				if (result !== 'bust') hideHoleCard = false;
 
@@ -141,7 +141,7 @@ module.exports = class BlackjackCommand extends Command {
 					? 'won' : 'lost'} ${Math.abs(winnings)}`}`;
 			/*eslint-enable*/
 
-			this.gameResult(this.playerValue, dealerValue, winnings, msg)
+			this.gameResultBal(this.playerValue, dealerValue, winnings, msg)
 			return msg.embed(embed);
 		});
 	}
@@ -153,7 +153,17 @@ module.exports = class BlackjackCommand extends Command {
 	}
 
 	//eslint-disable-next-line class-methods-use-this
-	gameResult(playerValue, dealerValue, winnings, msg) {
+	gameResult(playerValue, dealerValue) {
+		if (playerValue > 21) return 'bust';
+		if (dealerValue > 21) return 'dealer bust';
+		if (playerValue === dealerValue) return 'push';
+		if (playerValue === 'Blackjack' || playerValue > dealerValue) return 'win';
+
+		return 'loss';
+	}
+
+	//eslint-disable-next-line class-methods-use-this
+	gameResultBal(playerValue, dealerValue, winnings, msg) {
 		let result;
 		if (playerValue > 21) result = 'bust';
 		if (dealerValue > 21) result = 'dealer bust';
