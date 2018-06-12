@@ -1,139 +1,73 @@
-/*eslint-disable*/
 const sql = require('sqlite');
 
 class Currency {
-	static changeBalance(user, amount) {
-		let msg
-		sql.open('./bank.sqlite')
-		sql.get(`SELECT * FROM bank WHERE userId ="${user}"`).then(row => {
-				if (!row) {
-					sql.run('INSERT INTO bank (userId, balance, points) VALUES (?, ?, ?)', [user, amount, 0])
-					msg = 'Created account and set balance.'
-					/*eslint-disable*/
-					return msg;
-				} else {
-					/*eslint-enable*/
-					sql.run(`UPDATE bank SET balance = ${amount} WHERE userId = ${user}`)
-					msg = 'Changed balance.'
-					return msg;
-				}
-			})
-			.catch((err) => {
-				if (err) console.error(`${err} \n${err.stack}`);
-				sql.run('CREATE TABLE IF NOT EXISTS bank (userId TEXT, balance INTEGER, points INTEGER)').then(() => {
-					sql.run('INSERT INTO bank (userId, balance, points) VALUES (?, ?, ?)', [user, 0, 0])
-				})
-				//eslint-disable-next-line
-				msg = 'Created table and set balance.'
-				return msg;
-			})
-	}
+  constructor() {
+    sql.open('./bin/bank.sqlite').then(() => {
+      sql.run('CREATE TABLE IF NOT EXISTS bank (userId TEXT, balance INTEGER, points INTEGER)');
+    });
+  }
 
-	static addBalance(user, amount) {
-		let msg
-		sql.open('./bank.sqlite')
-		sql.get(`SELECT * FROM bank WHERE userId ="${user}"`).then(row => {
-				//eslint-disable-next-line no-negated-condition
-				if (!row) {
-					sql.run('INSERT INTO bank (userId, balance, points) VALUES (?, ?, ?)', [user, amount, 0])
-					msg = 'Created account and set balance.'
-					/*eslint-disable*/
-					return msg;
-				} else {
-					/*eslint-enable*/
-					let curBal = parseInt(row.balance)
-					let newBal = curBal + amount
-					sql.run(`UPDATE bank SET balance = ${newBal} WHERE userId = ${user}`)
-					msg = 'Added balance.'
-					return msg;
-				}
-			})
-			.catch((err) => {
-				if (err) console.error(`${err} \n${err.stack}`);
-				sql.run('CREATE TABLE IF NOT EXISTS bank (userId TEXT, balance INTEGER, points INTEGER)').then(() => {
-					sql.run('INSERT INTO bank (userId, balance, points) VALUES (?, ?, ?)', [user, 0, 0])
-				})
-				//eslint-disable-next-line
-				msg = 'Created table and set balance.'
-				return msg;
-			})
-	}
+  static _queryBalance(user) {
+    //eslint-disable-next-line arrow-body-style
+    sql.get(`SELECT * FROM bank WHERE userId ="${user}"`).then(row => {
+      //eslint-disable-next-line no-negated-condition
+      if (!row) {
+        sql.run('INSERT INTO bank (userId, balance, points) VALUES (?, ?, ?)', [user, 0, 0]);
+        return row;
+      }
+      return row;
+    });
+  }
 
-	static removeBalance(user, amount) {
-		let msg
-		sql.open('./bank.sqlite')
-		sql.get(`SELECT * FROM bank WHERE userId ="${user}"`).then(row => {
-				//eslint-disable-next-line no-negated-condition
-				if (!row) {
-					sql.run('INSERT INTO bank (userId, balance, points) VALUES (?, ?, ?)', [user, amount, 0])
-					msg = 'Created account and set balance.'
-					/*eslint-disable*/
-					return msg;
-				} else {
-					/*eslint-enable*/
-					let curBal = parseInt(row.balance)
-					let newBal = curBal - amount
-					sql.run(`UPDATE bank SET balance = ${newBal} WHERE userId = ${user}`)
-					msg = 'Removed balance.'
-					return msg;
-				}
-			})
-			.catch((err) => {
-				if (err) console.error(`${err} \n${err.stack}`);
-				sql.run('CREATE TABLE IF NOT EXISTS bank (userId TEXT, balance INTEGER, points INTEGER)').then(() => {
-					sql.run('INSERT INTO bank (userId, balance, points) VALUES (?, ?, ?)', [user, 0, 0])
-				})
-				//eslint-disable-next-line
-				msg = 'Created table and set balance.'
-				return msg;
-			})
-	}
+  static _writeBalance(user, amount) {
+    Currency._queryBalance(user).then((row) => {
+      if (Math.sign(parseInt(amount)) === 1) {
+        const curBal = parseInt(row.balance);
+        const newBal = curBal + amount;
+        sql.run(`UPDATE bank SET balance = ${newBal} WHERE userId = ${user}`);
+      } else if (Math.sign(parseInt(amount)) === -1) {
+        const curBal = parseInt(row.balance);
+        const newBal = curBal - amount;
+        sql.run(`UPDATE bank SET balance = ${newBal} WHERE userId = ${user}`);
+      }
+    });
+  }
 
-	static async getBalance(user) {
-		sql.open('./bank.sqlite')
-		sql.get(`SELECT * FROM bank WHERE userId ="${user}"`).then(row => {
-				//eslint-disable-next-line no-negated-condition
-				if (!row) {
-					sql.run('INSERT INTO bank (userId, balance, points) VALUES (?, ?, ?)', [user, 0, 0])
-					/*eslint-disable*/
-					return 0;
-				} else {
-					/*eslint-enable*/
-					return parseInt(row.balance);
-				}
-			})
-			.catch((err) => {
-				if (err) console.error(`${err} \n${err.stack}`);
-				sql.run('CREATE TABLE IF NOT EXISTS bank (userId TEXT, balance INTEGER, points INTEGER)').then(() => {
-					sql.run('INSERT INTO bank (userId, balance, points) VALUES (?, ?, ?)', [user, 0, 0])
-				})
-				//eslint-disable-next-line
-				return 0;
-			})
-	}
+  static addBalance(user, amount) {
+    Currency._writeBalance(user, amount);
+  }
 
-	static convert(amount, text = false) {
-		if (isNaN(amount)) amount = parseInt(amount);
-		if (!text) return `${amount.toLocaleString()} ${Math.abs(amount) === 1 ? Currency.singular : Currency.plural}`;
+  static removeBalance(user, amount) {
+    Currency._writeBalance(user, -amount);
+  }
 
-		return `${amount.toLocaleString()} ${Math.abs(amount) === 1 ? Currency.textSingular : Currency.textPlural}`;
-	}
+  static async getBalance(user) {
+		const row = Currency._queryBalance(user);
+		return row.balance;
+  }
 
-	static get singular() {
-		return 'token';
-	}
+  static convert(amount, text = false) {
+    if (isNaN(amount)) amount = parseInt(amount);
+    if (!text) return `${amount.toLocaleString()} ${Math.abs(amount) === 1 ? Currency.singular : Currency.plural}`;
 
-	static get plural() {
-		return 'tokens';
-	}
+    return `${amount.toLocaleString()} ${Math.abs(amount) === 1 ? Currency.textSingular : Currency.textPlural}`;
+  }
 
-	static get textSingular() {
-		return 'token';
-	}
+  static get singular() {
+    return 'token';
+  }
 
-	static get textPlural() {
-		return 'tokens';
-	}
+  static get plural() {
+    return 'tokens';
+  }
+
+  static get textSingular() {
+    return 'token';
+  }
+
+  static get textPlural() {
+    return 'tokens';
+  }
 }
 
 module.exports = Currency;
