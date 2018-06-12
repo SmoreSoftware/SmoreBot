@@ -65,7 +65,8 @@ module.exports = class BlackjackCommand extends Command {
 
 			if (Blackjack.handValue(playerHand) !== 'Blackjack') {
 				playerHands = await this.getFinalHand(msg, playerHand, dealerHand, balance, bet, blackjack);
-				const result = this.gameResult(Blackjack.handValue(playerHands[0]), 0, msg);
+				//eslint-disable-next-line no-use-before-define
+				const result = this.gameResult(Blackjack.handValue(playerHands[0]), 0, winnings, msg);
 				const noHit = playerHands.length === 1 && result === 'bust';
 
 				while ((Blackjack.isSoft(dealerHand) ||
@@ -93,7 +94,7 @@ module.exports = class BlackjackCommand extends Command {
 			playerHands.forEach((hand, i) => {
 				const playerValue = Blackjack.handValue(hand);
 				this.playerValue = playerValue;
-				const result = this.gameResult(playerValue, dealerValue, msg);
+				const result = this.gameResult(playerValue, dealerValue, winnings, msg);
 
 				if (result !== 'bust') hideHoleCard = false;
 
@@ -140,19 +141,19 @@ module.exports = class BlackjackCommand extends Command {
 					? 'won' : 'lost'} ${Math.abs(winnings)}`}`;
 			/*eslint-enable*/
 
-			this.gameResult(this.playerValue, dealerValue, msg)
+			this.gameResult(this.playerValue, dealerValue, winnings, msg)
 			return msg.embed(embed);
 		});
 	}
 
 	//eslint-disable-next-line class-methods-use-this
-	awardMoney(result, msg) {
-		if (result !== 'bust') Currency.addBalance(msg.author.id, result);
-		else Currency.removeBalance(msg.author.id, result);
+	awardMoney(result, winnings, msg) {
+		if (result !== 'bust') Currency.addBalance(msg.author.id, winnings);
+		else Currency.removeBalance(msg.author.id, winnings);
 	}
 
 	//eslint-disable-next-line class-methods-use-this
-	gameResult(playerValue, dealerValue, msg) {
+	gameResult(playerValue, dealerValue, winnings, msg) {
 		let result;
 		if (playerValue > 21) result = 'bust';
 		if (dealerValue > 21) result = 'dealer bust';
@@ -161,7 +162,7 @@ module.exports = class BlackjackCommand extends Command {
 
 		if (!result) result = 'loss'
 
-		this.awardMoney(result, msg);
+		this.awardMoney(result, winnings, msg);
 
 		return result;
 	}
