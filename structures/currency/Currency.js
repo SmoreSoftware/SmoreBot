@@ -7,12 +7,12 @@ class Currency {
 		});
 	}
 
-	static _queryBalance(user) {
+	static async _queryBalance(user) {
 		//eslint-disable-next-line arrow-body-style
-		sql.get(`SELECT * FROM bank WHERE userId ="${user}"`).then(row => {
+		await sql.get(`SELECT * FROM bank WHERE userId ="${user}"`).then(async row => {
 			//eslint-disable-next-line no-negated-condition
 			if (!row) {
-				sql.run('INSERT INTO bank (userId, balance, points) VALUES (?, ?, ?)', [user, 0, 0]);
+				await sql.run('INSERT INTO bank (userId, balance, points) VALUES (?, ?, ?)', [user, 0, 0]);
 				return {
 					user: user,
 					balance: 0,
