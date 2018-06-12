@@ -92,6 +92,7 @@ module.exports = class BlackjackCommand extends Command {
 
 			playerHands.forEach((hand, i) => {
 				const playerValue = Blackjack.handValue(hand);
+				this.playerValue = playerValue;
 				const result = this.gameResult(playerValue, dealerValue, msg);
 
 				if (result !== 'bust') hideHoleCard = false;
@@ -139,6 +140,7 @@ module.exports = class BlackjackCommand extends Command {
 					? 'won' : 'lost'} ${Math.abs(winnings)}`}`;
 			/*eslint-enable*/
 
+			this.gameResult(this.playerValue, dealerValue, msg)
 			return msg.embed(embed);
 		});
 	}
