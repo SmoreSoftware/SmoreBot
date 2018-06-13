@@ -37,13 +37,14 @@ class Currency {
 		});
 	}
 
+	static setBalance(user, amount) {
+		Currency._queryBalance(user).then(() => {
+			sql.run(`UPDATE bank SET balance = ${amount} WHERE userId = ${user}`);
+		});
+	}
+
 	static changeBalance(user, amount) {
-		const sign = Math.sign(parseInt(amount));
-		if (sign === 1) {
-			Currency._writeBalance(user, amount)
-		} else if (sign === -1) {
-			Currency._writeBalance(user, -amount)
-		}
+		Currency._writeBalance(user, amount);
 	}
 
 	static addBalance(user, amount) {
