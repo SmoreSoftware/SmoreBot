@@ -31,7 +31,7 @@ class Currency {
 				sql.run(`UPDATE bank SET balance = ${newBal} WHERE userId = ${user}`);
 			} else if (sign === -1) {
 				const curBal = parseInt(row.balance);
-				const newBal = curBal - amount;
+				const newBal = curBal - Math.abs(amount);
 				sql.run(`UPDATE bank SET balance = ${newBal} WHERE userId = ${user}`);
 			}
 		});
