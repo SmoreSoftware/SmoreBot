@@ -40,7 +40,7 @@ module.exports = class AnnounceCommand extends commando.Command {
 		.setDescription(args.toAnn)
 		.setColor('0xFF0000')
     .setTimestamp();
-    annChan.send('<@&338046233765478401>', { embed }).then((msg) => {
+    annChan.send('<@&338046233765478401>', { embed }).then(() => {
         message.reply('Announcement sent!')
 		})
 		annRole.setMentionable(false)
