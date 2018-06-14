@@ -6,8 +6,11 @@
   "scripts": {
     "start": "node app.js"
   },
-  "author": "SpaceX#0276 and TJDoesCode#6088",
   "repository": "SmoreSoftware/SmoreJS",
+  "contributors": [
+    "SpaceX#0276",
+    "TJDoesCode#6088"
+  ],
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/SmoreSoftware/SmoreJS/issues"
