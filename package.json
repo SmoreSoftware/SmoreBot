@@ -36,6 +36,7 @@
   "name": "smorejs",
   "repository": "SmoreSoftware/SmoreJS",
   "scripts": {
+    "lint": "eslint .",
     "start": "node smore.js"
   },
   "version": "2.0.4"
