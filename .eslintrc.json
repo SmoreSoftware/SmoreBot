@@ -3,7 +3,7 @@
     "es6": true,
     "node": true
   },
-  "extends": "eslint-config-aqua",
+  "extends": "aqua",
   "parserOptions": {
     "sourceType": "module"
   }
