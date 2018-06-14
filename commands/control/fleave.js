@@ -35,7 +35,6 @@ module.exports = class FLeaveCommand extends commando.Command {
 	async run(message, args) {
 		let found = 0
 		let guild = this.client.guilds.get(args.toLeave)
-		//eslint-disable-next-line array-callback-return
 		guild.channels.map((c) => {
 			if (found === 0) {
 				if (c.type === 'text') {
@@ -47,7 +46,8 @@ module.exports = class FLeaveCommand extends commando.Command {
 						}
 					}
 				}
-			}
+      }
+      return null;
 		})
 		guild.leave()
 		message.reply('Left guild.')

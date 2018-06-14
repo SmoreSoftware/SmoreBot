@@ -2,7 +2,6 @@
 const commando = require('discord.js-commando');
 const oneLine = require('common-tags').oneLine;
 const fs = require('fs');
-//eslint-disable-next-line no-sync
 
 module.exports = class ABLCommand extends commando.Command {
 	constructor(bot) {
@@ -49,10 +48,9 @@ module.exports = class ABLCommand extends commando.Command {
 		if (args.type.toLowerCase() === 'guild') {
 			if (this.client.guilds.find('id', args.id) === null) return message.reply('That guild does not exist, is not in the bot\'s cache, or is not available to the bot.')
 			const guildToBlack = this.client.guilds.get(args.id)
-			/*eslint-disable quotes*/
 			if (!blacklist) blacklist = {
-				"guilds": [],
-				"users": []
+				'guilds': [],
+				'users': []
 			}
 			/*eslint-enable quotes*/
 			if (blacklist.guilds.includes(args.id)) return message.reply(`The guild ${guildToBlack.name} (${guildToBlack.id} is already blacklisted.`)
@@ -61,7 +59,6 @@ module.exports = class ABLCommand extends commando.Command {
 				if (err) {
 					message.reply('Something went wrong! Contact a developer.')
 					console.error(err)
-					//eslint-disable-next-line newline-before-return
 					return
 				}
 				message.reply(`The guild ${guildToBlack.name} (${guildToBlack.id}) has been blacklisted from all aspects of the bot.`)
@@ -69,19 +66,16 @@ module.exports = class ABLCommand extends commando.Command {
 		} else if (args.type.toLowerCase() === 'user') {
 			if (this.client.users.find('id', args.id) === null) return message.reply('That user does not exist, is not in the bot\'s cache, or is not available to the bot.')
 			const userToBlack = this.client.users.get(args.id)
-			/*eslint-disable quotes*/
 			if (!blacklist) blacklist = {
-				"guilds": [],
-				"users": []
+				'guilds': [],
+				'users': []
 			}
-			/*eslint-enable quotes*/
 			if (blacklist.users.includes(args.id)) return message.reply(`The user ${userToBlack.tag} (${userToBlack.id}) is already blacklisted.`)
 			blacklist.users.push(args.id)
 			fs.writeFile('./blacklist.json', JSON.stringify(blacklist, null, 2), (err) => {
 				if (err) {
 					message.reply('Something went wrong! Contact a developer.')
 					console.error(err)
-					//eslint-disable-next-line newline-before-return
 					return
 				}
 				message.reply(`The user ${userToBlack.tag} (${userToBlack.id}) has been blacklisted from all aspects of the bot.`)

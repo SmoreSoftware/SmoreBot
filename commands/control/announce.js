@@ -1,4 +1,3 @@
-//eslint-disable-next-line
 const commando = require('discord.js-commando');
 const oneLine = require('common-tags').oneLine;
 const { RichEmbed } = require('discord.js')
@@ -40,7 +39,7 @@ module.exports = class AnnounceCommand extends commando.Command {
 		.setDescription(args.toAnn)
 		.setColor('0xFF0000')
     .setTimestamp();
-    annChan.send('<@&338046233765478401>', { embed }).then((msg) => {
+    annChan.send('<@&338046233765478401>', { embed }).then(() => {
         message.reply('Announcement sent!')
 		})
 		annRole.setMentionable(false)
