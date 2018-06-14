@@ -43,9 +43,7 @@ module.exports = class GAnnCommand extends commando.Command {
 ~TJ, SmoreSoftware Owner
 Want to turn these announcements off? Do \`${guild.commandPrefix}settings add announcements off\` to opt out.`
 				let setting = guild.settings.get('announcements')
-				//eslint-disable-next-line array-callback-return
 				if (setting === 'off') return
-				//eslint-disable-next-line array-callback-return
 				guild.channels.map((c) => {
 					if (found === 0) {
 						if (c.type === 'text') {
@@ -56,7 +54,8 @@ Want to turn these announcements off? Do \`${guild.commandPrefix}settings add an
 								}
 							}
 						}
-					}
+          }
+          return null
 				})
 			})
 			message.reply(`Execution completed. Shouted "${toSay}"`)
