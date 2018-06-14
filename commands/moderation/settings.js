@@ -1,4 +1,3 @@
-// eslint-disable-next-line
 const commando = require('discord.js-commando');
 const oneLine = require('common-tags').oneLine;
 
@@ -44,12 +43,10 @@ module.exports = class SettingsCommand extends commando.Command {
 		});
 	}
 
-	// eslint-disable-next-line class-methods-use-this
 	hasPermission(msg) {
 		return this.client.isOwner(msg.author) || msg.member.hasPermission('ADMINISTRATOR');
 	}
 
-	// eslint-disable-next-line class-methods-use-this
 	async run(message, args) {
 		switch (args.action.toLowerCase()) {
 			case 'add':
@@ -93,7 +90,6 @@ module.exports = class SettingsCommand extends commando.Command {
 						} else if (state.toLowerCase() === 'off') {
 							message.guild.settings.set('announcements', state);
 							message.reply(`Set the announcement state to "${message.guild.settings.get('announcements')}" \nDo \`${message.guild.commandPrefix}settings add announcements on\` to re-enable announcements.`);
-							// eslint-disable-next-line no-useless-escape
 						} else { return message.reply('Invaid state! Use \`on\` or  \`off\`.'); }
 						break;
 					}
@@ -174,7 +170,6 @@ module.exports = class SettingsCommand extends commando.Command {
 					case 'mod':
 					{
 						const role = message.guild.roles.get(message.guild.settings.get('modrole'));
-						// eslint-disable-next-line no-undefined
 						if (role === undefined || role.name === undefined || role === undefined) return message.reply('There is currently no mod role set.');
 						message.reply(`The mod role is "${role.name}"`);
 						break;
@@ -182,7 +177,6 @@ module.exports = class SettingsCommand extends commando.Command {
 					case 'admin':
 					{
 						const role = message.guild.roles.get(message.guild.settings.get('adminrole'));
-						// eslint-disable-next-line no-undefined
 						if (role === undefined || role.name === undefined || role === undefined) return message.reply('There is currently no admin role set.');
 						message.reply(`The admin role is "${role.name}"`);
 						break;
@@ -190,7 +184,6 @@ module.exports = class SettingsCommand extends commando.Command {
 					case 'modlog':
 					{
 						const chan = message.guild.channels.get(message.guild.settings.get('modlog'));
-						// eslint-disable-next-line no-undefined
 						if (chan === undefined || chan.id === undefined || chan === undefined) return message.reply('There is currently no modlog channel set.');
 						message.reply(`The mod log channel is "<#${chan.id}>"`);
 						break;
@@ -198,7 +191,6 @@ module.exports = class SettingsCommand extends commando.Command {
 					case 'announcements':
 					{
 						const state = message.guild.settings.get('announcements');
-						// eslint-disable-next-line no-undefined
 						if (state === undefined) return message.reply('There is currently no announcements state set.');
 						message.reply(`The announcements state is "${state}"`);
 						break;
@@ -206,7 +198,6 @@ module.exports = class SettingsCommand extends commando.Command {
 					case 'autorole':
 					{
 						const role = message.guild.roles.get(message.guild.settings.get('autorole'));
-						// eslint-disable-next-line no-undefined
 						if (role === undefined || role.name === undefined || role === undefined) return message.reply('There is currently no auto role set.');
 						message.reply(`The auto role is "${role.name}"`);
 						break;
@@ -214,7 +205,6 @@ module.exports = class SettingsCommand extends commando.Command {
 					case 'starboard':
 					{
 						const chan = message.guild.channels.get(message.guild.settings.get('starboard'));
-						// eslint-disable-next-line no-undefined
 						if (chan === undefined || chan.name === undefined) return message.reply('There is currently no starboard channel set.');
 						message.reply(`The starboard channel is "<#${message.guild.settings.get('starboard')}>"`);
 						break;
@@ -237,21 +227,15 @@ module.exports = class SettingsCommand extends commando.Command {
 						let announcements = message.guild.settings.get('announcements');
 						let autorole = message.guild.roles.get(message.guild.settings.get('autorole'));
 						let starboard = message.guild.channels.get(message.guild.settings.get('starboard'));
-						// eslint-disable-next-line no-undefined
 						if (modrole === undefined || modrole.name === undefined) modrole = 'not set';
 						else modrole = modrole.name;
-						// eslint-disable-next-line no-undefined
 						if (adminrole === undefined || adminrole.name === undefined) adminrole = 'not set';
 						else adminrole = adminrole.name;
-						// eslint-disable-next-line no-undefined
 						if (modlog === undefined || modlog.name === undefined) modlog = 'not set';
 						else modlog = `<#${modlog.id}>`;
-						// eslint-disable-next-line no-undefined
 						if (announcements === undefined) announcements = 'not set';
-						// eslint-disable-next-line no-undefined
 						if (autorole === undefined || autorole.name === undefined) autorole = 'not set';
 						else autorole = autorole.name;
-						// eslint-disable-next-line no-undefined
 						if (starboard === undefined || starboard.name === undefined) starboard = 'not set';
 						else starboard = `<#${starboard.id}>`;
 						message.reply(`The settings for this server are:
@@ -272,7 +256,6 @@ module.exports = class SettingsCommand extends commando.Command {
 			}
 			default:
 			{
-				// eslint-disable-next-line no-useless-escape
 				message.reply('Invalid command usage. Please try again. *(Action should be \`add\`, \`remove\`, \`view\`, or \`list\`.)*');
 			}
 		}

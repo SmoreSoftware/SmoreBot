@@ -1,4 +1,3 @@
-/*eslint-disable*/
 const decks = new Map();
 const games = new Map();
 

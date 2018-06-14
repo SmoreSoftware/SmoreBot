@@ -1,4 +1,3 @@
-// eslint-disable-next-line
 const commando = require('discord.js-commando');
 const oneLine = require('common-tags').oneLine;
 
@@ -35,7 +34,6 @@ module.exports = class LmgtfyCommand extends commando.Command {
 		});
 	}
 
-	// eslint-disable-next-line class-methods-use-this
 	async run(message, args) {
 		const toLink = args.toSearch.replace(/\s+/g, '+');
 		message.channel.send(`Dear ${args.member}, your friend decided to help you out in your search for finding "${args.toSearch}".

@@ -1,4 +1,3 @@
-// eslint-disable-next-line
 const commando = require('discord.js-commando');
 const oneLine = require('common-tags').oneLine;
 const allowed = require('./techsupport.json');
@@ -45,7 +44,6 @@ module.exports = class ConnectCommand extends commando.Command {
 		let sent = 0;
 		this.client.on('message', message => {
 			if (sent === 0) {
-				// eslint-disable-next-line no-useless-escape
 				supportChan.send('Connected. Do \`call end\` at any time to end the call.');
 				sent = 1;
 			}

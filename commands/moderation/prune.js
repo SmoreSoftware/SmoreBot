@@ -1,4 +1,3 @@
-// eslint-disable-next-line
 const commando = require('discord.js-commando');
 const oneLine = require('common-tags').oneLine;
 
@@ -24,7 +23,6 @@ module.exports = class PruneCommand extends commando.Command {
 		});
 	}
 
-	// eslint-disable-next-line class-methods-use-this
 	async run(message, args) {
 		const messagecount = args.toPrune;
 		message.channel.fetchMessages({

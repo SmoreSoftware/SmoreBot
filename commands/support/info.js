@@ -1,4 +1,3 @@
-// eslint-disable-next-line
 const commando = require('discord.js-commando');
 const oneLine = require('common-tags').oneLine;
 const { RichEmbed } = require('discord.js');
@@ -21,7 +20,6 @@ module.exports = class InfoCommand extends commando.Command {
 		});
 	}
 
-	// eslint-disable-next-line class-methods-use-this
 	async run(message) {
 		let host;
 		if (os.hostname().toLowerCase() === 'ubuntuserver') {

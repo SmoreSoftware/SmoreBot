@@ -1,4 +1,3 @@
-// eslint-disable-next-line
 const commando = require('discord.js-commando');
 const oneLine = require('common-tags').oneLine;
 const { RichEmbed } = require('discord.js');
@@ -23,7 +22,7 @@ module.exports = class SupportCommand extends commando.Command {
 
 	async run(message) {
 		let isEnabled;
-		const avatarURL = message.author.avatar ? message.author.avatarURL : 'https://discordapp.com/assets/0e291f67c9274a1abdddeb3fd919cbaa.png';
+		const avatarURL = message.author.displayAvatarURL;
 		const client = this.client;
 		message.reply('Thank you for contacting SmoreBot Support! If there are any available support representatives, they will contact you soon.');
 		const chan = message.channel;
@@ -53,12 +52,10 @@ module.exports = class SupportCommand extends commando.Command {
 			}
 			if (reason === 'success') {
 				this.client.channels.get(supportChan).send(':heavy_check_mark: Call picked up!');
-				// eslint-disable-next-line no-useless-escape
 				this.client.channels.get(supportChan).send('Do \`call end\` at any time to end the call.');
 				chan.send(`${message.author}`);
 				chan.send(':heavy_check_mark: Your call has been picked up by a support representative!');
 				chan.send(':hourglass: You will be helped shortly.');
-				// eslint-disable-next-line no-useless-escape
 				chan.send('Do \`call end\` at any time to end the call.');
 				isEnabled = true;
 				this.client.on('message', message => {

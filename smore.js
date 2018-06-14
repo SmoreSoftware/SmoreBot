@@ -1,5 +1,3 @@
-/* eslint-disable no-sync*/
-// eslint-disable-next-line
 require('dotenv').load();
 const commando = require('discord.js-commando');
 const client = new commando.Client({
@@ -17,7 +15,6 @@ const sqlite = require('sqlite');
 const sql = require('sqlite');
 const oneLine = require('common-tags').oneLine;
 const ms = require('ms');
-// eslint-disable-next-line no-unused-vars
 const dbots = require('superagent');
 const request = require('request');
 const { RichEmbed } = require('discord.js');
@@ -41,10 +38,10 @@ function dmTemplate() {
 const DMUser = dmTemplate();
 
 const evalObjects = {
-	hostname: hostname,
-	owners: owners,
-	prefix: prefix,
-	DMUser: DMUser
+	hostname,
+	owners,
+	prefix,
+	DMUser
 };
 
 client.registry
@@ -66,12 +63,10 @@ client.registry
 
 client.setProvider(sqlite.open('./bin/settings.sqlite').then(db => new commando.SQLiteProvider(db))).catch(console.error);
 client.dispatcher.addInhibitor(msg => {
-	// eslint-disable-next-line no-sync
 	const blacklist = require('./bin/blacklist.json');
 	if (blacklist.guilds.includes(msg.guild.id)) return [`Guild ${msg.guild.id} is blacklisted`, msg.channel.send('This guild has been blacklisted. Appeal here: https://discord.gg/6P6MNAU')];
 });
 client.dispatcher.addInhibitor(msg => {
-	// eslint-disable-next-line no-sync
 	const blacklist = require('./bin/blacklist.json');
 	if (blacklist.users.includes(msg.author.id)) return [`User ${msg.author.id} is blacklisted`, msg.reply('You have been blacklisted. Appeal here: https://discord.gg/6P6MNAU')];
 });
@@ -202,7 +197,6 @@ Now on: ${client.guilds.size} servers`);
 		const botPercentage = Math.floor(guild.members.filter(u => u.user.bot).size / guild.members.size * 100);
 		if (botPercentage >= 80) {
 			let found = 0;
-			// eslint-disable-next-line array-callback-return
 			guild.channels.map(c => {
 				if (found === 0) {
 					if (c.type === 'text') {
@@ -218,7 +212,6 @@ Now on: ${client.guilds.size} servers`);
 			});
 			guild.owner.send(`**ALERT:** Your guild, "${guild.name}", has been marked as an illegal guild. \nThis may be due to it being marked as a bot guild or marked as a spam guild. \nThe bot will now leave the server. \nIf you wish to speak to my developer, you may join here: https://discord.gg/t8xHbHY`);
 			guild.leave();
-			// eslint-disable-next-line newline-before-return
 			return;
 		}
 		client.user.setPresence({
@@ -235,7 +228,6 @@ Now on: ${client.guilds.size} servers`);
 			.setDescription(`Thanks for adding me to your server, "${guild.name}"! To see commands do ${guild.commandPrefix}help. Please note: By adding me to your server and using me, you affirm that you agree to [our TOS](https://smoresoft.uk/tos.html).`);
 		guild.owner.send({ embed });
 		let found = 0;
-		// eslint-disable-next-line array-callback-return
 		guild.channels.map(c => {
 			if (found === 0) {
 				if (c.type === 'text') {
@@ -280,7 +272,6 @@ Now on: ${client.guilds.size} servers`);
 			const guild = member.guild;
 			const role = guild.settings.get('autorole');
 			if (!role) return;
-			// eslint-disable-next-line no-useless-return
 			if (member.bot) return;
 			member.addRole(role, 'SmoreBot Autorole');
 		}
@@ -309,7 +300,6 @@ Now on: ${client.guilds.size} servers`);
 		}
 
 		if (message.mentions) {
-			// eslint-disable-next-line array-callback-return
 			message.mentions.users.map(user => {
 				if (afkUsers[user.id]) {
 					if (afkUsers[user.id].afk === true) {
@@ -322,13 +312,10 @@ Now on: ${client.guilds.size} servers`);
 		fs.open('./db.lock', 'r', err => {
 			if (err) {
 				if (err.code === 'ENOENT') {
-					// eslint-disable-next-line no-use-before-define
 					onSuccess();
 				}
-				// eslint-disable-next-line no-negated-condition
 			} else if (!err) {
-				// eslint-disable-next-line no-useless-return
-				return;
+
 			} else {
 				return console.error(err);
 			}
@@ -337,12 +324,8 @@ Now on: ${client.guilds.size} servers`);
 
 		async function onSuccess() {
 			sql.get(`SELECT * FROM bank WHERE userId ="${message.author.id}"`).then(row => {
-				// eslint-disable-next-line no-negated-condition
 				if (!row) {
 					sql.run('INSERT INTO bank (userId, balance, points) VALUES (?, ?, ?)', [message.author.id, 0, 0]);
-					// eslint-disable-next-line
-						return
-					// eslint-disable-next-line no-else-return
 				} else {
 					if (parseInt(row.points) >= 100) {
 						const curBal = parseInt(row.balance);
@@ -350,25 +333,20 @@ Now on: ${client.guilds.size} servers`);
 						sql.run(`UPDATE bank SET balance = ${newBal} WHERE userId = ${message.author.id}`);
 						sql.run(`UPDATE bank SET points = ${0} WHERE userId = ${message.author.id}`);
 					}
-					// eslint-disable-next-line
-						if (!cooldownUsers.includes(message.author.id)) {
+					if (!cooldownUsers.includes(message.author.id)) {
 						sql.get(`SELECT * FROM bank WHERE userId ="${message.author.id}"`).then(row => {
-							// eslint-disable-next-line no-mixed-operators
 							const newPts = Math.floor(Math.abs(Math.random() * (10 - 36) + 10));
 							sql.run(`UPDATE bank SET points = ${row.points + newPts} WHERE userId = ${message.author.id}`);
 							cooldownUsers.push(message.author.id);
 						});
-					} else {
-						// eslint-disable-next-line no-lonely-if
-						if (!waitingUsers.includes(message.author.id)) {
-							waitingUsers.push(message.author.id);
-							setTimeout(() => {
-								const index1 = cooldownUsers.indexOf(message.author.id);
-								const index2 = waitingUsers.indexOf(message.author.id);
-								cooldownUsers.splice(index1, 1);
-								waitingUsers.splice(index2, 1);
-							}, ms('1m'));
-						}
+					} else if (!waitingUsers.includes(message.author.id)) {
+						waitingUsers.push(message.author.id);
+						setTimeout(() => {
+							const index1 = cooldownUsers.indexOf(message.author.id);
+							const index2 = waitingUsers.indexOf(message.author.id);
+							cooldownUsers.splice(index1, 1);
+							waitingUsers.splice(index2, 1);
+						}, ms('1m'));
 					}
 				}
 			})
@@ -377,8 +355,6 @@ Now on: ${client.guilds.size} servers`);
 					sql.run('CREATE TABLE IF NOT EXISTS bank (userId TEXT, balance INTEGER, points INTEGER)').then(() => {
 						sql.run('INSERT INTO bank (userId, balance, points) VALUES (?, ?, ?)', [message.author.id, 0, 0]);
 					});
-					// eslint-disable-next-line
-					return
 				});
 		}
 		fs.unlinkSync('./db.lock');
@@ -398,12 +374,10 @@ Now on: ${client.guilds.size} servers`);
 			const starboard = client.channels.get(msg.guild.settings.get('starboard'));
 			if (!starboard) return;
 			if (user.id === msg.author.id) return msg.channel.send(`${msg.author}, You can't star your own messages!`);
-			// eslint-disable-next-line no-undef
 			reacts = msg.reactions.filter(reacts => reacts.emoji.name === '⭐');
-			// eslint-disable-next-line no-undef
 			if (reacts.length > 1) return;
 			starboard.send({
-				embed: embed
+				embed
 			});
 		}
 	});
@@ -413,14 +387,10 @@ setInterval(() => {
 		if (err) {
 			if (err.code === 'ENOENT') {
 				console.log('No DB lock, polling transactions');
-				// eslint-disable-next-line no-use-before-define
 				onSuccess();
 			}
-			// eslint-disable-next-line no-negated-condition
 		} else if (!err) {
 			console.error('DB lock exists, transaction polling halted');
-			// eslint-disable-next-line newline-before-return, no-useless-return
-			return;
 		} else {
 			return console.error(err);
 		}
@@ -459,7 +429,6 @@ setInterval(() => {
 				console.log(JSON.stringify(body, null, 2));
 				body.forEach(t => {
 					sql.get(`SELECT * FROM bank WHERE userId ="${t.user}"`).then(row => {
-						// eslint-disable-next-line no-negated-condition
 						if (!row) {
 							sql.run('INSERT INTO bank (userId, balance, points) VALUES (?, ?, ?)', [t.user, t.amount, 0]);
 							const transAuth = client.users.get(t.user);
@@ -476,10 +445,7 @@ setInterval(() => {
 							transAuth.send({
 								embed
 							});
-							/*eslint-disable*/
-								return
-							} else {
-								/* eslint-enable*/
+						} else {
 							const curBal = parseInt(row.balance);
 							const newBal = curBal + t.amount;
 							sql.run(`UPDATE bank SET balance = ${newBal} WHERE userId = ${t.user}`);
@@ -518,14 +484,11 @@ setInterval(() => {
 									embed
 								});
 							});
-							// eslint-disable-next-line
-							return
 						});
 				});
 			}
 		});
 	}
-	// eslint-disable-next-line no-sync
 	fs.unlinkSync('./db.lock');
 }, ms('30s'));
 

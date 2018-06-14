@@ -1,4 +1,3 @@
-// eslint-disable-next-line
 const commando = require('discord.js-commando');
 const oneLine = require('common-tags').oneLine;
 const fs = require('fs');
@@ -22,7 +21,6 @@ module.exports = class PubRanksCommand extends commando.Command {
 			args: [{
 				key: 'action',
 				label: 'action',
-				// eslint-disable-next-line no-useless-escape
 				prompt: 'What action would you like to preform? (\`add\`, \`remove\`, or \`list\`)',
 				type: 'string',
 				infinite: false
@@ -40,7 +38,6 @@ module.exports = class PubRanksCommand extends commando.Command {
 		});
 	}
 
-	// eslint-disable-next-line class-methods-use-this
 	async run(message, args) {
 		if (args.action.toLowerCase() === 'add') {
 			if (!message.guild.member(message.author).hasPermission('MANAGE_ROLES', false, true, true)) return message.reply(`You do not have permission to perform this action! Did you mean \`${message.guild.commandPrefix}rank give\`?`);
@@ -56,7 +53,6 @@ module.exports = class PubRanksCommand extends commando.Command {
 				if (err) {
 					message.reply('Something went wrong! Contact a developer. https://discord.gg/6P6MNAU');
 					console.error(err);
-					// eslint-disable-next-line newline-before-return
 					return;
 				}
 				message.reply('Role added.');
@@ -71,7 +67,6 @@ module.exports = class PubRanksCommand extends commando.Command {
 				if (err) {
 					message.reply('Something went wrong! Contact a developer.');
 					console.error(err);
-					// eslint-disable-next-line newline-before-return
 					return;
 				}
 				message.reply('Role removed.');
@@ -84,7 +79,6 @@ module.exports = class PubRanksCommand extends commando.Command {
 				rankArray.push(rank);
 			});
 			message.reply(`\`\`\`${rankArray}\`\`\``);
-			// eslint-disable-next-line no-useless-escape
 		} else {
 			return message.reply(`Invalid command usage. Please use \`add\`, \`remove\`, or \`list\`.
 **NOTE:** If you are trying to give yourself a role, do \`${message.guild.commandPrefix}rank give role\`.`);

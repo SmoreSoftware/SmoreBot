@@ -1,4 +1,3 @@
-// eslint-disable-next-line
 const commando = require('discord.js-commando');
 const oneLine = require('common-tags').oneLine;
 const { RichEmbed } = require('discord.js');
@@ -64,7 +63,7 @@ Reason: "${args.reason}"`).catch(console.error);
 					.setTimestamp();
 				message.delete(1);
 				message.guild.channels.get(modlog).send({
-					embed: embed
+					embed
 				});
 				message.reply(`The user ${member.user.tag} was successfully banned.`);
 			})

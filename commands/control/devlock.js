@@ -1,4 +1,3 @@
-// eslint-disable-next-line
 const commando = require('discord.js-commando');
 const oneLine = require('common-tags').oneLine;
 const fs = require('fs');
@@ -51,12 +50,10 @@ module.exports = class DevlockCommand extends commando.Command {
 			// this is a very messy way to remove an inhibitor, but it will have to do until i figure out CommandDispatcher#removeInhibitor
 			this.client.dispatcher.inhibitors.clear();
 			this.client.dispatcher.addInhibitor(msg => {
-				// eslint-disable-next-line no-sync
 				const blacklist = JSON.parse(fs.readFileSync('./blacklist.json', 'utf8'));
 				if (blacklist.guilds.includes(msg.guild.id)) return [`Guild ${msg.guild.id} is blacklisted`, msg.channel.send('This guild has been blacklisted. Appeal here: https://discord.gg/6P6MNAU')];
 			});
 			this.client.dispatcher.addInhibitor(msg => {
-				// eslint-disable-next-line no-sync
 				const blacklist = JSON.parse(fs.readFileSync('./blacklist.json', 'utf8'));
 				if (blacklist.users.includes(msg.author.id)) return [`User ${msg.author.id} is blacklisted`, msg.reply('You have been blacklisted. Appeal here: https://discord.gg/6P6MNAU')];
 			});

@@ -1,4 +1,3 @@
-// eslint-disable-next-line
 const commando = require('discord.js-commando');
 const oneLine = require('common-tags').oneLine;
 const { RichEmbed } = require('discord.js');
@@ -30,7 +29,6 @@ module.exports = class NoteCommand extends commando.Command {
 	}
 
 	async run(message) {
-		// eslint-disable-next-line no-negated-condition
 		if (!this.client.notes[message.author.id]) {
 			this.client.notes[message.author.id] = {
 				notes: [{
@@ -45,7 +43,6 @@ module.exports = class NoteCommand extends commando.Command {
 			}
 		} else {
 			const [action, title] = message.content.split(/\s+/g).slice(1);
-			// eslint-disable-next-line newline-per-chained-call
 			const content = message.content.split(/\s+/g).slice(3).join(' ');
 			const user = this.client.notes[message.author.id];
 
@@ -75,7 +72,7 @@ module.exports = class NoteCommand extends commando.Command {
 					.setDescription(newNote.content)
 					.setTimestamp();
 				message.channel.send(`<@${message.author.id}>, Note Saved`, {
-					embed: embed
+					embed
 				});
 			} else
 			if (action === 'list') {
@@ -89,7 +86,6 @@ To get a note: \`${message.guild.commandPrefix}note get (ID)\`
 To list all notes: \`${message.guild.commandPrefix}note list\`
 To delete a note: \`${message.guild.commandPrefix}note delete (ID)\`
 ----------------------------------------------------------------------------------------------`);
-				// eslint-disable-next-line array-callback-return
 				user.notes.map(note => {
 					const noteID = user.notes.indexOf(note);
 					embed.addField(`${note.title} (ID: ${noteID})`, `${note.content}\n----------------------------------------------------------------------------------------------`);

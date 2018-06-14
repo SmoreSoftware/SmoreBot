@@ -1,4 +1,3 @@
-// eslint-disable-next-line
 const commando = require('discord.js-commando');
 const oneLine = require('common-tags').oneLine;
 const sql = require('sqlite');
@@ -27,26 +26,20 @@ module.exports = class DailyCommand extends commando.Command {
 		});
 	}
 
-	// eslint-disable-next-line class-methods-use-this
 	async run(message) {
 		fs.open('./db.lock', 'r', err => {
 			if (err) {
 				if (err.code === 'ENOENT') {
 					console.log('No DB lock, running daily command');
-					// eslint-disable-next-line no-use-before-define
 					onSuccess();
 				}
-				// eslint-disable-next-line no-negated-condition
 			} else if (!err) {
 				console.error('DB lock exists, daily command halted');
 				message.reply('The bank is currently busy. Please run this command again.');
-				// eslint-disable-next-line newline-before-return, no-useless-return
-				return;
 			} else {
 				return console.error(err);
 			}
 		});
-		// eslint-disable-next-line no-sync
 		fs.closeSync(fs.openSync('./db.lock', 'w'));
 
 		async function onSuccess() {
@@ -56,8 +49,7 @@ module.exports = class DailyCommand extends commando.Command {
 					message.reply('You don\'t have a bank account! Creating one now...');
 					sql.run('INSERT INTO bank (userId, balance, points) VALUES (?, ?, ?)', [message.author.id, 0, 0]);
 					message.reply('Account created.');
-					// eslint-disable-next-line
-          return
+					return;
 				}
 				const curBal = parseInt(row.balance);
 				const newBal = curBal + 100;
@@ -68,7 +60,6 @@ module.exports = class DailyCommand extends commando.Command {
 Be sure to come back tomorrow!`);
 			});
 		}
-		// eslint-disable-next-line no-sync
 		fs.unlinkSync('./db.lock');
 	}
 };

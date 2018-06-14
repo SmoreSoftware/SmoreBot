@@ -67,7 +67,6 @@ module.exports = class RouletteCommand extends Command {
 		});
 	}
 
-	// eslint-disable-next-line class-methods-use-this
 	async run(msg, args) {
 		const {
 			bet,
@@ -102,21 +101,20 @@ module.exports = class RouletteCommand extends Command {
 
 				winners.forEach(winner => Currency.changeBalance(winner.user.id, winner.winnings));
 
-				/*eslint-disable*/
-        return msg.embed({
-          color: colors[roulette.winSpaces[1]] || null,
-          description: stripIndents `
+				return msg.embed({
+					color: colors[roulette.winSpaces[1]] || null,
+					description: stripIndents`
 						The ball landed on: **${roulette.winSpaces[1]
-							? roulette.winSpaces[1]
-							: ''} ${roulette.winSpaces[0]}**!
+		? roulette.winSpaces[1]
+		: ''} ${roulette.winSpaces[0]}**!
 						${winners.length !== 0
-							? `__**Winners:**__
+		? `__**Winners:**__
 							${winners.map(winner => `${winner.user.username} won ${Currency.convert(winner.winnings)}`)
-								.join('\n')}`
-							: '__**No winner.**__'}
+		.join('\n')}`
+		: '__**No winner.**__'}
 					`
-        });
-        /* eslint-enable*/
+				});
+				/* eslint-enable*/
 			});
 	}
 };

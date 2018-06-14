@@ -1,5 +1,3 @@
-// eslint-disable-next-line
-/*eslint-disable camelcase*/
 const commando = require('discord.js-commando');
 const oneLine = require('common-tags').oneLine;
 const Twit = require('twit');
@@ -24,7 +22,6 @@ const T = new Twit({
 	access_token: TAT,
 	access_token_secret: TATS
 });
-/* eslint-enable camelcase*/
 
 module.exports = class TweetCommand extends commando.Command {
 	constructor(client) {
@@ -48,7 +45,6 @@ module.exports = class TweetCommand extends commando.Command {
 				prompt: 'What would you like to tweet? (Max 140 characters)',
 				validate: text => {
 					if (text.length < 280) return true;
-					// eslint-disable-next-line newline-before-return
 					return 'Your tweet must be 280 characters or less!';
 				},
 				infinite: false
@@ -62,14 +58,12 @@ module.exports = class TweetCommand extends commando.Command {
 		return this.client.isOwner(msg.author);
 	}
 
-	// eslint-disable-next-line class-methods-use-this
 	async run(message, args) {
 		const tweet = {
 			status: `${args.message}
 -${message.author.username}`
 		};
 
-		// eslint-disable-next-line no-use-before-define
 		T.post('statuses/update', tweet, tweeted);
 
 		function tweeted(err) {

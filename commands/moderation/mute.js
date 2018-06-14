@@ -1,4 +1,3 @@
-// eslint-disable-next-line
 const commando = require('discord.js-commando');
 const oneLine = require('common-tags').oneLine;
 const { RichEmbed } = require('discord.js');
@@ -57,7 +56,6 @@ module.exports = class MuteCommand extends commando.Command {
 		const muted = [];
 		const validUnlocks = ['voice', 'unmute'];
 		if (validUnlocks.includes(args.time)) {
-			// eslint-disable-next-line array-callback-return
 			message.guild.channels.map(channel => {
 				channel.overwritePermissions(args.user, {
 					SEND_MESSAGES: null,
@@ -67,12 +65,9 @@ module.exports = class MuteCommand extends commando.Command {
 					.then(() => console.log('Done per 1 channel.'))
 					.catch(err => {
 						if (err) console.error(err);
-						// eslint-disable-next-line no-undef
 						if (errcount === 0) {
 							message.reply('**Failed to mute in one or more channels.** Please mute manually or give me administrator permission and try again.');
-							// eslint-disable-next-line no-undef
 							errcount++;
-							// eslint-disable-next-line no-undef
 						} else { return console.log(`errcount === ${errcount}`); }
 					});
 			}).then(() => {
@@ -86,12 +81,10 @@ module.exports = class MuteCommand extends commando.Command {
 					.setTimestamp();
 				message.delete(1);
 				message.guild.channels.get(modlog).send({
-					embed: embed
+					embed
 				});
 				clearTimeout(muted[args.user.id]);
-				// eslint-disable-next-line prefer-reflect
 				delete muted[args.user.id];
-				// eslint-disable-next-line newline-per-chained-call
 			}).catch(error => {
 				console.log(error);
 			});
@@ -100,7 +93,6 @@ module.exports = class MuteCommand extends commando.Command {
 			let count2 = 0;
 			// console.log(`first ${count2}`)
 			const client = this.client;
-			// eslint-disable-next-line array-callback-return
 			message.guild.channels.map(channel => {
 				channel.overwritePermissions(args.user, {
 					SEND_MESSAGES: false,
@@ -119,11 +111,10 @@ module.exports = class MuteCommand extends commando.Command {
 									.setDescription(`**Action:** Mute \n**User:** ${args.user.user.tag} (${args.user.id}) \n**Reason:** ${args.reason} \n**Time:** ${ms(ms(args.time), { 'long': true })}`)
 									.setTimestamp();
 								message.guild.channels.get(modlog).send({
-									embed: embed
+									embed
 								});
 								muted[args.user.id] = setTimeout(() => {
 									// console.log(`third ${count2}`)
-									// eslint-disable-next-line array-callback-return, no-unused-vars
 									message.guild.channels.map(channel => {
 										channel.overwritePermissions(args.user, {
 											SEND_MESSAGES: null,
@@ -135,21 +126,18 @@ module.exports = class MuteCommand extends commando.Command {
 												message.channel.send(`:loud_sound: ${args.user.user.tag} unmuted.`);
 												const embed = new RichEmbed()
 													.setTitle(':bangbang: **Moderation action** :scales:')
-												// eslint-disable-next-line no-invalid-this
-													.setAuthor(`${client.user.tag} (${client.user.id})`, `${client.user.avatarURL}`)
+												  .setAuthor(`${client.user.tag} (${client.user.id})`, `${client.user.avatarURL}`)
 													.setColor(0x00FF00)
 													.setDescription(`**Action:** Unmute \n**User:** ${args.user.user.tag} (${args.user.id}) \n**Reason:** Time ended, mute expired`)
 													.setTimestamp();
 												message.guild.channels.get(modlog).send({
-													embed: embed
+													embed
 												});
 											}
 										});
-										// eslint-disable-next-line prefer-reflect
 										delete muted[args.user.id];
 									});
 								}, ms(args.time));
-								// eslint-disable-next-line newline-per-chained-call
 							}).catch(error => {
 								console.log(error);
 							});

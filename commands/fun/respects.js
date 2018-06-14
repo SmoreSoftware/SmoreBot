@@ -1,4 +1,3 @@
-// eslint-disable-next-line
 const commando = require('discord.js-commando');
 const oneLine = require('common-tags').oneLine;
 
@@ -18,7 +17,6 @@ module.exports = class RespectsCommand extends commando.Command {
 		});
 	}
 
-	// eslint-disable-next-line class-methods-use-this
 	async run(message) {
 		message.channel.send('Press F to pay respects').then(m => {
 			m.react('🇫');

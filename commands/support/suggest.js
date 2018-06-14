@@ -1,4 +1,3 @@
-// eslint-disable-next-line
 const commando = require('discord.js-commando');
 const oneLine = require('common-tags').oneLine;
 const { RichEmbed } = require('discord.js');
@@ -30,7 +29,6 @@ module.exports = class SuggestCommand extends commando.Command {
 
 	async run(message, args) {
 		if (message.guild.member(this.client.user).hasPermission('CREATE_INSTANT_INVITE')) {
-			// eslint-disable-next-line no-unused-vars
 			const invite = message.channel.createInvite({
 				temporary: false,
 				maxAge: 0,

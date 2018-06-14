@@ -1,4 +1,3 @@
-// eslint-disable-next-line
 const commando = require('discord.js-commando');
 const oneLine = require('common-tags').oneLine;
 const rankFile = require('../../bin/ranks.json');
@@ -36,7 +35,6 @@ module.exports = class DebugCommand extends commando.Command {
 		return this.client.isOwner(msg.author);
 	}
 
-	// eslint-disable-next-line class-methods-use-this
 	async run(message, args) {
 		if (args.guild.toLowerCase() === 'local') {
 			let modrole = message.guild.roles.get(message.guild.settings.get('modrole'));
@@ -44,30 +42,23 @@ module.exports = class DebugCommand extends commando.Command {
 			let modlog = message.guild.channels.get(message.guild.settings.get('modlog'));
 			let announcements = message.guild.settings.get('announcements');
 			let autorole = message.guild.roles.get(message.guild.settings.get('autorole'));
-			// eslint-disable-next-line no-undefined
 			if (modrole === undefined || modrole.name === undefined) modrole = 'not set';
 			else modrole = modrole.name;
-			// eslint-disable-next-line no-undefined
 			if (adminrole === undefined || adminrole.name === undefined) adminrole = 'not set';
 			else adminrole = adminrole.name;
-			// eslint-disable-next-line no-undefined
 			if (modlog === undefined || modlog.name === undefined) modlog = 'not set';
 			else modlog = `<#${modlog.id}>`;
-			// eslint-disable-next-line no-undefined
 			if (announcements === undefined) announcements = 'not set';
-			// eslint-disable-next-line no-undefined
 			if (autorole === undefined || autorole.name === undefined) autorole = 'not set';
 			else autorole = autorole.name;
 
 			let rankArray;
-			// eslint-disable-next-line no-negated-condition
 			if (!ranks[message.guild.id]) { rankArray = 'no public ranks'; } else {
 				rankArray = [];
 				ranks[message.guild.id].ranks.forEach(rank => {
 					rankArray.push(rank);
 				});
 			}
-			// eslint-disable-next-line no-undefined
 			if (ranks === undefined) ranks = 'no public ranks';
 
 			message.reply(`__**Guild Info**__
@@ -98,23 +89,17 @@ __**Settings**__
 			let modlog = guild.channels.get(guild.settings.get('modlog'));
 			let announcements = guild.settings.get('announcements');
 			let autorole = guild.roles.get(guild.settings.get('autorole'));
-			// eslint-disable-next-line no-undefined
 			if (modrole === undefined || modrole.name === undefined) modrole = 'not set';
 			else modrole = modrole.name;
-			// eslint-disable-next-line no-undefined
 			if (adminrole === undefined || adminrole.name === undefined) adminrole = 'not set';
 			else adminrole = adminrole.name;
-			// eslint-disable-next-line no-undefined
 			if (modlog === undefined || modlog.name === undefined) modlog = 'not set';
 			else modlog = `<#${modlog.id}>`;
-			// eslint-disable-next-line no-undefined
 			if (announcements === undefined) announcements = 'not set';
-			// eslint-disable-next-line no-undefined
 			if (autorole === undefined || autorole.name === undefined) autorole = 'not set';
 			else autorole = autorole.name;
 
 			let rankArray;
-			// eslint-disable-next-line no-negated-condition
 			if (!ranks[args.guild]) { rankArray = 'no public ranks'; } else {
 				rankArray = [];
 				ranks[args.guild].ranks.forEach(rank => {

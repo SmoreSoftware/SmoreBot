@@ -5,7 +5,6 @@ store user currencies. This assumes you've
 already set up a currency DB, a way to earn
 currency, and have a basic knowledge of SQL.*/
 
-// eslint-disable-next-line
 const commando = require('discord.js-commando');
 const oneLine = require('common-tags').oneLine;
 const request = require('request');
@@ -48,70 +47,54 @@ module.exports = class ConvertCommand extends commando.Command {
 		});
 	}
 
-	// eslint-disable-next-line class-methods-use-this
 	async run(message, args) {
 		message.channel.startTyping();
 		fs.open('./db.lock', 'r', err => {
 			if (err) {
 				if (err.code === 'ENOENT') {
 					console.log('No DB lock, running convert command');
-					// eslint-disable-next-line no-use-before-define
 					onSuccess();
 				}
-				// eslint-disable-next-line no-negated-condition
 			} else if (!err) {
 				console.error('DB lock exists, convert command halted');
 				message.reply('The bank is currently busy. Please run this command again.');
-				// eslint-disable-next-line newline-before-return, no-useless-return
-				return;
 			} else {
 				return console.error(err);
 			}
 		});
-		// eslint-disable-next-line no-sync
 		fs.closeSync(fs.openSync('./db.lock', 'w'));
 
 		async function onSuccess() {
 			sql.open('./bin/bank.sqlite');
 			sql.get(`SELECT * FROM bank WHERE userId ="${message.author.id}"`).then(row => {
-				// eslint-disable-next-line no-negated-condition
 				if (!row) {
 					message.reply('You don\'t have a bank account! Creating one now...');
 					sql.run('INSERT INTO bank (userId, balance, points) VALUES (?, ?, ?)', [message.author.id, 0, 0]);
 					message.reply('Account created.');
-					/*eslint-disable*/
-					return
-				} else {
-					/* eslint-enable*/
-					const userBal = row.balance;
-					const balAfterTransaction = userBal - args.amount;
-					if (balAfterTransaction < 0) {
-						const embed = new RichEmbed()
-							.setTitle('Transaction error!')
-							.setColor(0xFF0000)
-							.setDescription(`You can not afford this transaction!
+					return;
+				}
+				const userBal = row.balance;
+				const balAfterTransaction = userBal - args.amount;
+				if (balAfterTransaction < 0) {
+					const embed = new RichEmbed()
+						.setTitle('Transaction error!')
+						.setColor(0xFF0000)
+						.setDescription(`You can not afford this transaction!
 You only have ${userBal} SBT. You would be left with ${balAfterTransaction} SBT after the conversion.
 You need ${Math.abs(userBal - args.amount)} more SBT.`);
-						message.replyEmbed(embed);
-						// eslint-disable-next-line
-						return
-						// eslint-disable-next-line no-else-return
-					} else if (args.toCurrency.toUpperCase() === 'SBT') {
-						const embed = new RichEmbed()
-							.setTitle('Transaction error!')
-							.setColor(0xFF0000)
-							.setDescription(`You can not convert from this currency back to this currency!
+					message.replyEmbed(embed);
+					return;
+				} else if (args.toCurrency.toUpperCase() === 'SBT') {
+					const embed = new RichEmbed()
+						.setTitle('Transaction error!')
+						.setColor(0xFF0000)
+						.setDescription(`You can not convert from this currency back to this currency!
 Your transaction would end up converting SBT back into SBT.
 Please convert to a different currency. They are available [here](http://discoin.disnodeteam.com/rates)`);
-						message.replyEmbed(embed);
-						/*eslint-disable*/
-						return
-					} else {
-						/* eslint-enable*/
-						// eslint-disable-next-line no-use-before-define
-						ifApproved();
-					}
+					message.replyEmbed(embed);
+					return;
 				}
+				ifApproved();
 			});
 
 			async function ifApproved() {
@@ -171,15 +154,11 @@ Please try this transaction again.`);
 						if (body.status === 'approved' && response.statusCode === 200) {
 							sql.open('./bin/bank.sqlite');
 							sql.get(`SELECT * FROM bank WHERE userId ="${message.author.id}"`).then(row => {
-								// eslint-disable-next-line no-negated-condition
 								if (!row) {
 									message.reply('You don\'t have a bank account! Creating one now...');
 									sql.run('INSERT INTO bank (userId, balance, points) VALUES (?, ?, ?)', [message.author.id, 0, 0]);
 									message.reply('Account created. Please run command again.');
-									/*eslint-disable*/
-										return
-									} else {
-										/* eslint-enable*/
+								} else {
 									const curBal = parseInt(row.balance);
 									const newBal = curBal - args.amount;
 									sql.run(`UPDATE bank SET balance = ${newBal} WHERE userId = ${message.author.id}`);
@@ -191,14 +170,11 @@ Please try this transaction again.`);
 										sql.run('INSERT INTO bank (userId, balance, points) VALUES (?, ?, ?)', [args.user.id, 0, 0]);
 										message.reply('Unknown database error. Please run command again.');
 									});
-									// eslint-disable-next-line
-									return
 								});
 						}
 					}
 				});
 			}
-			// eslint-disable-next-line no-sync
 			fs.unlinkSync('./db.lock');
 		}
 		message.channel.stopTyping();

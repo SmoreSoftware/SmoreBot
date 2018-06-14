@@ -19,7 +19,6 @@ module.exports = class RouletteInfo extends Command {
 		});
 	}
 
-	// eslint-disable-next-line class-methods-use-this
 	async run(msg) {
 		return msg.embed({
 			description: stripIndents`

@@ -1,4 +1,3 @@
-// eslint-disable-next-line
 const commando = require('discord.js-commando');
 const oneLine = require('common-tags').oneLine;
 const sql = require('sqlite');
@@ -56,26 +55,20 @@ module.exports = class BankerCommand extends commando.Command {
 		return this.client.isOwner(msg.author);
 	}
 
-	// eslint-disable-next-line class-methods-use-this
 	async run(message, args) {
 		fs.open('./db.lock', 'r', err => {
 			if (err) {
 				if (err.code === 'ENOENT') {
 					console.log('No DB lock, running banker command');
-					// eslint-disable-next-line no-use-before-define
 					onSuccess();
 				}
-				// eslint-disable-next-line no-negated-condition
 			} else if (!err) {
 				console.error('DB lock exists, banker command halted');
 				message.reply('The bank is currently busy. Please run this command again.');
-				// eslint-disable-next-line newline-before-return, no-useless-return
-				return;
 			} else {
 				return console.error(err);
 			}
 		});
-		// eslint-disable-next-line no-sync
 		fs.closeSync(fs.openSync('./db.lock', 'w'));
 
 		async function onSuccess() {
@@ -83,15 +76,11 @@ module.exports = class BankerCommand extends commando.Command {
 			if (args.type.toLowerCase() === 'balance' || args.type.toLowerCase() === 'bal') {
 				if (args.action.toLowerCase() === 'give' || args.action.toLowerCase() === 'add') {
 					sql.get(`SELECT * FROM bank WHERE userId ="${args.user.id}"`).then(row => {
-						// eslint-disable-next-line no-negated-condition
 						if (!row) {
 							message.reply(`The user ${args.user.user.tag} doesn't have a bank account! Creating one now...`);
 							sql.run('INSERT INTO bank (userId, balance, points) VALUES (?, ?, ?)', [args.user.id, args.amount, 0]);
 							message.reply('Account created.');
-							/*eslint-disable*/
-								return
-							} else {
-								/* eslint-enable*/
+						} else {
 							const curBal = parseInt(row.balance);
 							const newBal = curBal + args.amount;
 							sql.run(`UPDATE bank SET balance = ${newBal} WHERE userId = ${args.user.id}`);
@@ -104,25 +93,19 @@ module.exports = class BankerCommand extends commando.Command {
 								sql.run('INSERT INTO bank (userId, balance, points) VALUES (?, ?, ?)', [args.user.id, args.amount, 0]);
 								message.reply('Table did not exist, user inserted into new table.');
 							});
-							// eslint-disable-next-line
-							return
 						});
 				} else if (args.action.toLowerCase() === 'take' || args.action.toLowerCase() === 'remove') {
 					sql.get(`SELECT * FROM bank WHERE userId ="${args.user.id}"`).then(row => {
-						// eslint-disable-next-line no-negated-condition
 						if (!row) {
 							message.reply(`The user ${args.user.user.tag} doesn't have a bank account! Creating one now...`);
 							sql.run('INSERT INTO bank (userId, balance, points) VALUES (?, ?, ?)', [args.user.id, args.amount, 0]);
 							message.reply('Account created.');
-							/*eslint-disable*/
-								return
-							} else {
-								/* eslint-enable*/
-							const curBal = parseInt(row.balance);
-							const newBal = curBal - args.amount;
-							sql.run(`UPDATE bank SET balance = ${newBal} WHERE userId = ${args.user.id}`);
-							message.reply(`Finished. ${args.amount} SBT removed from ${args.user.user.tag}`);
+							return;
 						}
+						const curBal = parseInt(row.balance);
+						const newBal = curBal - args.amount;
+						sql.run(`UPDATE bank SET balance = ${newBal} WHERE userId = ${args.user.id}`);
+						message.reply(`Finished. ${args.amount} SBT removed from ${args.user.user.tag}`);
 					})
 						.catch(err => {
 							if (err) console.error(`${err} \n${err.stack}`);
@@ -130,25 +113,18 @@ module.exports = class BankerCommand extends commando.Command {
 								sql.run('INSERT INTO bank (userId, balance, points) VALUES (?, ?, ?)', [args.user.id, args.amount, 0]);
 								message.reply('Table did not exist, user inserted into new table.');
 							});
-							// eslint-disable-next-line
-							return
 						});
 				} else {
-					// eslint-disable-next-line no-useless-escape
 					message.reply('Unrecognized action. Action should be \`give\` or \`take\`.');
 				}
 			} else if (args.type.toLowerCase() === 'points' || args.type.toLowerCase() === 'pts') {
 				if (args.action.toLowerCase() === 'give' || args.action.toLowerCase() === 'add') {
 					sql.get(`SELECT * FROM bank WHERE userId ="${args.user.id}"`).then(row => {
-						// eslint-disable-next-line no-negated-condition
 						if (!row) {
 							message.reply(`The user ${args.user.user.tag} doesn't have a bank account! Creating one now...`);
 							sql.run('INSERT INTO bank (userId, balance, points) VALUES (?, ?, ?)', [args.user.id, args.amount, 0]);
 							message.reply('Account created.');
-							/*eslint-disable*/
-								return
-							} else {
-								/* eslint-enable*/
+						} else {
 							const curPts = parseInt(row.points);
 							const newPts = curPts + args.amount;
 							sql.run(`UPDATE bank SET points = ${newPts} WHERE userId = ${args.user.id}`);
@@ -161,20 +137,14 @@ module.exports = class BankerCommand extends commando.Command {
 								sql.run('INSERT INTO bank (userId, balance, points) VALUES (?, ?, ?)', [args.user.id, args.amount, 0]);
 								message.reply('Table did not exist, user inserted into new table.');
 							});
-							// eslint-disable-next-line
-							return
 						});
 				} else if (args.action.toLowerCase() === 'take' || args.action.toLowerCase() === 'remove') {
 					sql.get(`SELECT * FROM bank WHERE userId ="${args.user.id}"`).then(row => {
-						// eslint-disable-next-line no-negated-condition
 						if (!row) {
 							message.reply(`The user ${args.user.user.tag} doesn't have a bank account! Creating one now...`);
 							sql.run('INSERT INTO bank (userId, balance, points) VALUES (?, ?, ?)', [args.user.id, args.amount, 0]);
 							message.reply('Account created.');
-							/*eslint-disable*/
-								return
-							} else {
-								/* eslint-enable*/
+						} else {
 							const curPts = parseInt(row.points);
 							const newPts = curPts - args.amount;
 							sql.run(`UPDATE bank SET points = ${newPts} WHERE userId = ${args.user.id}`);
@@ -187,11 +157,8 @@ module.exports = class BankerCommand extends commando.Command {
 								sql.run('INSERT INTO bank (userId, balance, points) VALUES (?, ?, ?)', [args.user.id, args.amount, 0]);
 								message.reply('Table did not exist, user inserted into new table.');
 							});
-							// eslint-disable-next-line
-							return
 						});
 				} else {
-					// eslint-disable-next-line no-useless-escape
 					message.reply('Unrecognized action. Action should be \`give\` or \`take\`.');
 				}
 			} else if (args.type.toLowerCase() === 'all') {
@@ -203,15 +170,12 @@ module.exports = class BankerCommand extends commando.Command {
 						message.reply(`\`\`\`${JSON.stringify(rows, null, 2)}\`\`\``);
 					});
 				} else {
-					// eslint-disable-next-line no-useless-escape
 					message.reply('Unrecognized action. Action should be \`remove\` or \`list\`.');
 				}
 			} else {
-				// eslint-disable-next-line no-useless-escape
 				message.reply('Unrecognized type. Type should be \`balance\`, \`points\`, or \`all\`.');
 			}
 		}
-		// eslint-disable-next-line no-sync
 		fs.unlinkSync('./db.lock');
 	}
 };

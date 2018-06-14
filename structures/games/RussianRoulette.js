@@ -1,4 +1,3 @@
-/*eslint-disable*/
 const games = new Map();
 
 class RussianRoulette {
@@ -19,7 +18,7 @@ class RussianRoulette {
 	}
 
 	hasPlayer(userID) {
-		return !!this.players.find(player => player.user.id === userID);
+		return Boolean(this.players.find(player => player.user.id === userID));
 	}
 
 	awaitPlayers(time) {

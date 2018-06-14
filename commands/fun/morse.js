@@ -1,4 +1,3 @@
-// eslint-disable-next-line
 const commando = require('discord.js-commando');
 const oneLine = require('common-tags').oneLine;
 const { RichEmbed } = require('discord.js');
@@ -26,7 +25,6 @@ module.exports = class MorseCommand extends commando.Command {
 		});
 	}
 
-	// eslint-disable-next-line class-methods-use-this
 	async run(message, args) {
 		const translated = morse.encode(args.toMorse);
 		const embed = new RichEmbed()
@@ -37,6 +35,6 @@ module.exports = class MorseCommand extends commando.Command {
 			.setFooter(`Powered by ${this.client.user.username}`)
 			.setTimestamp();
 		message.delete(1);
-		message.channel.send(message.author, { embed: embed });
+		message.channel.send(message.author, { embed });
 	}
 };

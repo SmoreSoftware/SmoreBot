@@ -1,4 +1,3 @@
-// eslint-disable-next-line
 const commando = require('discord.js-commando');
 const oneLine = require('common-tags').oneLine;
 const ascii = require('figlet');
@@ -23,7 +22,6 @@ module.exports = class AsciiTextCommand extends commando.Command {
 				type: 'string',
 				validate: text => {
 					if (text.length <= 10) return true;
-					// eslint-disable-next-line newline-before-return
 					return 'Your message is too long! Must be 10 characters or less.';
 				},
 				infinite: false
@@ -31,7 +29,6 @@ module.exports = class AsciiTextCommand extends commando.Command {
 		});
 	}
 
-	// eslint-disable-next-line class-methods-use-this
 	async run(message, args) {
 		ascii(args.toAscii, {
 			horizontalLayout: 'fitted',

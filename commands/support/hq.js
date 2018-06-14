@@ -1,4 +1,3 @@
-// eslint-disable-next-line
 const commando = require('discord.js-commando');
 const oneLine = require('common-tags').oneLine;
 
@@ -19,7 +18,6 @@ module.exports = class HQCommand extends commando.Command {
 		});
 	}
 
-	// eslint-disable-next-line class-methods-use-this
 	async run(message) {
 		message.author.send(`**Need help?**
 Come join the official SmoreSoftware Discord server!

@@ -32,12 +32,11 @@ module.exports = class UserInfoCommand extends commando.Command {
 				.setDescription(`Info on **${user.tag}** (ID: ${user.id})`)
 				.setColor('0x0000FF')
 				.setTitle(user.tag)
-				// eslint-disable-next-line no-negated-condition
 				.addField('🛡️ **Guild-based Info:**', ` ${member.nickname !== null ? `Nickname: ${member.nickname}` : 'Nickname: No nickname'}\nRoles: ${member.roles.map(roles => `\`${roles.name}\``).join(', ')}\nJoined at: ${member.joinedAt}`)
 				.addField('🚶 **User Info:**', `Created at: ${user.createdAt}\n${user.bot ? 'Account Type: Bot' : 'Account Type: User'}\nStatus: ${user.presence.status}\nGame: ${user.presence.game ? user.presence.game.name : 'None'}`)
 				.setFooter(`Powered by ${this.client.user.username}`);
 			message.channel.send({
-				embed: embed
+				embed
 			});
 			message.channel.stopTyping();
 		} else if (user.bot === true) {
@@ -50,13 +49,12 @@ module.exports = class UserInfoCommand extends commando.Command {
 					.setDescription(`Info on **${user.tag}** (ID: ${user.id})`)
 					.setColor('0x0000FF')
 					.setTitle(user.tag)
-					// eslint-disable-next-line no-negated-condition
 					.addField('🛡️ **Guild-based Info:**', ` ${member.nickname !== null ? `Nickname: ${member.nickname}` : 'Nickname: No nickname'}\nRoles: ${member.roles.map(roles => `\`${roles.name}\``).join(', ')}\nJoined at: ${member.joinedAt}`)
 					.addField('🚶 **User Info:**', `Created at: ${user.createdAt}\n${user.bot ? 'Account Type: Bot' : 'Account Type: User'}\nStatus: ${user.presence.status}\nGame: ${user.presence.game ? user.presence.game.name : 'None'}`)
 					.addField('🤖 **Bot Info:**', `Servers: ${body.server_count ? `${body.server_count}` : 'Could not get server count'} \nUpvotes: ${body.points ? `${body.points}` : 'Could not get bot stats'} \nDescription: ${body.shortdesc ? `${body.shortdesc}` : 'Could not get bot info'}`)
 					.setFooter('Powered by SmoreBot and discordbots.org');
 				message.channel.send({
-					embed: embed
+					embed
 				});
 				message.channel.stopTyping();
 			});

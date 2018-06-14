@@ -69,7 +69,6 @@ module.exports = class RussianRouletteCommand extends Command {
 			let deadPlayer = null;
 			let survivors = [];
 
-			// eslint-disable-next-line guard-for-in
 			for (const slot in barrel) {
 				const currentPlayer = players[slot % players.length];
 				if (!deadPlayer) deadPlayer = currentPlayer;
@@ -91,7 +90,6 @@ module.exports = class RussianRouletteCommand extends Command {
 		});
 	}
 
-	// eslint-disable-next-line class-methods-use-this
 	generateBarrel() {
 		const barrel = [0, 0, 0, 0, 0, 0];
 		barrel[Math.floor(Math.random() * barrel.length)] = 1;

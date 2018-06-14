@@ -1,4 +1,3 @@
-// eslint-disable-next-line
 const commando = require('discord.js-commando');
 const oneLine = require('common-tags').oneLine;
 
@@ -18,7 +17,6 @@ module.exports = class MemeCommand extends commando.Command {
 		});
 	}
 
-	// eslint-disable-next-line class-methods-use-this
 	async run(message) {
 		let toMeme = ['https://i.redd.it/0ilh488xbudz.png',
 			'https://cdn.discordapp.com/attachments/310611569794875404/353539349742092289/image.jpg',

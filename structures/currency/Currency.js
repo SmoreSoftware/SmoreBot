@@ -8,13 +8,11 @@ class Currency {
 	}
 
 	static async _queryBalance(user) {
-		// eslint-disable-next-line arrow-body-style
 		const row = await sql.get(`SELECT * FROM bank WHERE userId ="${user}"`);
-		// eslint-disable-next-line no-negated-condition
 		if (!row) {
 			await sql.run('INSERT INTO bank (userId, balance, points) VALUES (?, ?, ?)', [user, 0, 0]);
 			return {
-				user: user,
+				user,
 				balance: 0,
 				points: 0
 			};

@@ -1,4 +1,3 @@
-// eslint-disable-next-line
 const commando = require('discord.js-commando');
 const oneLine = require('common-tags').oneLine;
 
@@ -27,7 +26,6 @@ module.exports = class SearchCommand extends commando.Command {
 		});
 	}
 
-	// eslint-disable-next-line class-methods-use-this
 	async run(message, args) {
 		const toLink = args.toSearch.replace(/\s+/g, '%20');
 		message.reply(`https://www.google.com/search?q=${toLink}`);

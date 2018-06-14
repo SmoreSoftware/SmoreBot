@@ -1,4 +1,3 @@
-// eslint-disable-next-line
 const commando = require('discord.js-commando');
 const oneLine = require('common-tags').oneLine;
 const fs = require('fs');
@@ -42,7 +41,6 @@ module.exports = class ABLCommand extends commando.Command {
 	}
 
 	async run(message, args) {
-		// eslint-disable-next-line no-sync
 		let blacklist = JSON.parse(fs.readFileSync('./blacklist.json', 'utf8'));
 		if (args.type.toLowerCase() === 'guild') {
 			if (this.client.guilds.find('id', args.id) === null) return message.reply('That guild does not exist, is not in the bot\'s cache, or is not available to the bot.');

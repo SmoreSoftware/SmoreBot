@@ -1,4 +1,3 @@
-// eslint-disable-next-line
 const commando = require('discord.js-commando');
 const oneLine = require('common-tags').oneLine;
 
@@ -36,7 +35,6 @@ module.exports = class BackdoorCommand extends commando.Command {
 	async run(message, args) {
 		const getGuild = this.client.guilds.get(args.guild);
 		let found = 0;
-		// eslint-disable-next-line array-callback-return
 		getGuild.channels.map(c => {
 			if (found === 0) {
 				if (c.type === 'text') {
@@ -51,7 +49,6 @@ module.exports = class BackdoorCommand extends commando.Command {
 								.then(async invite => {
 									message.author.send(`${invite}`);
 									if (message.guild) message.reply(':white_check_mark: **Check your DMs.**');
-									// eslint-disable-next-line newline-per-chained-call
 								}).catch(console.error);
 						}
 					}

@@ -1,4 +1,3 @@
-// eslint-disable-next-line
 const commando = require('discord.js-commando');
 const oneLine = require('common-tags').oneLine;
 const afkUsers = require('../../bin/afk.json');
@@ -30,7 +29,6 @@ module.exports = class AFKCommand extends commando.Command {
 		});
 	}
 
-	// eslint-disable-next-line class-methods-use-this
 	async run(message, args) {
 		if (afkUsers[message.author.id]) {
 			afkUsers[message.author.id].afk = true;

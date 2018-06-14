@@ -1,4 +1,3 @@
-// eslint-disable-next-line
 const commando = require('discord.js-commando');
 const oneLine = require('common-tags').oneLine;
 
@@ -22,7 +21,6 @@ module.exports = class PurgeCommand extends commando.Command {
 				type: 'float',
 				validate: text => {
 					if (text <= 99 && text > 2) return true;
-					// eslint-disable-next-line newline-before-return
 					return 'You can only delete 2-99 messages at a time!';
 				},
 				infinite: false
@@ -32,7 +30,6 @@ module.exports = class PurgeCommand extends commando.Command {
 		});
 	}
 
-	// eslint-disable-next-line class-methods-use-this
 	async run(message, args) {
 		const modrole = message.guild.settings.get('modrole');
 		const adminrole = message.guild.settings.get('adminrole');

@@ -1,6 +1,4 @@
-// eslint-disable-next-line
-/*eslint-disable
-//eslint-disable-next-line
+/*
 const commando = require('discord.js-commando');
 const oneLine = require('common-tags').oneLine;
 const ascii = require('image-to-ascii');
@@ -29,7 +27,6 @@ module.exports = class ImgAsciiCommand extends commando.Command {
     })
   }
 
-  //eslint-disable-next-line class-methods-use-this
   async run(message, args) {
 
     This commmand is currenrly non-functional.

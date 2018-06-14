@@ -1,4 +1,3 @@
-// eslint-disable-next-line
 const commando = require('discord.js-commando');
 const oneLine = require('common-tags').oneLine;
 const { RichEmbed } = require('discord.js');
@@ -58,12 +57,10 @@ module.exports = class LockdownCommand extends commando.Command {
 					.setTimestamp();
 				message.delete(1);
 				message.guild.channels.get(modlog).send({
-					embed: embed
+					embed
 				});
 				clearTimeout(lockit[message.channel.id]);
-				// eslint-disable-next-line prefer-reflect
 				delete lockit[message.channel.id];
-				// eslint-disable-next-line newline-per-chained-call
 			}).catch(error => {
 				console.log(error);
 			});
@@ -71,7 +68,6 @@ module.exports = class LockdownCommand extends commando.Command {
 			let count = 0;
 			let count2 = 0;
 			// console.log(`first ${count2}`)
-			// eslint-disable-next-line array-callback-return
 			message.guild.roles.map(role => {
 				message.channel.overwritePermissions(role.id, {
 					SEND_MESSAGES: false,
@@ -92,11 +88,10 @@ module.exports = class LockdownCommand extends commando.Command {
 									.setDescription(`**Action:** Lockdown \n**Channel:** ${message.channel.name} (${message.channel.id}) \n**Reason:** ${args.reason} \n**Time:** ${ms(ms(args.time), { 'long': true })}`)
 									.setTimestamp();
 								message.guild.channels.get(modlog).send({
-									embed: embed
+									embed
 								});
 								lockit[message.channel.id] = setTimeout(() => {
 									// console.log(`third ${count2}`)
-									// eslint-disable-next-line array-callback-return
 									message.guild.roles.map(role => {
 										message.channel.overwritePermissions(role.id, {
 											SEND_MESSAGES: null,
@@ -112,16 +107,13 @@ module.exports = class LockdownCommand extends commando.Command {
 													.setDescription(`**Action:** Lockdown lift \n**Channel:** ${message.channel.name} (${message.channel.id}) \n**Reason:** Time ended, lockdown expired`)
 													.setTimestamp();
 												message.guild.channels.get(modlog).send({
-													embed: embed
+													embed
 												});
 											}
 										});
-										// eslint-disable-next-line prefer-reflect
 										delete lockit[message.channel.id];
 									});
 								}, ms(args.time));
-
-								// eslint-disable-next-line newline-per-chained-call
 							}).catch(error => {
 								console.log(error);
 							});

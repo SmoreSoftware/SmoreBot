@@ -1,4 +1,3 @@
-/*eslint-disable*/
 const { Collection } = require('discord.js');
 
 const games = new Map();
@@ -39,7 +38,7 @@ class Roulette {
 	}
 
 	hasPlayer(userID) {
-		return !!this.players.find(player => player.user.id === userID);
+		return Boolean(this.players.find(player => player.user.id === userID));
 	}
 
 	static awaitPlayers(time) {
@@ -56,7 +55,7 @@ class Roulette {
 	}
 
 	static hasSpace(space) {
-		return !!spaces.find(spc => spc.values.includes(space));
+		return Boolean(spaces.find(spc => spc.values.includes(space)));
 	}
 
 	static _generateSpaces() {

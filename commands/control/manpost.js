@@ -1,4 +1,3 @@
-// eslint-disable-next-line
 const commando = require('discord.js-commando');
 const oneLine = require('common-tags').oneLine;
 const request = require('superagent');
@@ -25,7 +24,6 @@ module.exports = class ManpostCommand extends commando.Command {
 		return this.client.isOwner(msg.author);
 	}
 
-	// eslint-disable-next-line class-methods-use-this
 	async run(message) {
 		request.post(`https://discordbots.org/api/bots/${this.client.user.id}/stats`)
 			.set('Authorization', process.env.dbotsToken1)

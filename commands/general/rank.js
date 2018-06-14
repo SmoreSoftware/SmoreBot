@@ -1,4 +1,3 @@
-// eslint-disable-next-line
 const commando = require('discord.js-commando');
 const oneLine = require('common-tags').oneLine;
 const ranks = require('../../bin/ranks.json');
@@ -20,7 +19,6 @@ module.exports = class RankCommand extends commando.Command {
 			args: [{
 				key: 'action',
 				label: 'action',
-				// eslint-disable-next-line no-useless-escape
 				prompt: 'What action would you like to preform? (\`give\`, \`take\`, or \`list\`)',
 				type: 'string',
 				infinite: false
@@ -38,7 +36,6 @@ module.exports = class RankCommand extends commando.Command {
 		});
 	}
 
-	// eslint-disable-next-line class-methods-use-this
 	async run(message, args) {
 		if (args.action.toLowerCase() === 'give' || args.action.toLowerCase() === 'add') {
 			if (!message.guild.member(this.client.user).hasPermission('MANAGE_ROLES')) return message.reply('I do not have permission to manage roles! Contact a mod or admin.');
@@ -69,7 +66,6 @@ module.exports = class RankCommand extends commando.Command {
 				rankArray.push(rank);
 			});
 			message.reply(`\`\`\`${rankArray}\`\`\``);
-			// eslint-disable-next-line no-useless-escape
 		} else {
 			return message.reply(`Invalid command usage. Please use \`give\`, \`take\`, or \`list\`.
 **NOTE:** If you're trying to add a public role, do \`${message.guild.commandPrefix}pubranks add role\`.`);

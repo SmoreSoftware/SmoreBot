@@ -1,4 +1,3 @@
-// eslint-disable-next-line
 const commando = require('discord.js-commando');
 const oneLine = require('common-tags').oneLine;
 const childProcess = require('child_process');
@@ -26,11 +25,9 @@ module.exports = class ExecCommand extends commando.Command {
 		return this.client.isOwner(msg.author);
 	}
 
-	// eslint-disable-next-line class-methods-use-this
 	async run(message) {
 		const toExec = message.content.split(' ').slice(1);
 		childProcess.exec(toExec.join(' '), {},
-			// eslint-disable-next-line no-unused-vars
 			(err, stdout, stderr) => {
 				if (err) return message.channel.sendCode('', err.message);
 				message.channel.sendCode('', stdout);

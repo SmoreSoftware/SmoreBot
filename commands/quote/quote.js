@@ -1,4 +1,3 @@
-// eslint-disable-next-line
 const commando = require('discord.js-commando');
 const oneLine = require('common-tags').oneLine;
 const { RichEmbed } = require('discord.js');
@@ -29,7 +28,6 @@ module.exports = class QuoteCommand extends commando.Command {
 		});
 	}
 
-	// eslint-disable-next-line class-methods-use-this
 	async run(message, args) {
 		const quoteUser = args.user.user;
 		message.channel.fetchMessages({
@@ -37,7 +35,6 @@ module.exports = class QuoteCommand extends commando.Command {
 		}).then(messages => {
 			messages = messages.filterArray(message => message.author.id === args.user.id);
 			const msgs = messages.map(m => m.content);
-			// eslint-disable-next-line no-undefined
 			if (msgs.includes(undefined)) return message.reply('This user does not have enough recent messages!');
 			const quotes = `1: \`${msgs[0]}\`
 2: \`${msgs[1]}\`
@@ -53,15 +50,13 @@ module.exports = class QuoteCommand extends commando.Command {
 				.setTitle('**Quotes**')
 				.setAuthor(quoteUser.username, quoteUser.avatarURL)
 				.setColor(0x00CCFF)
-			// eslint-disable-next-line no-use-before-define
-				.setDescription(clean(quotes))
+			  .setDescription(clean(quotes))
 				.setFooter('QBot')
 				.setTimestamp();
 			message.channel.send('The last 10 messages of the user are below.');
-			// eslint-disable-next-line no-useless-escape
 			message.channel.send('The message can be picked by doing \`option <number>\` for the quote you want. Say \`cancel\` to cancel this command. This prompt times out in 30 seconds.');
 			message.channel.send({
-				embed: embed
+				embed
 			});
 			const collector = message.channel.createCollector(msg => msg.author === message.author, {
 				time: 30000
@@ -93,7 +88,7 @@ module.exports = class QuoteCommand extends commando.Command {
 					message.channel.bulkDelete(5)
 						.then(() => {
 							message.channel.send({
-								embed: embed
+								embed
 							});
 						});
 				}

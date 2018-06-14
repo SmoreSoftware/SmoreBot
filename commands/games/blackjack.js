@@ -61,13 +61,12 @@ module.exports = class BlackjackCommand extends Command {
 
 			if (Blackjack.handValue(playerHand) !== 'Blackjack') {
 				playerHands = await this.getFinalHand(msg, playerHand, dealerHand, balance, bet, blackjack);
-				// eslint-disable-next-line no-use-before-define
 				const result = this.gameResult(Blackjack.handValue(playerHands[0]), 0);
 				const noHit = playerHands.length === 1 && result === 'bust';
 
 				while ((Blackjack.isSoft(dealerHand) ||
             Blackjack.handValue(dealerHand) < 17) &&
-          !noHit) { // eslint-disable-line no-unmodified-loop-condition
+          !noHit) {
 					blackjack.hit(dealerHand);
 				}
 			} else {
@@ -94,17 +93,14 @@ module.exports = class BlackjackCommand extends Command {
 
 				if (result !== 'bust') hideHoleCard = false;
 
-				/*eslint-disable*/
-        const lossOrGain = Math.floor((['loss', 'bust'].includes(result) ?
-          -1 : result === 'push' ?
-          0 : 1) * (hand.doubled ?
-          2 : 1) * (playerValue === 'Blackjack' ?
-          1.5 : 1) * bet);
-        /* eslint-enable*/
+				const lossOrGain = Math.floor((['loss', 'bust'].includes(result)
+					? -1 : result === 'push'
+						? 0 : 1) * (hand.doubled
+					? 2 : 1) * (playerValue === 'Blackjack'
+					? 1.5 : 1) * bet);
 
 				winnings += lossOrGain;
 				const soft = Blackjack.isSoft(hand);
-				/* eslint-disable max-len */
 				embed.fields.push({
 					name: playerHands.length === 1 ? '**Your hand**' : `**Hand ${i + 1}**`,
 					value: stripIndents`
@@ -114,7 +110,6 @@ module.exports = class BlackjackCommand extends Command {
 					`,
 					inline: true
 				});
-				/* eslint-enable max-len */
 			});
 
 			embed.fields.push({
@@ -130,12 +125,10 @@ module.exports = class BlackjackCommand extends Command {
 				`
 			});
 
-			/*eslint-disable*/
-      embed.color = winnings > 0 ? 0x009900 : winnings < 0 ? 0x990000 : undefined;
-      embed.description = `You ${winnings === 0
+			embed.color = winnings > 0 ? 0x009900 : winnings < 0 ? 0x990000 : undefined;
+			embed.description = `You ${winnings === 0
 				? 'broke even' : `${winnings > 0
 					? 'won' : 'lost'} ${Math.abs(winnings)}`}`;
-      /* eslint-enable*/
 
 			if (winnings !== 0) Currency.changeBalance(msg.author.id, winnings);
 
@@ -143,7 +136,6 @@ module.exports = class BlackjackCommand extends Command {
 		});
 	}
 
-	// eslint-disable-next-line class-methods-use-this
 	gameResult(playerValue, dealerValue) {
 		if (playerValue > 21) return 'bust';
 		if (dealerValue > 21) return 'dealer bust';
@@ -153,30 +145,26 @@ module.exports = class BlackjackCommand extends Command {
 		return 'loss';
 	}
 
-	// eslint-disable-next-line class-methods-use-this
 	getFinalHand(msg, playerHand, dealerHand, balance, bet, blackjack) {
 		return new Promise(async resolve => {
 			const hands = [playerHand];
 			let currentHand = hands[0];
 			let totalBet = bet;
 
-			const nextHand = () => currentHand = hands[hands.indexOf(currentHand) + 1]; // eslint-disable-line no-return-assign, max-len
-			while (currentHand) { // eslint-disable-line no-unmodified-loop-condition
+			const nextHand = () => currentHand = hands[hands.indexOf(currentHand) + 1];
+			while (currentHand) {
 				if (currentHand.length === 1) blackjack.hit(currentHand);
 				if (Blackjack.handValue(currentHand) === 'Blackjack') {
 					nextHand();
-					// eslint-disable-next-line no-continue
 					continue;
 				}
 				if (Blackjack.handValue(currentHand) >= 21) {
 					nextHand();
-					// eslint-disable-next-line no-continue
 					continue;
 				}
 				if (currentHand.doubled) {
 					blackjack.hit(currentHand);
 					nextHand();
-					// eslint-disable-next-line no-continue
 					continue;
 				}
 
@@ -185,50 +173,46 @@ module.exports = class BlackjackCommand extends Command {
           Blackjack.handValue([currentHand[0]]) === Blackjack.handValue([currentHand[1]]) &&
           currentHand.length === 2;
 
-				/*eslint-disable*/
-        await msg.embed({ // eslint-disable-line no-await-in-loop
-          title: `Blackjack | ${msg.member.displayName}`,
-          description: !canDoubleDown && !canSplit ?
-            'Type `hit` to draw another card or `stand` to pass.' : `Type \`hit\` to draw another card, ${canDoubleDown
+				await msg.embed({
+					title: `Blackjack | ${msg.member.displayName}`,
+					description: !canDoubleDown && !canSplit
+						? 'Type `hit` to draw another card or `stand` to pass.' : `Type \`hit\` to draw another card, ${canDoubleDown
 							? '`double down` to double down, '
 							: ''}${canSplit
 							? '`split` to split, ' : ''}or \`stand\` to pass.`,
-          fields: [{
-              name: hands.length === 1 ?
-                '**Your hand**' : `**Hand ${hands.indexOf(currentHand) + 1}**`,
-              value: stripIndents `
+					fields: [{
+						name: hands.length === 1
+							? '**Your hand**' : `**Hand ${hands.indexOf(currentHand) + 1}**`,
+						value: stripIndents`
 								${currentHand.join(' - ')}
 								Value: ${Blackjack.isSoft(currentHand) ? 'Soft ' : ''}${Blackjack.handValue(currentHand)}
 							`,
-              inline: true
-            },
-            {
-              name: '**Dealer hand**',
-              value: stripIndents `
+						inline: true
+					},
+					{
+						name: '**Dealer hand**',
+						value: stripIndents`
 								${dealerHand[0]} - XX
 						 		Value: ${Blackjack.isSoft([dealerHand[0]]) ? 'Soft ' : ''}${Blackjack.handValue([dealerHand[0]])}
 							`,
-              inline: true
-            }
-          ],
-          footer: {
-            text: blackjack.cardsRemaining() ? `Cards remaining: ${blackjack.cardsRemaining()}` : `Shuffling`
-          }
-        });
-        /* eslint-enable*/
+						inline: true
+					}],
+					footer: {
+						text: blackjack.cardsRemaining() ? `Cards remaining: ${blackjack.cardsRemaining()}` : `Shuffling`
+					}
+				});
 
-				/*eslint-disable*/
-        const responses = await msg.channel.awaitMessages(msg2 =>
-          msg2.author.id === msg.author.id && (
-            msg2.content === 'hit' ||
+				const responses = await msg.channel.awaitMessages(msg2 =>
+					msg2.author.id === msg.author.id && (
+						msg2.content === 'hit' ||
             msg2.content === 'stand' ||
             (msg2.content === 'split' && canSplit) ||
             (msg2.content === 'double down' && canDoubleDown)
-          ), {
-            maxMatches: 1,
-            time: 20e3
-          });
-        /* eslint-enable*/
+					), {
+					maxMatches: 1,
+					time: 20e3
+				});
+				/* eslint-enable*/
 
 				if (responses.size === 0) break;
 				const action = responses.first().content.toLowerCase();
