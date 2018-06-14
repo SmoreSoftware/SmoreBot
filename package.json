@@ -35,8 +35,8 @@
   },
   "description": "SmoreBot JS is the JavaScript bot written in Discord.js and Node.js it is designed to have music and server prefixes with custom settings per guild! Version 2 is the SmoreJS rewrite with migration onto the Discord.js-Commando framework.",
   "homepage": "https://github.com/SmoreSoftware/SmoreJS#readme",
-  "license": "ISC",
   "main": "app.js",
+  "license": "AGPL-3.0-or-later",
   "name": "smorejs",
   "repository": "SmoreSoftware/SmoreJS",
   "scripts": {
