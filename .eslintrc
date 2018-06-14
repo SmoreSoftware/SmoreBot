@@ -249,7 +249,7 @@
         "before": false
       }
     ],
-    "semi-style": "off",
+    "semi-style": "error",
     "sort-imports": "error",
     "sort-keys": "off",
     "sort-vars": "error",
