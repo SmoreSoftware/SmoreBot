@@ -8,22 +8,22 @@ class Currency {
 	}
 
 	static async _queryBalance(user) {
-		//eslint-disable-next-line arrow-body-style
-		const row = await sql.get(`SELECT * FROM bank WHERE userId ="${user}"`)
-		//eslint-disable-next-line no-negated-condition
+		// eslint-disable-next-line arrow-body-style
+		const row = await sql.get(`SELECT * FROM bank WHERE userId ="${user}"`);
+		// eslint-disable-next-line no-negated-condition
 		if (!row) {
 			await sql.run('INSERT INTO bank (userId, balance, points) VALUES (?, ?, ?)', [user, 0, 0]);
 			return {
 				user: user,
 				balance: 0,
 				points: 0
-			}
+			};
 		}
 		return row;
 	}
 
 	static _writeBalance(user, amount) {
-		Currency._queryBalance(user).then((row) => {
+		Currency._queryBalance(user).then(row => {
 			const sign = Math.sign(parseInt(amount));
 			if (sign === 1) {
 				const curBal = parseInt(row.balance);

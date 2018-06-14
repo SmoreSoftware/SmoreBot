@@ -1,4 +1,4 @@
-//eslint-disable-next-line
+// eslint-disable-next-line
 /*eslint-disable
 //eslint-disable-next-line
 const commando = require('discord.js-commando');
