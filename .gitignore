@@ -78,11 +78,3 @@ typings/
 
 # dotenv environment variables file
 .env
-
-# ESLINT CONFIGS
-*.eslintrc
-*.eslintrc.*
-.eslintrc
-*.eslintignore
-*.eslintignore.*
-.eslintignore
