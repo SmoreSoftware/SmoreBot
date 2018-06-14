@@ -3,7 +3,7 @@
     "es6": true,
     "node": true
   },
-  "extends": "aqua",
+  "extends": "aqua/node",
   "parserOptions": {
     "sourceType": "module"
   }
