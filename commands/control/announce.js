@@ -23,7 +23,7 @@ module.exports = class AnnounceCommand extends commando.Command {
         infinite: false
       }],
       guarded: true,
-      ownerOnly: true,
+      ownerOnly: true
     });
   }
 
