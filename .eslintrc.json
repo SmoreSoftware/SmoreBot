@@ -6,5 +6,8 @@
   "extends": "aqua/node",
   "parserOptions": {
     "sourceType": "module"
+  },
+  "rules":{
+    "indent": ["warn", 2]
   }
 }
