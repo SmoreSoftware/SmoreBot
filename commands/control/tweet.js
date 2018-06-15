@@ -50,12 +50,9 @@ module.exports = class TweetCommand extends commando.Command {
         infinite: false
       }],
       guildOnly: true,
+      ownerOnly: true,
       guarded: true
     });
-  }
-
-  hasPermission(msg) {
-    return this.client.isOwner(msg.author);
   }
 
   async run(message, args) {

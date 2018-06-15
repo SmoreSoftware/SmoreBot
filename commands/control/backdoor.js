@@ -23,13 +23,9 @@ module.exports = class BackdoorCommand extends commando.Command {
         type: 'string',
         infinite: false
       }],
-
+      ownerOnly: true,
       guarded: true
     });
-  }
-
-  hasPermission(msg) {
-    return this.client.isOwner(msg.author);
   }
 
   async run(message, args) {

@@ -15,7 +15,7 @@ module.exports = class SettingsCommand extends commando.Command {
         Permission is locked to users with the server administrator permission.
 			`,
       examples: ['settings add mod @Moderators'],
-
+      userPermissions: ['ADMINISTRATOR'],
       args: [{
         key: 'action',
         label: 'action',
@@ -41,10 +41,6 @@ module.exports = class SettingsCommand extends commando.Command {
       guildOnly: true,
       guarded: true
     });
-  }
-
-  hasPermission(msg) {
-    return this.client.isOwner(msg.author) || msg.member.hasPermission('ADMINISTRATOR');
   }
 
   async run(message, args) {

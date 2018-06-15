@@ -15,13 +15,9 @@ module.exports = class ManpostCommand extends commando.Command {
       Permission is locked to developers. Duh!
 			`,
       examples: ['debug 1234567890'],
-
+      ownerOnly: true,
       guarded: true
     });
-  }
-
-  hasPermission(msg) {
-    return this.client.isOwner(msg.author);
   }
 
   async run(message) {

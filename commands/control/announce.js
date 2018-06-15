@@ -22,12 +22,9 @@ module.exports = class AnnounceCommand extends commando.Command {
         type: 'string',
         infinite: false
       }],
-      guarded: true
+      guarded: true,
+      ownerOnly: true,
     });
-  }
-
-  hasPermission(msg) {
-    return this.client.isOwner(msg.author);
   }
 
   async run(message, args) {

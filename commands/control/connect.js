@@ -23,14 +23,14 @@ module.exports = class ConnectCommand extends commando.Command {
         type: 'string',
         infinite: false
       }],
-
+      ownerOnly: true,
       guildOnly: true,
       guarded: true
     });
   }
 
   hasPermission(msg) {
-    return this.client.isOwner(msg.author) || allowed.general.includes(msg.author.id);
+    return allowed.general.includes(msg.author.id);
   }
 
   async run(message, args) {

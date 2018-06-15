@@ -24,13 +24,9 @@ module.exports = class DevlockCommand extends commando.Command {
         prompt: 'What would you like to do? (On / Off)',
         infinite: false
       }],
-
+      ownerOnly: true,
       guarded: true
     });
-  }
-
-  hasPermission(msg) {
-    return this.client.isOwner(msg.author);
   }
 
   async run(message, args) {

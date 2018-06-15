@@ -16,13 +16,9 @@ module.exports = class ExecCommand extends commando.Command {
         Duh. Did you really expect to be able to use this?
 			`,
       examples: ['exec git pull'],
-
+      ownerOnly: true,
       guarded: true
     });
-  }
-
-  hasPermission(msg) {
-    return this.client.isOwner(msg.author);
   }
 
   async run(message) {

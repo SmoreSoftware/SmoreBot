@@ -15,13 +15,9 @@ module.exports = class ListGuildsCommand extends commando.Command {
         Usage is restricted to bot owners.
 			`,
       examples: ['listguilds'],
-
+      ownerOnly: true,
       guarded: true
     });
-  }
-
-  hasPermission(msg) {
-    return this.client.isOwner(msg.author);
   }
 
   async run(message) {
