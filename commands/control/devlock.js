@@ -69,8 +69,7 @@ module.exports = class DevlockCommand extends commando.Command {
 			})
 			message.reply('Bot unlocked to general usage.')
 		} else {
-			//eslint-disable-next-line no-useless-escape
-			message.reply('Incorrect action! Please use \`on\` or \`off\`!')
+			message.reply('Incorrect action! Please use `on` or `off`!')
 		}
 	}
 };

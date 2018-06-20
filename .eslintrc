@@ -1,4 +1,4 @@
-module.exports = {
+{
   "env": {
     "es6": true,
     "node": true
@@ -6,7 +6,7 @@ module.exports = {
   "extends": "eslint:recommended",
   "parserOptions": {
     "sourceType": "module",
-    "ecmaVersion": "2017"
+    "ecmaVersion": 2017
   },
   "rules": {
     "accessor-pairs": "error",
@@ -103,7 +103,7 @@ module.exports = {
     "max-lines": "off",
     "max-nested-callbacks": "error",
     "max-params": "off",
-    "max-statements": 'off',
+    "max-statements": "off",
     "max-statements-per-line": [
       "warn", {
         "max": 1
@@ -249,7 +249,7 @@ module.exports = {
         "before": false
       }
     ],
-    "semi-style": "off",
+    "semi-style": "error",
     "sort-imports": "error",
     "sort-keys": "off",
     "sort-vars": "error",
@@ -281,4 +281,4 @@ module.exports = {
     "yield-star-spacing": "error",
     "yoda": ["error", "never"]
   }
-};
+}

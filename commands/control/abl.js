@@ -2,7 +2,6 @@
 const commando = require('discord.js-commando');
 const oneLine = require('common-tags').oneLine;
 const fs = require('fs');
-//eslint-disable-next-line no-sync
 
 module.exports = class ABLCommand extends commando.Command {
   constructor(bot) {

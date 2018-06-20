@@ -72,8 +72,8 @@ module.exports = class SupportCommand extends commando.Command {
 
               return isEnabled = false
             }
-            if (message.channel.id === chan.id) client.channels.get(supportChan).send(`:telephone_receiver: **${message.author.tag}**: ${message.content}`)
-            if (message.channel.id === supportChan) chan.send(`:star: ${message.content}`)
+            if (message.channel.id === chan.id) client.channels.get(supportChan).send(`:telephone_receiver: **${message.author.tag}**: ${message.cleanContent}`)
+            if (message.channel.id === supportChan) chan.send(`:star: ${message.cleanContent}`)
           }
           contact(client)
         })
