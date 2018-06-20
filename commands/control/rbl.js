@@ -57,7 +57,7 @@ module.exports = class RBLCommand extends commando.Command {
       if (!blacklist.guilds.includes(args.id)) return message.reply(`The guild ${guildToBlack.name} (${guildToBlack.id} isn't blacklisted!`)
       let blackIndex = blacklist.guilds.indexOf(args.id)
       blacklist.guilds.splice(blackIndex, 1)
-      fs.writeFile('./blacklist.json', JSON.stringify(blacklist, null, 2), (err) => {
+      fs.writeFile('./bin/blacklist.json', JSON.stringify(blacklist, null, 2), (err) => {
         if (err) {
           message.reply('Something went wrong! Contact a developer.')
           console.error(err)
@@ -78,7 +78,7 @@ module.exports = class RBLCommand extends commando.Command {
       if (!blacklist.users.includes(args.id)) return message.reply(`The user ${userToBlack.tag} (${userToBlack.id}) isn't blacklisted!`)
       let blackIndex = blacklist.users.indexOf(args.id)
       blacklist.users.splice(blackIndex, 1)
-      fs.writeFile('./blacklist.json', JSON.stringify(blacklist, null, 2), (err) => {
+      fs.writeFile('./bin/blacklist.json', JSON.stringify(blacklist, null, 2), (err) => {
         if (err) {
           message.reply('Something went wrong! Contact a developer.')
           console.error(err)

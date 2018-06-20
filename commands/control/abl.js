@@ -56,7 +56,7 @@ module.exports = class ABLCommand extends commando.Command {
       /*eslint-enable quotes*/
       if (blacklist.guilds.includes(args.id)) return message.reply(`The guild ${guildToBlack.name} (${guildToBlack.id} is already blacklisted.`)
       blacklist.guilds.push(args.id)
-      fs.writeFile('./blacklist.json', JSON.stringify(blacklist, null, 2), (err) => {
+      fs.writeFile('./bin/blacklist.json', JSON.stringify(blacklist, null, 2), (err) => {
         if (err) {
           message.reply('Something went wrong! Contact a developer.')
           console.error(err)
@@ -76,7 +76,7 @@ module.exports = class ABLCommand extends commando.Command {
       /*eslint-enable quotes*/
       if (blacklist.users.includes(args.id)) return message.reply(`The user ${userToBlack.tag} (${userToBlack.id}) is already blacklisted.`)
       blacklist.users.push(args.id)
-      fs.writeFile('./blacklist.json', JSON.stringify(blacklist, null, 2), (err) => {
+      fs.writeFile('./bin/blacklist.json', JSON.stringify(blacklist, null, 2), (err) => {
         if (err) {
           message.reply('Something went wrong! Contact a developer.')
           console.error(err)
