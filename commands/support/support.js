@@ -27,7 +27,7 @@ module.exports = class SupportCommand extends commando.Command {
     const client = this.client
     message.reply('Thank you for contacting SmoreBot Support! If there are any available support representatives, they will contact you soon.')
     let chan = message.channel
-    let supportChan = '322450311597916172'
+    let supportChan = '464237929762652161'
     const embed = new RichEmbed()
       .setTitle(':bangbang: **New support call** :bangbang:')
       .setAuthor(`${message.author.tag} (${message.author.id})`, `${avatarURL}`)
@@ -35,8 +35,8 @@ module.exports = class SupportCommand extends commando.Command {
       .setDescription(`**Guild:** ${message.guild.name} (${message.guild.id}) \n**Channel:** #${message.channel.name} (${message.channel.id}) \n**Started by:** ${message.author.tag} (${message.author.id})`)
       .setFooter('SmoreBot Support System')
       .setTimestamp()
-		this.client.channels.get(supportChan).send('<@&294883525881102336>')
-		this.client.channels.get(supportChan).send({ embed })
+    this.client.channels.get(supportChan).send('<@&294883525881102336>')
+    this.client.channels.get(supportChan).send({ embed })
     const collector = this.client.channels.get(supportChan).createCollector(message => message.content.startsWith('call'), {
       time: 0
     })
