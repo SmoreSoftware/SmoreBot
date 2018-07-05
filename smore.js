@@ -197,7 +197,7 @@ Members: ${guild.members.size}
 Bots: ${guild.members.filter(u => u.user.bot).size} (${Math.floor(guild.members.filter(u => u.user.bot).size / guild.members.size * 100)}%)
 Humans: ${guild.members.filter(u => !u.user.bot).size} (${Math.floor(guild.members.filter(u => !u.user.bot).size / guild.members.size * 100)}%)
 Now on: ${client.guilds.size} servers`)
-    client.channels.get('330701184698679307').send(`New guild added:
+    client.channels.get('402318969379225618').send(`New guild added:
 Guild: ${guild.id}
 Name: ${guild.name}
 Owner: ${guild.owner.user.tag} (${guild.owner.id})
