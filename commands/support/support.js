@@ -1,5 +1,5 @@
 const commando = require('discord.js-commando');
-const oneLine = require('common-tags').oneLine;
+const { oneLine } = require('common-tags');
 const { RichEmbed } = require('discord.js');
 
 module.exports = class SupportCommand extends commando.Command {
@@ -20,10 +20,11 @@ module.exports = class SupportCommand extends commando.Command {
     });
   }
 
-  async run(message) {
+  run(message) {
+    // TODO Clean this up a lot
     let isEnabled;
     const avatarURL = message.author.displayAvatarURL;
-    const client = this.client;
+    const { client } = this;
     message.reply('Thank you for contacting SmoreBot Support! If there are any available support representatives, they will contact you soon.');
     const chan = message.channel;
     const supportChan = '322450311597916172';
@@ -36,9 +37,9 @@ module.exports = class SupportCommand extends commando.Command {
       .setTimestamp();
     this.client.channels.get(supportChan).send('<@&294883525881102336>');
     this.client.channels.get(supportChan).send({ embed });
-    const collector = this.client.channels.get(supportChan).createCollector(message => message.content.startsWith('call'), {
-      time: 0
-    });
+    const collector = this.client.channels
+      .get(supportChan)
+      .createCollector(message => message.content.startsWith('call'), { time: 0 });
     this.client.channels.get(supportChan).send('Do `call answer` to answer call and connect to server in need or `call end` to deny call.');
     collector.on('message', message => {
       if (message.content === 'call end') collector.stop('aborted');
@@ -52,11 +53,11 @@ module.exports = class SupportCommand extends commando.Command {
       }
       if (reason === 'success') {
         this.client.channels.get(supportChan).send(':heavy_check_mark: Call picked up!');
-        this.client.channels.get(supportChan).send('Do \`call end\` at any time to end the call.');
+        this.client.channels.get(supportChan).send('Do `call end` at any time to end the call.');
         chan.send(`${message.author}`);
         chan.send(':heavy_check_mark: Your call has been picked up by a support representative!');
         chan.send(':hourglass: You will be helped shortly.');
-        chan.send('Do \`call end\` at any time to end the call.');
+        chan.send('Do `call end` at any time to end the call.');
         isEnabled = true;
         this.client.on('message', message => {
           function contact() {

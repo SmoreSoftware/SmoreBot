@@ -13,7 +13,7 @@ const warn = chalk.keyword('orange');
 const debug = chalk.cyan;
 const sqlite = require('sqlite');
 const sql = require('sqlite');
-const oneLine = require('common-tags').oneLine;
+const { oneLine } = require('common-tags');
 const ms = require('ms');
 const dbots = require('superagent');
 const request = require('request');
@@ -106,16 +106,14 @@ client
     console.log(`Client ready; logged in as ${client.user.tag} (${client.user.id}) with prefix "${process.env.prefix}"`);
     dbots.post(`https://discordbots.org/api/bots/${client.user.id}/stats`)
       .set('Authorization', process.env.dbotsToken1)
-      .send({
-        server_count: client.guilds.size
-      })
+      // eslint-disable-next-line camelcase
+      .send({ server_count: client.guilds.size })
       .end();
     console.log('DBotsList guild count updated.');
     dbots.post(`https://bots.discord.pw/api/bots/${client.user.id}/stats`)
       .set('Authorization', process.env.dbotsToken2)
-      .send({
-        server_count: client.guilds.size
-      })
+      // eslint-disable-next-line camelcase
+      .send({ server_count: client.guilds.size })
       .end();
     console.log('DBots guild count updated.');
     client.user.setPresence({
@@ -269,7 +267,7 @@ Now on: ${client.guilds.size} servers`);
   })
   .on('guildMemberAdd', member => {
     function autoRole() {
-      const guild = member.guild;
+      const { guild } = member;
       const role = guild.settings.get('autorole');
       if (!role) return;
       if (member.bot) return;
@@ -314,19 +312,15 @@ Now on: ${client.guilds.size} servers`);
         if (err.code === 'ENOENT') {
           onSuccess();
         }
-      } else if (!err) {
-
       } else {
         return console.error(err);
       }
     });
     fs.closeSync(fs.openSync('./db.lock', 'w'));
 
-    async function onSuccess() {
+    function onSuccess() {
       sql.get(`SELECT * FROM bank WHERE userId ="${message.author.id}"`).then(row => {
-        if (!row) {
-          sql.run('INSERT INTO bank (userId, balance, points) VALUES (?, ?, ?)', [message.author.id, 0, 0]);
-        } else {
+        if (row) {
           if (parseInt(row.points) >= 100) {
             const curBal = parseInt(row.balance);
             const newBal = curBal + 1;
@@ -335,7 +329,7 @@ Now on: ${client.guilds.size} servers`);
           }
           if (!cooldownUsers.includes(message.author.id)) {
             sql.get(`SELECT * FROM bank WHERE userId ="${message.author.id}"`).then(row => {
-              const newPts = Math.floor(Math.abs(Math.random() * (10 - 36) + 10));
+              const newPts = Math.floor(Math.abs((Math.random() * (10 - 36)) + 10));
               sql.run(`UPDATE bank SET points = ${row.points + newPts} WHERE userId = ${message.author.id}`);
               cooldownUsers.push(message.author.id);
             });
@@ -348,6 +342,8 @@ Now on: ${client.guilds.size} servers`);
               waitingUsers.splice(index2, 1);
             }, ms('1m'));
           }
+        } else {
+          sql.run('INSERT INTO bank (userId, balance, points) VALUES (?, ?, ?)', [message.author.id, 0, 0]);
         }
       })
         .catch(err => {
@@ -374,11 +370,9 @@ Now on: ${client.guilds.size} servers`);
       const starboard = client.channels.get(msg.guild.settings.get('starboard'));
       if (!starboard) return;
       if (user.id === msg.author.id) return msg.channel.send(`${msg.author}, You can't star your own messages!`);
-      reacts = msg.reactions.filter(reacts => reacts.emoji.name === '⭐');
+      const reacts = msg.reactions.filter(reacts => reacts.emoji.name === '⭐');
       if (reacts.length > 1) return;
-      starboard.send({
-        embed
-      });
+      starboard.send({ embed });
     }
   });
 

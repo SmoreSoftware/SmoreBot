@@ -22,13 +22,13 @@ class Currency {
 
   static _writeBalance(user, amount) {
     Currency._queryBalance(user).then(row => {
-      const sign = Math.sign(parseInt(amount));
+      const sign = Math.sign(parseInt(amount, 10));
       if (sign === 1) {
-        const curBal = parseInt(row.balance);
+        const curBal = parseInt(row.balance, 10);
         const newBal = curBal + amount;
         sql.run(`UPDATE bank SET balance = ${newBal} WHERE userId = ${user}`);
       } else if (sign === -1) {
-        const curBal = parseInt(row.balance);
+        const curBal = parseInt(row.balance, 10);
         const newBal = curBal - Math.abs(amount);
         sql.run(`UPDATE bank SET balance = ${newBal} WHERE userId = ${user}`);
       }
@@ -53,13 +53,13 @@ class Currency {
     Currency._writeBalance(user, -amount);
   }
 
-  static async getBalance(user) {
+  static getBalance(user) {
     const row = Currency._queryBalance(user);
     return row.balance;
   }
 
   static convert(amount, text = false) {
-    if (isNaN(amount)) amount = parseInt(amount);
+    if (isNaN(amount)) amount = parseInt(amount, 10);
     if (!text) return `${amount.toLocaleString()} ${Math.abs(amount) === 1 ? Currency.singular : Currency.plural}`;
 
     return `${amount.toLocaleString()} ${Math.abs(amount) === 1 ? Currency.textSingular : Currency.textPlural}`;

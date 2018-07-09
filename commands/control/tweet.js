@@ -1,5 +1,5 @@
 const commando = require('discord.js-commando');
-const oneLine = require('common-tags').oneLine;
+const { oneLine } = require('common-tags');
 const Twit = require('twit');
 const crypto = require('crypto');
 require('dotenv').load();
@@ -16,12 +16,14 @@ const TCK = decrypt('5a4aa6988faaf27757d3223294e4e927e9d4ed3d4b0d0faba55108142cc
 const TCS = decrypt('20507520c516f0ed1548abde199f71548af74676c724618be5bac27911631d7d42aa988ad5cb8b4d4977be81379c82e85b1e307e276d9946b07b45f9dcf92735');
 const TAT = decrypt('1e64cbc536e7048f1c21cf97ecef6cf0457d7b77e9f3c10f5ce278749acc09e6983631a4ef612dd5a96a7b447fdaf03bdd2f1527c1f5e63c6ac3d9a17b01e246');
 const TATS = decrypt('7320425cff5fccd508bc3fb633dce26a2e4d955e22000d64287e947f1bb54bbf0ee599fce5b74af6ed2b41374b03cf26');
+/* eslint-disable camelcase */
 const T = new Twit({
   consumer_key: TCK,
   consumer_secret: TCS,
   access_token: TAT,
   access_token_secret: TATS
 });
+/* eslint-enable camelcase */
 
 module.exports = class TweetCommand extends commando.Command {
   constructor(client) {
@@ -55,15 +57,13 @@ module.exports = class TweetCommand extends commando.Command {
     });
   }
 
-  async run(message, args) {
+  run(message, args) {
     const tweet = {
       status: `${args.message}
 -${message.author.username}`
     };
 
-    T.post('statuses/update', tweet, tweeted);
-
-    function tweeted(err) {
+    const tweeted = err => {
       if (err) {
         console.error(err);
         message.reply('There was an error! Contact a JS dev. Was your tweet too long?');
@@ -71,6 +71,8 @@ module.exports = class TweetCommand extends commando.Command {
         return;
       }
       message.reply('Tweet sent successfully.');
-    }
+    };
+
+    T.post('statuses/update', tweet, tweeted);
   }
 };

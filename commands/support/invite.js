@@ -1,5 +1,5 @@
 const commando = require('discord.js-commando');
-const oneLine = require('common-tags').oneLine;
+const { oneLine } = require('common-tags');
 
 module.exports = class InviteCommand extends commando.Command {
   constructor(client) {
@@ -19,7 +19,7 @@ module.exports = class InviteCommand extends commando.Command {
     });
   }
 
-  async run(message) {
+  run(message) {
     message.channel.send('Click here to add me to your server: https://discordapp.com/oauth2/authorize?permissions=360054015&scope=bot&client_id=290228059599142913');
   }
 };

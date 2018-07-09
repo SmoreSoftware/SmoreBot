@@ -1,5 +1,5 @@
 const commando = require('discord.js-commando');
-const oneLine = require('common-tags').oneLine;
+const { oneLine } = require('common-tags');
 const { RichEmbed } = require('discord.js');
 
 module.exports = class SuggestCommand extends commando.Command {
@@ -27,13 +27,14 @@ module.exports = class SuggestCommand extends commando.Command {
     });
   }
 
-  async run(message, args) {
+  run(message, args) {
     if (message.guild.member(this.client.user).hasPermission('CREATE_INSTANT_INVITE')) {
-      const invite = message.channel.createInvite({
-        temporary: false,
-        maxAge: 0,
-        maxUses: 1
-      })
+      message.channel
+        .createInvite({
+          temporary: false,
+          maxAge: 0,
+          maxUses: 1
+        })
         .then(invite => {
           const avatarURL = message.author.avatar ? message.author.avatarURL : 'https://discordapp.com/assets/0e291f67c9274a1abdddeb3fd919cbaa.png';
           const embed = new RichEmbed()

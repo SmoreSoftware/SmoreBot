@@ -1,5 +1,5 @@
 const commando = require('discord.js-commando');
-const oneLine = require('common-tags').oneLine;
+const { oneLine } = require('common-tags');
 
 module.exports = class DonateCommand extends commando.Command {
   constructor(client) {
@@ -18,7 +18,7 @@ module.exports = class DonateCommand extends commando.Command {
     });
   }
 
-  async run(message) {
+  run(message) {
     message.channel.send('Please donate to our host here: \nhttps://patreon.com/vertbot');
   }
 };

@@ -1,5 +1,5 @@
 const commando = require('discord.js-commando');
-const oneLine = require('common-tags').oneLine;
+const { oneLine } = require('common-tags');
 const allowed = require('./techsupport.json');
 
 module.exports = class ConnectCommand extends commando.Command {
@@ -11,7 +11,7 @@ module.exports = class ConnectCommand extends commando.Command {
       memberName: 'connect',
       description: 'Opens a support connection to a channel.',
       details: oneLine`
-				Did you miss a supprt call?
+				Did you miss a support call?
 				Use this command to open a support connection to any channel and assist them.
 			`,
       examples: ['connect 322450311597916172'],
@@ -23,17 +23,16 @@ module.exports = class ConnectCommand extends commando.Command {
         type: 'string',
         infinite: false
       }],
-      ownerOnly: true,
       guildOnly: true,
       guarded: true
     });
   }
 
   hasPermission(msg) {
-    return allowed.general.includes(msg.author.id);
+    return this.client.isOwner(msg.author) || allowed.general.includes(msg.author.id);
   }
 
-  async run(message, args) {
+  run(message, args) {
     const chan = this.client.channels.get(args.chan);
     let supportChan = '322450311597916172';
     supportChan = this.client.channels.get(supportChan);
@@ -42,13 +41,14 @@ module.exports = class ConnectCommand extends commando.Command {
     chan.send('**ALERT:** Incoming call from SmoreSoftware Support!');
     supportChan.send(`Connecting to "#${chan.name}" {${chan.id}) on the guild "${chan.guild.name}" (${chan.guild.id})`);
     let sent = 0;
+    // ! Remove this listener, it's leaking memory
     this.client.on('message', message => {
       if (sent === 0) {
-        supportChan.send('Connected. Do \`call end\` at any time to end the call.');
+        supportChan.send('Connected. Do `call end` at any time to end the call.');
         sent = 1;
       }
 
-      function contact() {
+      const contact = () => {
         if (isEnabled === false) return;
         if (message.author.id === '290228059599142913') return;
         if (message.content.startsWith('call end')) {
@@ -60,7 +60,7 @@ module.exports = class ConnectCommand extends commando.Command {
         }
         if (message.channel.id === chan.id) supportChan.send(`:telephone_receiver: **${message.author.tag}**: ${message.content}`);
         if (message.channel.id === supportChan.id) chan.send(`:star: ${message.content}`);
-      }
+      };
       contact();
     });
   }

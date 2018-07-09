@@ -1,5 +1,5 @@
 const commando = require('discord.js-commando');
-const oneLine = require('common-tags').oneLine;
+const { oneLine } = require('common-tags');
 const fs = require('fs');
 
 module.exports = class ABLCommand extends commando.Command {
@@ -22,6 +22,7 @@ module.exports = class ABLCommand extends commando.Command {
         label: 'type',
         prompt: 'What would you like to blacklist? (Guild / User)',
         type: 'string',
+        oneof: ['guild', 'user'],
         infinite: false
       },
       {

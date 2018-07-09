@@ -1,5 +1,5 @@
 const commando = require('discord.js-commando');
-const oneLine = require('common-tags').oneLine;
+const { oneLine } = require('common-tags');
 const { RichEmbed } = require('discord.js');
 
 module.exports = class BanCommand extends commando.Command {
@@ -41,7 +41,7 @@ module.exports = class BanCommand extends commando.Command {
     });
   }
 
-  async run(message, args) {
+  run(message, args) {
     const adminrole = message.guild.settings.get('adminrole');
     const modlog = message.guild.settings.get('modlog');
     if (!adminrole || !modlog) return message.reply(`This command is not set up to work! Have someone run \`${message.guild.commandPrefix}settings\` to add the \`admin\` and \`modlog\` settings.`);
@@ -52,9 +52,11 @@ module.exports = class BanCommand extends commando.Command {
         days: args.pruneDays,
         reason: `${args.reason} -${message.author.tag}`
       }).then(member => {
-        args.user.send(`You have been banned from the server "${message.guild}"!
+        args.user
+          .send(`You have been banned from the server "${message.guild}"!
 Staff member: ${message.author.tag}
-Reason: "${args.reason}"`).catch(console.error);
+Reason: "${args.reason}"`)
+          .catch(console.error);
         const embed = new RichEmbed()
           .setTitle(':bangbang: **Moderation action** :scales:')
           .setAuthor(`${message.author.tag} (${message.author.id})`, `${message.author.avatarURL}`)

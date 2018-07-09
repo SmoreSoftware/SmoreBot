@@ -1,5 +1,5 @@
 const commando = require('discord.js-commando');
-const oneLine = require('common-tags').oneLine;
+const { oneLine } = require('common-tags');
 const { RichEmbed } = require('discord.js');
 
 module.exports = class JoinCommand extends commando.Command {
@@ -20,7 +20,7 @@ module.exports = class JoinCommand extends commando.Command {
     });
   }
 
-  async run(message) {
+  run(message) {
     message.channel.startTyping();
     const embed = new RichEmbed()
       .setAuthor(this.client.user.username, this.client.user.avatarURL)

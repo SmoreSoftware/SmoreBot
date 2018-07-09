@@ -7,7 +7,10 @@
   "parserOptions": {
     "sourceType": "module"
   },
-  "rules":{
-    "indent": ["warn", 2]
+  "rules": {
+    "indent": [
+      "warn",
+      2
+    ]
   }
 }

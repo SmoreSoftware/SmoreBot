@@ -1,4 +1,6 @@
-const { Collection } = require('discord.js');
+const {
+  Collection
+} = require('discord.js');
 
 const games = new Map();
 
@@ -8,12 +10,43 @@ const roulette = {
 };
 
 const spaces = new Collection([
-  ['numbers', { values: roulette.red.concat(roulette.black).concat([0]).map(item => item.toString()), multiplier: 36 }],
-  ['dozens', { values: ['1-12', '13-24', '25-36'], multiplier: 3 }],
-  ['columns', { values: ['1st', '2nd', '3rd'], multiplier: 3 }],
-  ['halves', { values: ['1-18', '19-36'], multiplier: 2 }],
-  ['parity', { values: ['even', 'odd'], multiplier: 2 }],
-  ['colors', { values: ['red', 'black'], multiplier: 2 }]
+  [
+    'numbers', {
+      values: roulette.red
+        .concat(roulette.black)
+        .concat([0])
+        .map(item => item.toString()),
+      multiplier: 36
+    }
+  ],
+  [
+    'dozens', {
+      values: ['1-12', '13-24', '25-36'],
+      multiplier: 3
+    }
+  ],
+  ['columns', {
+    values: ['1st', '2nd', '3rd'],
+    multiplier: 3
+  }],
+  [
+    'halves', {
+      values: ['1-18', '19-36'],
+      multiplier: 2
+    }
+  ],
+  [
+    'parity', {
+      values: ['even', 'odd'],
+      multiplier: 2
+    }
+  ],
+  [
+    'colors', {
+      values: ['red', 'black'],
+      multiplier: 2
+    }
+  ]
 ]);
 
 class Roulette {
@@ -81,8 +114,8 @@ class Roulette {
     if (number === 0) return null;
 
     return spaces.get(size).values.find(value => {
-      const min = parseInt(value.split('-')[0]);
-      const max = parseInt(value.split('-')[1]);
+      const min = parseInt(value.split('-')[0], 10);
+      const max = parseInt(value.split('-')[1], 10);
       return number >= min && number <= max;
     });
   }
