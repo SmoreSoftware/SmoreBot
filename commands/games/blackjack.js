@@ -197,7 +197,6 @@ module.exports = class BlackjackCommand extends Command {
           maxMatches: 1,
           time: 20e3
         });
-        /* eslint-enable*/
 
         if (responses.size === 0) break;
         const action = responses.first().content.toLowerCase();

@@ -69,12 +69,10 @@ client.registry
 
 client.setProvider(sqlite.open('./bin/settings.sqlite').then(db => new commando.SQLiteProvider(db))).catch(console.error);
 client.dispatcher.addInhibitor(msg => {
-  // eslint-disable-next-line no-sync
   const blacklist = require('./bin/blacklist.json');
   if (blacklist.guilds.includes(msg.guild.id)) return [`Guild ${msg.guild.id} is blacklisted`, msg.channel.send('This guild has been blacklisted. Appeal here: https://discord.gg/6P6MNAU')];
 });
 client.dispatcher.addInhibitor(msg => {
-  // eslint-disable-next-line no-sync
   const blacklist = require('./bin/blacklist.json');
   if (blacklist.users.includes(msg.author.id)) return [`User ${msg.author.id} is blacklisted`, msg.reply('You have been blacklisted. Appeal here: https://discord.gg/6P6MNAU')];
 });
@@ -113,11 +111,13 @@ client
     console.log(`Client ready; logged in as ${client.user.tag} (${client.user.id}) with prefix "${process.env.prefix}"`);
     dbots.post(`https://discordbots.org/api/bots/${client.user.id}/stats`)
       .set('Authorization', process.env.dbotsToken1)
+      // eslint-disable-next-line camelcase
       .send({ server_count: client.guilds.size })
       .end();
     console.log('DBotsList guild count updated.');
     dbots.post(`https://bots.discord.pw/api/bots/${client.user.id}/stats`)
       .set('Authorization', process.env.dbotsToken2)
+      // eslint-disable-next-line camelcase
       .send({ server_count: client.guilds.size })
       .end();
     console.log('DBots guild count updated.');
@@ -200,7 +200,6 @@ Now on: ${client.guilds.size} servers`);
     const botPercentage = Math.floor(guild.members.filter(u => u.user.bot).size / guild.members.size * 100);
     if (botPercentage >= 80) {
       let found = 0;
-      // eslint-disable-next-line array-callback-return
       guild.channels.map(c => {
         if (found === 0) {
           if (c.type === 'text') {
@@ -216,7 +215,6 @@ Now on: ${client.guilds.size} servers`);
       });
       guild.owner.send(`**ALERT:** Your guild, "${guild.name}", has been marked as an illegal guild. \nThis may be due to it being marked as a bot guild or marked as a spam guild. \nThe bot will now leave the server. \nIf you wish to speak to my developer, you may join here: https://discord.gg/t8xHbHY`);
       guild.leave();
-      // eslint-disable-next-line newline-before-return
       return;
     }
     client.user.setPresence({
@@ -233,7 +231,6 @@ Now on: ${client.guilds.size} servers`);
       .setDescription(`Thanks for adding me to your server, "${guild.name}"! To see commands do ${guild.commandPrefix}help. Please note: By adding me to your server and using me, you affirm that you agree to [our TOS](https://smoresoft.uk/tos.html).`);
     guild.owner.send({ embed });
     let found = 0;
-    // eslint-disable-next-line array-callback-return
     guild.channels.map(c => {
       if (found === 0) {
         if (c.type === 'text') {
@@ -278,7 +275,7 @@ Now on: ${client.guilds.size} servers`);
       const { guild } = member;
       const role = guild.settings.get('autorole');
       if (!role) return;
-      // eslint-disable-next-line no-useless-return
+
       if (member.bot) return;
       member.addRole(role, 'SmoreBot Autorole');
     }
@@ -307,7 +304,6 @@ Now on: ${client.guilds.size} servers`);
     }
 
     if (message.mentions) {
-      // eslint-disable-next-line array-callback-return
       message.mentions.users.map(user => {
         if (afkUsers[user.id]) {
           if (afkUsers[user.id].afk === true) {
@@ -389,14 +385,10 @@ setInterval(() => {
     if (err) {
       if (err.code === 'ENOENT') {
         console.log('No DB lock, polling transactions');
-        // eslint-disable-next-line no-use-before-define
         onSuccess();
       }
-      // eslint-disable-next-line no-negated-condition
-    } else if (!err) {
+    } else {
       console.error('DB lock exists, transaction polling halted');
-      // eslint-disable-next-line newline-before-return, no-useless-return
-      return;
     } else {
       return console.error(err);
     }
@@ -433,9 +425,10 @@ setInterval(() => {
         console.log(JSON.stringify(body, null, 2));
         body.forEach(t => {
           sql.get(`SELECT * FROM bank WHERE userId ="${t.user}"`).then(row => {
-            // eslint-disable-next-line no-negated-condition
-            if (!row) {
-              sql.run('INSERT INTO bank (userId, balance, points) VALUES (?, ?, ?)', [t.user, t.amount, 0]);
+            if (row) {
+              const curBal = parseInt(row.balance, 10);
+              const newBal = curBal + t.amount;
+              sql.run(`UPDATE bank SET balance = ${newBal} WHERE userId = ${t.user}`);
               const transAuth = client.users.get(t.user);
               const embed = new RichEmbed()
                 .setTitle('Discoin Transaction recieved\n')
@@ -448,13 +441,8 @@ setInterval(() => {
                 .addField('Reception Time:', getDateTime(), true)
                 .setFooter(`Transaction made at ${t.timestamp}`);
               transAuth.send({ embed });
-              /*eslint-disable*/
-                return
-              } else {
-                /* eslint-enable*/
-              const curBal = parseInt(row.balance, 10);
-              const newBal = curBal + t.amount;
-              sql.run(`UPDATE bank SET balance = ${newBal} WHERE userId = ${t.user}`);
+            } else {
+              sql.run('INSERT INTO bank (userId, balance, points) VALUES (?, ?, ?)', [t.user, t.amount, 0]);
               const transAuth = client.users.get(t.user);
               const embed = new RichEmbed()
                 .setTitle('Discoin Transaction recieved\n')
@@ -486,14 +474,11 @@ setInterval(() => {
                   .setFooter(`Transaction made at ${t.timestamp}`);
                 transAuth.send({ embed });
               });
-              // eslint-disable-next-line
-              return
             });
         });
       }
     });
   }
-  // eslint-disable-next-line no-sync
   fs.unlinkSync('./db.lock');
 }, ms('30s'));
 
