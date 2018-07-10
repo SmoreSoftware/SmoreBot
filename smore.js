@@ -1,7 +1,13 @@
 require('dotenv').load();
 const commando = require('discord.js-commando');
 const client = new commando.Client({
-  owner: ['197891949913571329', '251383432331001856', '156019409658314752', '142782417994907648'],
+  owner: [
+    '197891949913571329',
+    '251383432331001856', // Chronomly
+    '156019409658314752',
+    '142782417994907648',
+    '250432205145243649' // Jdender~
+  ],
   commandPrefix: process.env.prefix,
   unknownCommandResponse: false
 });
@@ -63,10 +69,12 @@ client.registry
 
 client.setProvider(sqlite.open('./bin/settings.sqlite').then(db => new commando.SQLiteProvider(db))).catch(console.error);
 client.dispatcher.addInhibitor(msg => {
+  // eslint-disable-next-line no-sync
   const blacklist = require('./bin/blacklist.json');
   if (blacklist.guilds.includes(msg.guild.id)) return [`Guild ${msg.guild.id} is blacklisted`, msg.channel.send('This guild has been blacklisted. Appeal here: https://discord.gg/6P6MNAU')];
 });
 client.dispatcher.addInhibitor(msg => {
+  // eslint-disable-next-line no-sync
   const blacklist = require('./bin/blacklist.json');
   if (blacklist.users.includes(msg.author.id)) return [`User ${msg.author.id} is blacklisted`, msg.reply('You have been blacklisted. Appeal here: https://discord.gg/6P6MNAU')];
 });
@@ -90,6 +98,7 @@ console.log('Note DB ready.');
 
 setInterval(() => {
   if (os.hostname() !== 'ubuntuServer') return console.log('Not in production , notes not written to JSON');
+
   function log() {
     console.log('Wrote afk users to file.');
   }
@@ -106,14 +115,16 @@ client
     console.log(`Client ready; logged in as ${client.user.tag} (${client.user.id}) with prefix "${process.env.prefix}"`);
     dbots.post(`https://discordbots.org/api/bots/${client.user.id}/stats`)
       .set('Authorization', process.env.dbotsToken1)
-      // eslint-disable-next-line camelcase
-      .send({ server_count: client.guilds.size })
+      .send({
+        server_count: client.guilds.size
+      })
       .end();
     console.log('DBotsList guild count updated.');
     dbots.post(`https://bots.discord.pw/api/bots/${client.user.id}/stats`)
       .set('Authorization', process.env.dbotsToken2)
-      // eslint-disable-next-line camelcase
-      .send({ server_count: client.guilds.size })
+      .send({
+        server_count: client.guilds.size
+      })
       .end();
     console.log('DBots guild count updated.');
     client.user.setPresence({
@@ -183,7 +194,7 @@ Members: ${guild.members.size}
 Bots: ${guild.members.filter(u => u.user.bot).size} (${Math.floor(guild.members.filter(u => u.user.bot).size / guild.members.size * 100)}%)
 Humans: ${guild.members.filter(u => !u.user.bot).size} (${Math.floor(guild.members.filter(u => !u.user.bot).size / guild.members.size * 100)}%)
 Now on: ${client.guilds.size} servers`);
-    client.channels.get('330701184698679307').send(`New guild added:
+    client.channels.get('402318969379225618').send(`New guild added:
 Guild: ${guild.id}
 Name: ${guild.name}
 Owner: ${guild.owner.user.tag} (${guild.owner.id})
@@ -195,6 +206,7 @@ Now on: ${client.guilds.size} servers`);
     const botPercentage = Math.floor(guild.members.filter(u => u.user.bot).size / guild.members.size * 100);
     if (botPercentage >= 80) {
       let found = 0;
+      // eslint-disable-next-line array-callback-return
       guild.channels.map(c => {
         if (found === 0) {
           if (c.type === 'text') {
@@ -210,6 +222,7 @@ Now on: ${client.guilds.size} servers`);
       });
       guild.owner.send(`**ALERT:** Your guild, "${guild.name}", has been marked as an illegal guild. \nThis may be due to it being marked as a bot guild or marked as a spam guild. \nThe bot will now leave the server. \nIf you wish to speak to my developer, you may join here: https://discord.gg/t8xHbHY`);
       guild.leave();
+      // eslint-disable-next-line newline-before-return
       return;
     }
     client.user.setPresence({
@@ -226,6 +239,7 @@ Now on: ${client.guilds.size} servers`);
       .setDescription(`Thanks for adding me to your server, "${guild.name}"! To see commands do ${guild.commandPrefix}help. Please note: By adding me to your server and using me, you affirm that you agree to [our TOS](https://smoresoft.uk/tos.html).`);
     guild.owner.send({ embed });
     let found = 0;
+    // eslint-disable-next-line array-callback-return
     guild.channels.map(c => {
       if (found === 0) {
         if (c.type === 'text') {
@@ -249,7 +263,7 @@ Members: ${guild.members.size}
 Bots: ${guild.members.filter(u => u.user.bot).size} (${Math.floor(guild.members.filter(u => u.user.bot).size / guild.members.size * 100)}%)
 Humans: ${guild.members.filter(u => !u.user.bot).size} (${Math.floor(guild.members.filter(u => !u.user.bot).size / guild.members.size * 100)}%)
 Now on: ${client.guilds.size} servers`);
-    client.channels.get('330701184698679307').send(`Existing guild left:
+    client.channels.get('402318969379225618').send(`Existing guild left:
 Guild: ${guild.id}
 Name: ${guild.name}
 Owner: ${guild.owner.user.tag} (${guild.owner.id})
@@ -267,9 +281,10 @@ Now on: ${client.guilds.size} servers`);
   })
   .on('guildMemberAdd', member => {
     function autoRole() {
-      const { guild } = member;
+      const guild = member.guild;
       const role = guild.settings.get('autorole');
       if (!role) return;
+      // eslint-disable-next-line no-useless-return
       if (member.bot) return;
       member.addRole(role, 'SmoreBot Autorole');
     }
@@ -298,6 +313,7 @@ Now on: ${client.guilds.size} servers`);
     }
 
     if (message.mentions) {
+      // eslint-disable-next-line array-callback-return
       message.mentions.users.map(user => {
         if (afkUsers[user.id]) {
           if (afkUsers[user.id].afk === true) {
@@ -310,40 +326,54 @@ Now on: ${client.guilds.size} servers`);
     fs.open('./db.lock', 'r', err => {
       if (err) {
         if (err.code === 'ENOENT') {
+          // eslint-disable-next-line no-use-before-define
           onSuccess();
         }
+        // eslint-disable-next-line no-negated-condition
+      } else if (!err) {
+        // eslint-disable-next-line no-useless-return
+        return;
       } else {
         return console.error(err);
       }
     });
     fs.closeSync(fs.openSync('./db.lock', 'w'));
 
-    function onSuccess() {
+    async function onSuccess() {
       sql.get(`SELECT * FROM bank WHERE userId ="${message.author.id}"`).then(row => {
-        if (row) {
+        // eslint-disable-next-line no-negated-condition
+        if (!row) {
+          sql.run('INSERT INTO bank (userId, balance, points) VALUES (?, ?, ?)', [message.author.id, 0, 0]);
+          // eslint-disable-next-line
+            return
+          // eslint-disable-next-line no-else-return
+        } else {
           if (parseInt(row.points) >= 100) {
             const curBal = parseInt(row.balance);
             const newBal = curBal + 1;
             sql.run(`UPDATE bank SET balance = ${newBal} WHERE userId = ${message.author.id}`);
             sql.run(`UPDATE bank SET points = ${0} WHERE userId = ${message.author.id}`);
           }
-          if (!cooldownUsers.includes(message.author.id)) {
+          // eslint-disable-next-line
+            if (!cooldownUsers.includes(message.author.id)) {
             sql.get(`SELECT * FROM bank WHERE userId ="${message.author.id}"`).then(row => {
-              const newPts = Math.floor(Math.abs((Math.random() * (10 - 36)) + 10));
+              // eslint-disable-next-line no-mixed-operators
+              const newPts = Math.floor(Math.abs(Math.random() * (10 - 36) + 10));
               sql.run(`UPDATE bank SET points = ${row.points + newPts} WHERE userId = ${message.author.id}`);
               cooldownUsers.push(message.author.id);
             });
-          } else if (!waitingUsers.includes(message.author.id)) {
-            waitingUsers.push(message.author.id);
-            setTimeout(() => {
-              const index1 = cooldownUsers.indexOf(message.author.id);
-              const index2 = waitingUsers.indexOf(message.author.id);
-              cooldownUsers.splice(index1, 1);
-              waitingUsers.splice(index2, 1);
-            }, ms('1m'));
+          } else {
+            // eslint-disable-next-line no-lonely-if
+            if (!waitingUsers.includes(message.author.id)) {
+              waitingUsers.push(message.author.id);
+              setTimeout(() => {
+                const index1 = cooldownUsers.indexOf(message.author.id);
+                const index2 = waitingUsers.indexOf(message.author.id);
+                cooldownUsers.splice(index1, 1);
+                waitingUsers.splice(index2, 1);
+              }, ms('1m'));
+            }
           }
-        } else {
-          sql.run('INSERT INTO bank (userId, balance, points) VALUES (?, ?, ?)', [message.author.id, 0, 0]);
         }
       })
         .catch(err => {
@@ -351,6 +381,8 @@ Now on: ${client.guilds.size} servers`);
           sql.run('CREATE TABLE IF NOT EXISTS bank (userId TEXT, balance INTEGER, points INTEGER)').then(() => {
             sql.run('INSERT INTO bank (userId, balance, points) VALUES (?, ?, ?)', [message.author.id, 0, 0]);
           });
+          // eslint-disable-next-line
+          return
         });
     }
     fs.unlinkSync('./db.lock');
@@ -370,9 +402,13 @@ Now on: ${client.guilds.size} servers`);
       const starboard = client.channels.get(msg.guild.settings.get('starboard'));
       if (!starboard) return;
       if (user.id === msg.author.id) return msg.channel.send(`${msg.author}, You can't star your own messages!`);
-      const reacts = msg.reactions.filter(reacts => reacts.emoji.name === '⭐');
+      // eslint-disable-next-line no-undef
+      reacts = msg.reactions.filter(reacts => reacts.emoji.name === '⭐');
+      // eslint-disable-next-line no-undef
       if (reacts.length > 1) return;
-      starboard.send({ embed });
+      starboard.send({
+        embed
+      });
     }
   });
 
@@ -381,10 +417,14 @@ setInterval(() => {
     if (err) {
       if (err.code === 'ENOENT') {
         console.log('No DB lock, polling transactions');
+        // eslint-disable-next-line no-use-before-define
         onSuccess();
       }
+      // eslint-disable-next-line no-negated-condition
     } else if (!err) {
       console.error('DB lock exists, transaction polling halted');
+      // eslint-disable-next-line newline-before-return, no-useless-return
+      return;
     } else {
       return console.error(err);
     }
@@ -423,6 +463,7 @@ setInterval(() => {
         console.log(JSON.stringify(body, null, 2));
         body.forEach(t => {
           sql.get(`SELECT * FROM bank WHERE userId ="${t.user}"`).then(row => {
+            // eslint-disable-next-line no-negated-condition
             if (!row) {
               sql.run('INSERT INTO bank (userId, balance, points) VALUES (?, ?, ?)', [t.user, t.amount, 0]);
               const transAuth = client.users.get(t.user);
@@ -439,7 +480,10 @@ setInterval(() => {
               transAuth.send({
                 embed
               });
-            } else {
+              /*eslint-disable*/
+                return
+              } else {
+                /* eslint-enable*/
               const curBal = parseInt(row.balance);
               const newBal = curBal + t.amount;
               sql.run(`UPDATE bank SET balance = ${newBal} WHERE userId = ${t.user}`);
@@ -478,11 +522,14 @@ setInterval(() => {
                   embed
                 });
               });
+              // eslint-disable-next-line
+              return
             });
         });
       }
     });
   }
+  // eslint-disable-next-line no-sync
   fs.unlinkSync('./db.lock');
 }, ms('30s'));
 

@@ -22,7 +22,6 @@ module.exports = class ABLCommand extends commando.Command {
         label: 'type',
         prompt: 'What would you like to blacklist? (Guild / User)',
         type: 'string',
-        oneof: ['guild', 'user'],
         infinite: false
       },
       {
@@ -32,16 +31,22 @@ module.exports = class ABLCommand extends commando.Command {
         type: 'string',
         infinite: false
       }],
-      ownerOnly: true,
+
       guarded: true
     });
   }
 
+  hasPermission(msg) {
+    return this.client.isOwner(msg.author);
+  }
+
   async run(message, args) {
-    let blacklist = JSON.parse(fs.readFileSync('./blacklist.json', 'utf8'));
+    // eslint-disable-next-line no-sync
+    let blacklist = JSON.parse(fs.readFileSync('./bin/blacklist.json', 'utf8'));
     if (args.type.toLowerCase() === 'guild') {
       if (this.client.guilds.find('id', args.id) === null) return message.reply('That guild does not exist, is not in the bot\'s cache, or is not available to the bot.');
       const guildToBlack = this.client.guilds.get(args.id);
+      /* eslint-disable quotes*/
       if (!blacklist) {
         blacklist = {
           guilds: [],
@@ -51,10 +56,11 @@ module.exports = class ABLCommand extends commando.Command {
       /* eslint-enable quotes*/
       if (blacklist.guilds.includes(args.id)) return message.reply(`The guild ${guildToBlack.name} (${guildToBlack.id} is already blacklisted.`);
       blacklist.guilds.push(args.id);
-      fs.writeFile('./blacklist.json', JSON.stringify(blacklist, null, 2), err => {
+      fs.writeFile('./bin/blacklist.json', JSON.stringify(blacklist, null, 2), err => {
         if (err) {
           message.reply('Something went wrong! Contact a developer.');
           console.error(err);
+          // eslint-disable-next-line newline-before-return
           return;
         }
         message.reply(`The guild ${guildToBlack.name} (${guildToBlack.id}) has been blacklisted from all aspects of the bot.`);
@@ -62,18 +68,21 @@ module.exports = class ABLCommand extends commando.Command {
     } else if (args.type.toLowerCase() === 'user') {
       if (this.client.users.find('id', args.id) === null) return message.reply('That user does not exist, is not in the bot\'s cache, or is not available to the bot.');
       const userToBlack = this.client.users.get(args.id);
+      /* eslint-disable quotes*/
       if (!blacklist) {
         blacklist = {
           guilds: [],
           users: []
         };
       }
+      /* eslint-enable quotes*/
       if (blacklist.users.includes(args.id)) return message.reply(`The user ${userToBlack.tag} (${userToBlack.id}) is already blacklisted.`);
       blacklist.users.push(args.id);
-      fs.writeFile('./blacklist.json', JSON.stringify(blacklist, null, 2), err => {
+      fs.writeFile('./bin/blacklist.json', JSON.stringify(blacklist, null, 2), err => {
         if (err) {
           message.reply('Something went wrong! Contact a developer.');
           console.error(err);
+          // eslint-disable-next-line newline-before-return
           return;
         }
         message.reply(`The user ${userToBlack.tag} (${userToBlack.id}) has been blacklisted from all aspects of the bot.`);

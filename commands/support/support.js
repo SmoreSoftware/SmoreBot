@@ -20,14 +20,13 @@ module.exports = class SupportCommand extends commando.Command {
     });
   }
 
-  run(message) {
-    // TODO Clean this up a lot
+  async run(message) {
     let isEnabled;
-    const avatarURL = message.author.displayAvatarURL;
-    const { client } = this;
+    const avatarURL = message.author.avatar ? message.author.avatarURL : 'https://discordapp.com/assets/0e291f67c9274a1abdddeb3fd919cbaa.png';
+    const client = this.client;
     message.reply('Thank you for contacting SmoreBot Support! If there are any available support representatives, they will contact you soon.');
     const chan = message.channel;
-    const supportChan = '322450311597916172';
+    const supportChan = '464237929762652161';
     const embed = new RichEmbed()
       .setTitle(':bangbang: **New support call** :bangbang:')
       .setAuthor(`${message.author.tag} (${message.author.id})`, `${avatarURL}`)
@@ -35,11 +34,11 @@ module.exports = class SupportCommand extends commando.Command {
       .setDescription(`**Guild:** ${message.guild.name} (${message.guild.id}) \n**Channel:** #${message.channel.name} (${message.channel.id}) \n**Started by:** ${message.author.tag} (${message.author.id})`)
       .setFooter('SmoreBot Support System')
       .setTimestamp();
-    this.client.channels.get(supportChan).send('<@&294883525881102336>');
+    this.client.channels.get(supportChan).send('<@&361657331374882816>');
     this.client.channels.get(supportChan).send({ embed });
-    const collector = this.client.channels
-      .get(supportChan)
-      .createCollector(message => message.content.startsWith('call'), { time: 0 });
+    const collector = this.client.channels.get(supportChan).createCollector(message => message.content.startsWith('call'), {
+      time: 0
+    });
     this.client.channels.get(supportChan).send('Do `call answer` to answer call and connect to server in need or `call end` to deny call.');
     collector.on('message', message => {
       if (message.content === 'call end') collector.stop('aborted');
@@ -70,8 +69,8 @@ module.exports = class SupportCommand extends commando.Command {
 
               return isEnabled = false;
             }
-            if (message.channel.id === chan.id) client.channels.get(supportChan).send(`:telephone_receiver: **${message.author.tag}**: ${message.content}`);
-            if (message.channel.id === supportChan) chan.send(`:star: ${message.content}`);
+            if (message.channel.id === chan.id) client.channels.get(supportChan).send(`:telephone_receiver: **${message.author.tag}**: ${message.cleanContent}`);
+            if (message.channel.id === supportChan) chan.send(`:star: ${message.cleanContent}`);
           }
           contact(client);
         });

@@ -44,7 +44,7 @@ module.exports = class SuggestCommand extends commando.Command {
             .setDescription(`**Guild:** ${message.guild.name} (${message.guild.id}) \n**Channel:** #${message.channel.name} (${message.channel.id}) \n**User:** ${message.author.tag} (${message.author.id}) \n**Suggestion:** ${args.toSug} \n**Invite:** ${invite}`)
             .setFooter('SmoreBot Suggestions System')
             .setTimestamp();
-          this.client.channels.get('304727510619389964').send({ embed });
+          this.client.channels.get('402318998395682836').send({ embed });
         });
       message.reply('Thank you for your suggestion! The SmoreSoftware development team appreciates all feedback. We will get back to you soon if we like your idea and want to discuss specifics.');
     } else {
