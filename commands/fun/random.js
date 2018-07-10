@@ -27,7 +27,7 @@ module.exports = class RandTextCommand extends Command {
   run(message, args) {
     function randomtext() {
       let text = '';
-      const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789.,!?@#$%^&()-_=+/|\{\}"\'';
+      const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789.,!?@#$%^&()-_=+/|{}"\'';
 
       for (let i = 0; i < args.toRand; i++) text += possible.charAt(Math.floor(Math.random() * possible.length));
 
