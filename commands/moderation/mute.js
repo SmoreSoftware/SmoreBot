@@ -1,9 +1,9 @@
-const commando = require('discord.js-commando');
-const oneLine = require('common-tags').oneLine;
+const { Command } = require('discord.js-commando');
+const { oneLine } = require('common-tags');
 const { RichEmbed } = require('discord.js');
 const ms = require('ms');
 
-module.exports = class MuteCommand extends commando.Command {
+module.exports = class MuteCommand extends Command {
   constructor(client) {
     super(client, {
       name: 'mute',
@@ -44,7 +44,7 @@ module.exports = class MuteCommand extends commando.Command {
     });
   }
 
-  async run(message, args) {
+  run(message, args) {
     const modrole = message.guild.settings.get('modrole');
     const adminrole = message.guild.settings.get('adminrole');
     const modlog = message.guild.settings.get('modlog');

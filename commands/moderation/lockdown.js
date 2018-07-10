@@ -1,9 +1,9 @@
-const commando = require('discord.js-commando');
-const oneLine = require('common-tags').oneLine;
+const { Command } = require('discord.js-commando');
+const { oneLine } = require('common-tags');
 const { RichEmbed } = require('discord.js');
 const ms = require('ms');
 
-module.exports = class LockdownCommand extends commando.Command {
+module.exports = class LockdownCommand extends Command {
   constructor(client) {
     super(client, {
       name: 'lockdown',
@@ -34,7 +34,7 @@ module.exports = class LockdownCommand extends commando.Command {
     });
   }
 
-  async run(message, args) {
+  run(message, args) {
     const adminrole = message.guild.settings.get('adminrole');
     const modlog = message.guild.settings.get('modlog');
     if (!adminrole || !modlog) return message.reply(`This command is not set up to work! Have someone run \`${message.guild.commandPrefix}settings\` to add the \`admin\` and \`modlog\` settings.`);
@@ -68,58 +68,57 @@ module.exports = class LockdownCommand extends commando.Command {
       let count = 0;
       let count2 = 0;
       // console.log(`first ${count2}`)
-      message.guild.roles.map(role => {
-        message.channel.overwritePermissions(role.id, {
-          SEND_MESSAGES: false,
-          ADD_REACTIONS: false
-        })
-          .then(() => {
+      message.guild.roles.map(role => message.channel.overwritePermissions(role.id, {
+        SEND_MESSAGES: false,
+        ADD_REACTIONS: false
+      })
+        .then(() => {
+          // console.log(count)
+          // console.log(`second ${count2}`)
+          if (count === 0) {
+            count++;
             // console.log(count)
-            // console.log(`second ${count2}`)
-            if (count === 0) {
-              count++;
-              // console.log(count)
-              message.delete(1);
-              message.channel.send(`:mute: Channel locked down for ${ms(ms(args.time), { 'long': true })} by ${message.author.tag}. (Do \`${message.guild.commandPrefix}lockdown unlock <reason>\` to unlock.)`).then(() => {
-                const embed = new RichEmbed()
-                  .setTitle(':bangbang: **Moderation action** :scales:')
-                  .setAuthor(`${message.author.tag} (${message.author.id})`, `${message.author.avatarURL}`)
-                  .setColor(0xCC5200)
-                  .setDescription(`**Action:** Lockdown \n**Channel:** ${message.channel.name} (${message.channel.id}) \n**Reason:** ${args.reason} \n**Time:** ${ms(ms(args.time), { 'long': true })}`)
-                  .setTimestamp();
-                message.guild.channels.get(modlog).send({
-                  embed
-                });
-                lockit[message.channel.id] = setTimeout(() => {
-                  // console.log(`third ${count2}`)
-                  message.guild.roles.map(role => {
-                    message.channel.overwritePermissions(role.id, {
-                      SEND_MESSAGES: null,
-                      ADD_REACTIONS: null
-                    }).then(() => {
-                      if (count2 === 0) {
-                        count2++;
-                        message.channel.send(':loud_sound: Lockdown lifted.');
-                        const embed = new RichEmbed()
-                          .setTitle(':bangbang: **Moderation action** :scales:')
-                          .setAuthor(`${this.client.user.tag} (${this.client.user.id})`, `${this.client.user.avatarURL}`)
-                          .setColor(0x00FF00)
-                          .setDescription(`**Action:** Lockdown lift \n**Channel:** ${message.channel.name} (${message.channel.id}) \n**Reason:** Time ended, lockdown expired`)
-                          .setTimestamp();
-                        message.guild.channels.get(modlog).send({
-                          embed
-                        });
-                      }
-                    });
-                    delete lockit[message.channel.id];
-                  });
-                }, ms(args.time));
-              }).catch(error => {
-                console.log(error);
+            message.delete(1);
+            message.channel.send(`:mute: Channel locked down for ${ms(ms(args.time), { 'long': true })} by ${message.author.tag}. (Do \`${message.guild.commandPrefix}lockdown unlock <reason>\` to unlock.)`).then(() => {
+              const embed = new RichEmbed()
+                .setTitle(':bangbang: **Moderation action** :scales:')
+                .setAuthor(`${message.author.tag} (${message.author.id})`, `${message.author.avatarURL}`)
+                .setColor(0xCC5200)
+                .setDescription(`**Action:** Lockdown \n**Channel:** ${message.channel.name} (${message.channel.id}) \n**Reason:** ${args.reason} \n**Time:** ${ms(ms(args.time), { 'long': true })}`)
+                .setTimestamp();
+              message.guild.channels.get(modlog).send({
+                embed
               });
-            }
-          });
-      });
+              lockit[message.channel.id] = setTimeout(() => {
+                // console.log(`third ${count2}`)
+                message.guild.roles.map(role => {
+                  message.channel.overwritePermissions(role.id, {
+                    SEND_MESSAGES: null,
+                    ADD_REACTIONS: null
+                  }).then(() => {
+                    if (count2 === 0) {
+                      count2++;
+                      message.channel.send(':loud_sound: Lockdown lifted.');
+                      const embed = new RichEmbed()
+                        .setTitle(':bangbang: **Moderation action** :scales:')
+                        .setAuthor(`${this.client.user.tag} (${this.client.user.id})`, `${this.client.user.avatarURL}`)
+                        .setColor(0x00FF00)
+                        .setDescription(`**Action:** Lockdown lift \n**Channel:** ${message.channel.name} (${message.channel.id}) \n**Reason:** Time ended, lockdown expired`)
+                        .setTimestamp();
+                      message.guild.channels.get(modlog).send({
+                        embed
+                      });
+                    }
+                  });
+                  delete lockit[message.channel.id];
+                  return null;
+                });
+              }, ms(args.time));
+            }).catch(error => {
+              console.log(error);
+            });
+          }
+        }));
     }
   }
 };

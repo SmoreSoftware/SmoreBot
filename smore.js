@@ -102,9 +102,7 @@ setInterval(() => {
   function log() {
     console.log('Wrote afk users to file.');
   }
-  fs.writeFile('./bin/afk.json', JSON.stringify(afkUsers, null, 2), {
-    encoding: 'utf8'
-  }, log);
+  fs.writeFile('./bin/afk.json', JSON.stringify(afkUsers, null, 2), { encoding: 'utf8' }, log);
 }, ms('30s'));
 
 client
@@ -115,16 +113,12 @@ client
     console.log(`Client ready; logged in as ${client.user.tag} (${client.user.id}) with prefix "${process.env.prefix}"`);
     dbots.post(`https://discordbots.org/api/bots/${client.user.id}/stats`)
       .set('Authorization', process.env.dbotsToken1)
-      .send({
-        server_count: client.guilds.size
-      })
+      .send({ server_count: client.guilds.size })
       .end();
     console.log('DBotsList guild count updated.');
     dbots.post(`https://bots.discord.pw/api/bots/${client.user.id}/stats`)
       .set('Authorization', process.env.dbotsToken2)
-      .send({
-        server_count: client.guilds.size
-      })
+      .send({ server_count: client.guilds.size })
       .end();
     console.log('DBots guild count updated.');
     client.user.setPresence({
@@ -281,7 +275,7 @@ Now on: ${client.guilds.size} servers`);
   })
   .on('guildMemberAdd', member => {
     function autoRole() {
-      const guild = member.guild;
+      const { guild } = member;
       const role = guild.settings.get('autorole');
       if (!role) return;
       // eslint-disable-next-line no-useless-return
@@ -326,54 +320,40 @@ Now on: ${client.guilds.size} servers`);
     fs.open('./db.lock', 'r', err => {
       if (err) {
         if (err.code === 'ENOENT') {
-          // eslint-disable-next-line no-use-before-define
           onSuccess();
         }
-        // eslint-disable-next-line no-negated-condition
-      } else if (!err) {
-        // eslint-disable-next-line no-useless-return
-        return;
       } else {
         return console.error(err);
       }
     });
     fs.closeSync(fs.openSync('./db.lock', 'w'));
 
-    async function onSuccess() {
+    const onSuccess = () => {
       sql.get(`SELECT * FROM bank WHERE userId ="${message.author.id}"`).then(row => {
-        // eslint-disable-next-line no-negated-condition
-        if (!row) {
-          sql.run('INSERT INTO bank (userId, balance, points) VALUES (?, ?, ?)', [message.author.id, 0, 0]);
-          // eslint-disable-next-line
-            return
-          // eslint-disable-next-line no-else-return
-        } else {
-          if (parseInt(row.points) >= 100) {
-            const curBal = parseInt(row.balance);
+        if (row) {
+          if (parseInt(row.points, 10) >= 100) {
+            const curBal = parseInt(row.balance, 10);
             const newBal = curBal + 1;
             sql.run(`UPDATE bank SET balance = ${newBal} WHERE userId = ${message.author.id}`);
             sql.run(`UPDATE bank SET points = ${0} WHERE userId = ${message.author.id}`);
           }
-          // eslint-disable-next-line
-            if (!cooldownUsers.includes(message.author.id)) {
+          if (!cooldownUsers.includes(message.author.id)) {
             sql.get(`SELECT * FROM bank WHERE userId ="${message.author.id}"`).then(row => {
-              // eslint-disable-next-line no-mixed-operators
-              const newPts = Math.floor(Math.abs(Math.random() * (10 - 36) + 10));
+              const newPts = Math.floor(Math.abs((Math.random() * (10 - 36)) + 10));
               sql.run(`UPDATE bank SET points = ${row.points + newPts} WHERE userId = ${message.author.id}`);
               cooldownUsers.push(message.author.id);
             });
-          } else {
-            // eslint-disable-next-line no-lonely-if
-            if (!waitingUsers.includes(message.author.id)) {
-              waitingUsers.push(message.author.id);
-              setTimeout(() => {
-                const index1 = cooldownUsers.indexOf(message.author.id);
-                const index2 = waitingUsers.indexOf(message.author.id);
-                cooldownUsers.splice(index1, 1);
-                waitingUsers.splice(index2, 1);
-              }, ms('1m'));
-            }
+          } else if (!waitingUsers.includes(message.author.id)) {
+            waitingUsers.push(message.author.id);
+            setTimeout(() => {
+              const index1 = cooldownUsers.indexOf(message.author.id);
+              const index2 = waitingUsers.indexOf(message.author.id);
+              cooldownUsers.splice(index1, 1);
+              waitingUsers.splice(index2, 1);
+            }, ms('1m'));
           }
+        } else {
+          sql.run('INSERT INTO bank (userId, balance, points) VALUES (?, ?, ?)', [message.author.id, 0, 0]);
         }
       })
         .catch(err => {
@@ -381,14 +361,11 @@ Now on: ${client.guilds.size} servers`);
           sql.run('CREATE TABLE IF NOT EXISTS bank (userId TEXT, balance INTEGER, points INTEGER)').then(() => {
             sql.run('INSERT INTO bank (userId, balance, points) VALUES (?, ?, ?)', [message.author.id, 0, 0]);
           });
-          // eslint-disable-next-line
-          return
         });
-    }
+    };
     fs.unlinkSync('./db.lock');
   })
   .on('messageReactionAdd', (reaction, user) => {
-    // console.log('new reaction')
     if (reaction.emoji.name === '⭐') {
       const msg = reaction.message;
       const embed = new RichEmbed()
@@ -402,13 +379,8 @@ Now on: ${client.guilds.size} servers`);
       const starboard = client.channels.get(msg.guild.settings.get('starboard'));
       if (!starboard) return;
       if (user.id === msg.author.id) return msg.channel.send(`${msg.author}, You can't star your own messages!`);
-      // eslint-disable-next-line no-undef
-      reacts = msg.reactions.filter(reacts => reacts.emoji.name === '⭐');
-      // eslint-disable-next-line no-undef
-      if (reacts.length > 1) return;
-      starboard.send({
-        embed
-      });
+      if (msg.reactions.filter(reacts => reacts.emoji.name === '⭐').size > 1) return;
+      starboard.send({ embed });
     }
   });
 
@@ -431,13 +403,11 @@ setInterval(() => {
   });
   fs.closeSync(fs.openSync('./db.lock', 'w'));
 
-  async function onSuccess() {
+  function onSuccess() {
     sql.open('./bin/bank.sqlite');
     request({
       url: 'http://discoin.sidetrip.xyz/transactions',
-      headers: {
-        Authorization: process.env.discoinToken
-      }
+      headers: { Authorization: process.env.discoinToken }
     }, (error, response, body) => {
       console.log(`Body: ${body}`);
       if (error && error !== null) console.log(`Error: ${error}`);
@@ -477,14 +447,12 @@ setInterval(() => {
                 .addField('Converted From:', t.source, true)
                 .addField('Reception Time:', getDateTime(), true)
                 .setFooter(`Transaction made at ${t.timestamp}`);
-              transAuth.send({
-                embed
-              });
+              transAuth.send({ embed });
               /*eslint-disable*/
                 return
               } else {
                 /* eslint-enable*/
-              const curBal = parseInt(row.balance);
+              const curBal = parseInt(row.balance, 10);
               const newBal = curBal + t.amount;
               sql.run(`UPDATE bank SET balance = ${newBal} WHERE userId = ${t.user}`);
               const transAuth = client.users.get(t.user);
@@ -498,9 +466,7 @@ setInterval(() => {
                 .addField('Converted From:', t.source, true)
                 .addField('Reception Time:', getDateTime(), true)
                 .setFooter(`Transaction made at ${t.timestamp}`);
-              transAuth.send({
-                embed
-              });
+              transAuth.send({ embed });
             }
           })
             .catch(err => {
@@ -518,9 +484,7 @@ setInterval(() => {
                   .addField('Converted From:', t.source, true)
                   .addField('Reception Time:', getDateTime(), true)
                   .setFooter(`Transaction made at ${t.timestamp}`);
-                transAuth.send({
-                  embed
-                });
+                transAuth.send({ embed });
               });
               // eslint-disable-next-line
               return

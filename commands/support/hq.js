@@ -1,7 +1,7 @@
-const commando = require('discord.js-commando');
+const { Command } = require('discord.js-commando');
 const { oneLine, stripIndents } = require('common-tags');
 
-module.exports = class HQCommand extends commando.Command {
+module.exports = class HQCommand extends Command {
   constructor(client) {
     super(client, {
       name: 'hq',

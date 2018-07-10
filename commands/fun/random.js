@@ -1,7 +1,7 @@
-const commando = require('discord.js-commando');
-const oneLine = require('common-tags').oneLine;
+const { Command } = require('discord.js-commando');
+const { oneLine } = require('common-tags');
 
-module.exports = class RandTextCommand extends commando.Command {
+module.exports = class RandTextCommand extends Command {
   constructor(client) {
     super(client, {
       name: 'random',
@@ -19,13 +19,12 @@ module.exports = class RandTextCommand extends commando.Command {
         key: 'toRand',
         label: 'randtext',
         prompt: 'How long would you like the message to be?',
-        type: 'float',
-        infinite: false
+        type: 'integer'
       }]
     });
   }
 
-  async run(message, args) {
+  run(message, args) {
     function randomtext() {
       let text = '';
       const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789.,!?@#$%^&()-_=+/|\{\}"\'';

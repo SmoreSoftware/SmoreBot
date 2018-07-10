@@ -1,8 +1,8 @@
-const commando = require('discord.js-commando');
+const { Command } = require('discord.js-commando');
 const oneLine = require('common-tags').oneLine;
 const afkUsers = require('../../bin/afk.json');
 
-module.exports = class AFKCommand extends commando.Command {
+module.exports = class AFKCommand extends Command {
   constructor(client) {
     super(client, {
       name: 'afk',

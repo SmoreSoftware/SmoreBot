@@ -1,8 +1,8 @@
-const commando = require('discord.js-commando');
+const { Command } = require('discord.js-commando');
 const oneLine = require('common-tags').oneLine;
 const childProcess = require('child_process');
 
-module.exports = class ExecCommand extends commando.Command {
+module.exports = class ExecCommand extends Command {
   constructor(client) {
     super(client, {
       name: 'exec',

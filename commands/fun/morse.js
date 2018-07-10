@@ -1,9 +1,9 @@
-const commando = require('discord.js-commando');
-const oneLine = require('common-tags').oneLine;
+const { Command } = require('discord.js-commando');
+const { oneLine } = require('common-tags');
 const { RichEmbed } = require('discord.js');
 const morse = require('morse-node').create('ITU');
 
-module.exports = class MorseCommand extends commando.Command {
+module.exports = class MorseCommand extends Command {
   constructor(client) {
     super(client, {
       name: 'morse',
@@ -25,7 +25,7 @@ module.exports = class MorseCommand extends commando.Command {
     });
   }
 
-  async run(message, args) {
+  run(message, args) {
     const translated = morse.encode(args.toMorse);
     const embed = new RichEmbed()
       .setColor('0x0000FF')

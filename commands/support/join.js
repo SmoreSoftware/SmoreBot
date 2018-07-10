@@ -1,8 +1,8 @@
-const commando = require('discord.js-commando');
+const { Command } = require('discord.js-commando');
 const { oneLine } = require('common-tags');
 const { RichEmbed } = require('discord.js');
 
-module.exports = class JoinCommand extends commando.Command {
+module.exports = class JoinCommand extends Command {
   constructor(client) {
     super(client, {
       name: 'join',

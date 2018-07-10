@@ -1,9 +1,9 @@
-const commando = require('discord.js-commando');
+const { Command } = require('discord.js-commando');
 const oneLine = require('common-tags').oneLine;
 const { RichEmbed } = require('discord.js');
 const { writeFileSync, readFileSync } = require('fs');
 
-module.exports = class NoteCommand extends commando.Command {
+module.exports = class NoteCommand extends Command {
   constructor(client) {
     super(client, {
       name: 'note',

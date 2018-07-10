@@ -1,7 +1,7 @@
-const commando = require('discord.js-commando');
-const oneLine = require('common-tags').oneLine;
+const { Command } = require('discord.js-commando');
+const { oneLine } = require('common-tags');
 
-module.exports = class PruneCommand extends commando.Command {
+module.exports = class PruneCommand extends Command {
   constructor(client) {
     super(client, {
       name: 'prune',
@@ -23,7 +23,7 @@ module.exports = class PruneCommand extends commando.Command {
     });
   }
 
-  async run(message, args) {
+  run(message, args) {
     const messagecount = args.toPrune;
     message.channel.fetchMessages({
       limit: 100

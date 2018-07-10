@@ -1,8 +1,8 @@
-const commando = require('discord.js-commando');
+const { Command } = require('discord.js-commando');');');
 const { RichEmbed } = require('discord.js');
 const request = require('request');
 
-module.exports = class UserInfoCommand extends commando.Command {
+module.exports = class UserInfoCommand extends Command {
   constructor(client) {
     super(client, {
       name: 'user-info',

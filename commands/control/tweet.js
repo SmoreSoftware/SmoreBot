@@ -1,4 +1,4 @@
-const commando = require('discord.js-commando');
+const { Command } = require('discord.js-commando');
 const { oneLine } = require('common-tags');
 const Twit = require('twit');
 const crypto = require('crypto');
@@ -25,7 +25,7 @@ const T = new Twit({
 });
 /* eslint-enable camelcase */
 
-module.exports = class TweetCommand extends commando.Command {
+module.exports = class TweetCommand extends Command {
   constructor(client) {
     super(client, {
       name: 'tweet',

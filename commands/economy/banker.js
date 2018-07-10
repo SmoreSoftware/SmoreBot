@@ -1,9 +1,9 @@
-const commando = require('discord.js-commando');
+const { Command } = require('discord.js-commando');
 const oneLine = require('common-tags').oneLine;
 const sql = require('sqlite');
 const fs = require('fs');
 
-module.exports = class BankerCommand extends commando.Command {
+module.exports = class BankerCommand extends Command {
   constructor(client) {
     super(client, {
       name: 'banker',

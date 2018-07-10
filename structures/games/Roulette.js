@@ -1,6 +1,4 @@
-const {
-  Collection
-} = require('discord.js');
+const { Collection } = require('discord.js');
 
 const games = new Map();
 

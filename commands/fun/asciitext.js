@@ -1,8 +1,8 @@
-const commando = require('discord.js-commando');
+const { Command } = require('discord.js-commando');
 const oneLine = require('common-tags').oneLine;
 const ascii = require('figlet');
 
-module.exports = class AsciiTextCommand extends commando.Command {
+module.exports = class AsciiTextCommand extends Command {
   constructor(client) {
     super(client, {
       name: 'asciitext',

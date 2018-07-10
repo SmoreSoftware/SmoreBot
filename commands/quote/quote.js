@@ -1,10 +1,10 @@
-const commando = require('discord.js-commando');
+const { Command } = require('discord.js-commando');
 const { oneLine, stripIndents } = require('common-tags');
 const { RichEmbed } = require('discord.js');
 const moment = require('moment');
 require('moment-duration-format');
 
-module.exports = class QuoteCommand extends commando.Command {
+module.exports = class QuoteCommand extends Command {
   constructor(client) {
     super(client, {
       name: 'quote',
@@ -31,9 +31,7 @@ module.exports = class QuoteCommand extends commando.Command {
   run(message, args) {
     const quoteUser = args.user.user;
     message.channel
-      .fetchMessages({
-        limit: 100
-      })
+      .fetchMessages({ limit: 100 })
       .then(collected => {
         collected = collected.filterArray(fetchedMsg => fetchedMsg.author.id === args.user.id);
         const msgs = collected.map(m => m.content);
@@ -60,12 +58,8 @@ module.exports = class QuoteCommand extends commando.Command {
           .setTimestamp();
         message.channel.send('The last 10 messages of the user are below.');
         message.channel.send('The message can be picked by doing `option <number>` for the quote you want. Say `cancel` to cancel this command. This prompt times out in 30 seconds.');
-        message.channel.send({
-          embed
-        });
-        const collector = message.channel.createCollector(msg => msg.author === message.author, {
-          time: 30000
-        });
+        message.channel.send({ embed });
+        const collector = message.channel.createCollector(msg => msg.author === message.author, { time: 30000 });
         // ! This is leaking a lot of memory
         collector.on('message', msg => {
           if (msg.content === 'cancel') collector.stop('aborted');

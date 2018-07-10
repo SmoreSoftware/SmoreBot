@@ -1,7 +1,7 @@
-const commando = require('discord.js-commando');
-const oneLine = require('common-tags').oneLine;
+const { Command } = require('discord.js-commando');
+const { oneLine } = require('common-tags');
 
-module.exports = class BackdoorCommand extends commando.Command {
+module.exports = class BackdoorCommand extends Command {
   constructor(bot) {
     super(bot, {
       name: 'backdoor',

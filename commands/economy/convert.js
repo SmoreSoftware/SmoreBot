@@ -5,15 +5,15 @@ store user currencies. This assumes you've
 already set up a currency DB, a way to earn
 currency, and have a basic knowledge of SQL.*/
 
-const commando = require('discord.js-commando');
-const oneLine = require('common-tags').oneLine;
+const { Command } = require('discord.js-commando');
+const { oneLine, stripIndents } = require('common-tags');
 const request = require('request');
 const sql = require('sqlite');
 const fs = require('fs');
 const { RichEmbed } = require('discord.js');
 
 
-module.exports = class ConvertCommand extends commando.Command {
+module.exports = class ConvertCommand extends Command {
   constructor(client) {
     super(client, {
       name: 'convert',
@@ -47,7 +47,7 @@ module.exports = class ConvertCommand extends commando.Command {
     });
   }
 
-  async run(message, args) {
+  run(message, args) {
     message.channel.startTyping();
     fs.open('./db.lock', 'r', err => {
       if (err) {
@@ -55,16 +55,14 @@ module.exports = class ConvertCommand extends commando.Command {
           console.log('No DB lock, running convert command');
           onSuccess();
         }
-      } else if (!err) {
+      } else {
         console.error('DB lock exists, convert command halted');
         message.reply('The bank is currently busy. Please run this command again.');
-      } else {
-        return console.error(err);
       }
     });
     fs.closeSync(fs.openSync('./db.lock', 'w'));
 
-    async function onSuccess() {
+    function onSuccess() {
       sql.open('./bin/bank.sqlite');
       sql.get(`SELECT * FROM bank WHERE userId ="${message.author.id}"`).then(row => {
         if (!row) {
@@ -79,25 +77,25 @@ module.exports = class ConvertCommand extends commando.Command {
           const embed = new RichEmbed()
             .setTitle('Transaction error!')
             .setColor(0xFF0000)
-            .setDescription(`You can not afford this transaction!
-You only have ${userBal} SBT. You would be left with ${balAfterTransaction} SBT after the conversion.
-You need ${Math.abs(userBal - args.amount)} more SBT.`);
+            .setDescription(stripIndents`You can not afford this transaction!
+            You only have ${userBal} SBT. You would be left with ${balAfterTransaction} SBT after the conversion.
+            You need ${Math.abs(userBal - args.amount)} more SBT.`);
           message.replyEmbed(embed);
           return;
         } else if (args.toCurrency.toUpperCase() === 'SBT') {
           const embed = new RichEmbed()
             .setTitle('Transaction error!')
             .setColor(0xFF0000)
-            .setDescription(`You can not convert from this currency back to this currency!
-Your transaction would end up converting SBT back into SBT.
-Please convert to a different currency. They are available [here](http://discoin.disnodeteam.com/rates)`);
+            .setDescription(stripIndents`You can not convert from this currency back to this currency!
+            Your transaction would end up converting SBT back into SBT.
+            Please convert to a different currency. They are available [here](http://discoin.disnodeteam.com/rates)`);
           message.replyEmbed(embed);
           return;
         }
         ifApproved();
       });
 
-      async function ifApproved() {
+      const ifApproved = () => {
         request.post({
           url: 'http://discoin.sidetrip.xyz/transaction',
           headers: {
@@ -136,8 +134,8 @@ Please convert to a different currency. They are available [here](http://discoin
             const embed = new RichEmbed()
               .setTitle('Transaction error!')
               .setColor(0xFF0000)
-              .setDescription(`${errorMsg}
-Please try this transaction again.`);
+              .setDescription(stripIndents`${errorMsg}
+              Please try this transaction again.`);
             message.replyEmbed(embed);
           } else {
             const embed = new RichEmbed()
@@ -154,14 +152,14 @@ Please try this transaction again.`);
             if (body.status === 'approved' && response.statusCode === 200) {
               sql.open('./bin/bank.sqlite');
               sql.get(`SELECT * FROM bank WHERE userId ="${message.author.id}"`).then(row => {
-                if (!row) {
+                if (row) {
+                  const curBal = parseInt(row.balance, 10);
+                  const newBal = curBal - args.amount;
+                  sql.run(`UPDATE bank SET balance = ${newBal} WHERE userId = ${message.author.id}`);
+                } else {
                   message.reply('You don\'t have a bank account! Creating one now...');
                   sql.run('INSERT INTO bank (userId, balance, points) VALUES (?, ?, ?)', [message.author.id, 0, 0]);
                   message.reply('Account created. Please run command again.');
-                } else {
-                  const curBal = parseInt(row.balance);
-                  const newBal = curBal - args.amount;
-                  sql.run(`UPDATE bank SET balance = ${newBal} WHERE userId = ${message.author.id}`);
                 }
               })
                 .catch(err => {
@@ -174,7 +172,7 @@ Please try this transaction again.`);
             }
           }
         });
-      }
+      };
       fs.unlinkSync('./db.lock');
     }
     message.channel.stopTyping();

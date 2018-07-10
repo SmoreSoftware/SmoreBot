@@ -1,7 +1,7 @@
-const commando = require('discord.js-commando');
-const oneLine = require('common-tags').oneLine;
+const { Command } = require('discord.js-commando');
+const { oneLine } = require('common-tags');
 
-module.exports = class SettingsCommand extends commando.Command {
+module.exports = class SettingsCommand extends Command {
   constructor(client) {
     super(client, {
       name: 'settings',
@@ -43,7 +43,7 @@ module.exports = class SettingsCommand extends commando.Command {
     });
   }
 
-  async run(message, args) {
+  run(message, args) {
     switch (args.action.toLowerCase()) {
     case 'add':
     {
@@ -86,7 +86,7 @@ module.exports = class SettingsCommand extends commando.Command {
         } else if (state.toLowerCase() === 'off') {
           message.guild.settings.set('announcements', state);
           message.reply(`Set the announcement state to "${message.guild.settings.get('announcements')}" \nDo \`${message.guild.commandPrefix}settings add announcements on\` to re-enable announcements.`);
-        } else { return message.reply('Invaid state! Use \`on\` or  \`off\`.'); }
+        } else { return message.reply('Invaid state! Use `on` or  `off`.'); }
         break;
       }
       case 'autorole':
@@ -166,42 +166,42 @@ module.exports = class SettingsCommand extends commando.Command {
       case 'mod':
       {
         const role = message.guild.roles.get(message.guild.settings.get('modrole'));
-        if (role === undefined || role.name === undefined || role === undefined) return message.reply('There is currently no mod role set.');
+        if (!role.name || !role) return message.reply('There is currently no mod role set.');
         message.reply(`The mod role is "${role.name}"`);
         break;
       }
       case 'admin':
       {
         const role = message.guild.roles.get(message.guild.settings.get('adminrole'));
-        if (role === undefined || role.name === undefined || role === undefined) return message.reply('There is currently no admin role set.');
+        if (!role || !role.name) return message.reply('There is currently no admin role set.');
         message.reply(`The admin role is "${role.name}"`);
         break;
       }
       case 'modlog':
       {
         const chan = message.guild.channels.get(message.guild.settings.get('modlog'));
-        if (chan === undefined || chan.id === undefined || chan === undefined) return message.reply('There is currently no modlog channel set.');
+        if (!chan || !chan.id) return message.reply('There is currently no modlog channel set.');
         message.reply(`The mod log channel is "<#${chan.id}>"`);
         break;
       }
       case 'announcements':
       {
         const state = message.guild.settings.get('announcements');
-        if (state === undefined) return message.reply('There is currently no announcements state set.');
+        if (!state) return message.reply('There is currently no announcements state set.');
         message.reply(`The announcements state is "${state}"`);
         break;
       }
       case 'autorole':
       {
         const role = message.guild.roles.get(message.guild.settings.get('autorole'));
-        if (role === undefined || role.name === undefined || role === undefined) return message.reply('There is currently no auto role set.');
+        if (!role.name || !role) return message.reply('There is currently no auto role set.');
         message.reply(`The auto role is "${role.name}"`);
         break;
       }
       case 'starboard':
       {
         const chan = message.guild.channels.get(message.guild.settings.get('starboard'));
-        if (chan === undefined || chan.name === undefined) return message.reply('There is currently no starboard channel set.');
+        if (!chan || !chan.name) return message.reply('There is currently no starboard channel set.');
         message.reply(`The starboard channel is "<#${message.guild.settings.get('starboard')}>"`);
         break;
       }
@@ -217,29 +217,29 @@ module.exports = class SettingsCommand extends commando.Command {
       switch (args.setting.toLowerCase()) {
       case 'all':
       {
-        let modrole = message.guild.roles.get(message.guild.settings.get('modrole'));
-        let adminrole = message.guild.roles.get(message.guild.settings.get('adminrole'));
+        let modRole = message.guild.roles.get(message.guild.settings.get('modrole'));
+        let adminRole = message.guild.roles.get(message.guild.settings.get('adminrole'));
         let modlog = message.guild.channels.get(message.guild.settings.get('modlog'));
         let announcements = message.guild.settings.get('announcements');
-        let autorole = message.guild.roles.get(message.guild.settings.get('autorole'));
+        let autoRole = message.guild.roles.get(message.guild.settings.get('autorole'));
         let starboard = message.guild.channels.get(message.guild.settings.get('starboard'));
-        if (modrole === undefined || modrole.name === undefined) modrole = 'not set';
-        else modrole = modrole.name;
-        if (adminrole === undefined || adminrole.name === undefined) adminrole = 'not set';
-        else adminrole = adminrole.name;
-        if (modlog === undefined || modlog.name === undefined) modlog = 'not set';
+        if (!modRole || !modRole.name) modRole = 'not set';
+        else modRole = modRole.name;
+        if (!adminRole || !adminRole.name) adminRole = 'not set';
+        else adminRole = adminRole.name;
+        if (!modlog || !modlog.name) modlog = 'not set';
         else modlog = `<#${modlog.id}>`;
-        if (announcements === undefined) announcements = 'not set';
-        if (autorole === undefined || autorole.name === undefined) autorole = 'not set';
-        else autorole = autorole.name;
-        if (starboard === undefined || starboard.name === undefined) starboard = 'not set';
+        if (!announcements) announcements = 'not set';
+        if (!autoRole || !autoRole.name) autoRole = 'not set';
+        else autoRole = autoRole.name;
+        if (!starboard || !starboard.name) starboard = 'not set';
         else starboard = `<#${starboard.id}>`;
         message.reply(`The settings for this server are:
-**Mod role**: "${modrole}"
-**Admin role**: "${adminrole}"
+**Mod role**: "${modRole}"
+**Admin role**: "${adminRole}"
 **Modlog channel**: "${modlog}"
 **Global announcements**: "${announcements}"
-**Auto role**: "${autorole}"
+**Auto role**: "${autoRole}"
 **Starboard Channel:** "${starboard}"`);
         break;
       }
@@ -252,7 +252,7 @@ module.exports = class SettingsCommand extends commando.Command {
     }
     default:
     {
-      message.reply('Invalid command usage. Please try again. *(Action should be \`add\`, \`remove\`, \`view\`, or \`list\`.)*');
+      message.reply('Invalid command usage. Please try again. *(Action should be `add`, `remove`, `view`, or `list`.)*');
     }
     }
   }

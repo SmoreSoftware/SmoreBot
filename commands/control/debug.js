@@ -1,10 +1,10 @@
-const commando = require('discord.js-commando');
-const oneLine = require('common-tags').oneLine;
+const { Command } = require('discord.js-commando');
+const { oneLine } = require('common-tags');
 const rankFile = require('../../bin/ranks.json');
 let ranks = rankFile;
 
 
-module.exports = class DebugCommand extends commando.Command {
+module.exports = class DebugCommand extends Command {
   constructor(bot) {
     super(bot, {
       name: 'debug',

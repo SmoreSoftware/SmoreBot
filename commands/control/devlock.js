@@ -1,8 +1,8 @@
-const commando = require('discord.js-commando');
-const oneLine = require('common-tags').oneLine;
+const { Command } = require('discord.js-commando');
+const { oneLine } = require('common-tags');
 const fs = require('fs');
 
-module.exports = class DevlockCommand extends commando.Command {
+module.exports = class DevlockCommand extends Command {
   constructor(client) {
     super(client, {
       name: 'devlock',
@@ -29,7 +29,7 @@ module.exports = class DevlockCommand extends commando.Command {
     });
   }
 
-  async run(message, args) {
+  run(message, args) {
     if (args.action.toLowerCase() === 'on' || args.action.toLowerCase() === 'enable') {
       this.client.dispatcher.addInhibitor(msg => {
         if (!this.client.isOwner(msg.author)) return 'dev lockout enabled';

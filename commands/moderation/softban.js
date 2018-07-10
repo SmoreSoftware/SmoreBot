@@ -1,8 +1,8 @@
-const commando = require('discord.js-commando');
-const oneLine = require('common-tags').oneLine;
+const { Command } = require('discord.js-commando');
+const { oneLine, stripIndents } = require('common-tags');
 const { RichEmbed } = require('discord.js');
 
-module.exports = class SoftBanCommand extends commando.Command {
+module.exports = class SoftBanCommand extends Command {
   constructor(bot) {
     super(bot, {
       name: 'softban',
@@ -35,7 +35,7 @@ module.exports = class SoftBanCommand extends commando.Command {
     });
   }
 
-  async run(message, args) {
+  run(message, args) {
     const adminrole = message.guild.settings.get('adminrole');
     const modlog = message.guild.settings.get('modlog');
     if (!adminrole || !modlog) return message.reply(`This command is not set up to work! Have someone run \`${message.guild.commandPrefix}settings\` to add the \`admin\` and \`modlog\` settings.`);
@@ -47,9 +47,9 @@ module.exports = class SoftBanCommand extends commando.Command {
         days: 7,
         reason: `SOFTBAN: ${args.reason}`
       }).then(() => message.guild.unban(args.user).then(async () => {
-        await args.user.send(`You have been softbanned from the server "${message.guild}"!
-Staff member: ${message.author.username}
-Reason: '${args.reason}'`);
+        await args.user.send(stripIndents`You have been softbanned from the server "${message.guild}"!
+        Staff member: ${message.author.username}
+        Reason: '${args.reason}'`);
         const embed = new RichEmbed()
           .setTitle(':bangbang: **Moderation action** :scales:')
           .setAuthor(`${message.author.tag} (${message.author.id})`, `${message.author.avatarURL}`)
@@ -57,19 +57,17 @@ Reason: '${args.reason}'`);
           .setDescription(`**Action:** Softban \n**User:** ${args.user.user.tag} (${args.user.id}) \n**Reason:** ${args.reason}`)
           .setTimestamp();
         message.delete(1);
-        message.guild.channels.get(modlog).send({
-          embed
-        });
+        message.guild.channels.get(modlog).send({ embed });
         message.reply(`The user ${args.user.tag} was softbanned successfully.`);
       }))
         .catch(err => {
-          message.reply(`There was an error!
-\`\`\`${err}\`\`\``);
+          message.reply(oneLine`There was an error!
+          \`\`\`${err}\`\`\``);
           console.error(err);
         });
     } catch (err) {
-      message.reply(`There was an error!
-\`\`\`${err}\`\`\``);
+      message.reply(oneLine`There was an error!
+      \`\`\`${err}\`\`\``);
       console.error(err);
     }
   }

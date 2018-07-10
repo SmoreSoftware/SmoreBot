@@ -1,8 +1,8 @@
-const commando = require('discord.js-commando');
+const { Command } = require('discord.js-commando');
 const { oneLine } = require('common-tags');
 const allowed = require('./techsupport.json');
 
-module.exports = class ConnectCommand extends commando.Command {
+module.exports = class ConnectCommand extends Command {
   constructor(client) {
     super(client, {
       name: 'connect',

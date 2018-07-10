@@ -1,7 +1,7 @@
-const commando = require('discord.js-commando');
+const { Command } = require('discord.js-commando');
 const oneLine = require('common-tags').oneLine;
 const request = require('superagent');
-module.exports = class ManpostCommand extends commando.Command {
+module.exports = class ManpostCommand extends Command {
   constructor(bot) {
     super(bot, {
       name: 'manpost',

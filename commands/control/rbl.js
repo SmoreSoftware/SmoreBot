@@ -1,8 +1,8 @@
-const commando = require('discord.js-commando');
+const { Command } = require('discord.js-commando');
 const { oneLine } = require('common-tags');
 const fs = require('fs');
 
-module.exports = class RBLCommand extends commando.Command {
+module.exports = class RBLCommand extends Command {
   constructor(bot) {
     super(bot, {
       name: 'rbl',

@@ -1,9 +1,9 @@
 /*
-const commando = require('discord.js-commando');
+const { Command } = require('discord.js-commando');
 const oneLine = require('common-tags').oneLine;
 const ascii = require('image-to-ascii');
 
-module.exports = class ImgAsciiCommand extends commando.Command {
+module.exports = class ImgAsciiCommand extends Command {
   constructor(client) {
     super(client, {
       name: 'imgascii',

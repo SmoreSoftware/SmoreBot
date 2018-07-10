@@ -1,7 +1,7 @@
-const commando = require('discord.js-commando');
+const { Command } = require('discord.js-commando');
 const { oneLine } = require('common-tags');
 
-module.exports = class DonateCommand extends commando.Command {
+module.exports = class DonateCommand extends Command {
   constructor(client) {
     super(client, {
       name: 'donate',

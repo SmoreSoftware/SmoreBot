@@ -1,7 +1,7 @@
-const commando = require('discord.js-commando');
-const oneLine = require('common-tags').oneLine;
+const { Command } = require('discord.js-commando');
+const { oneLine } = require('common-tags');
 
-module.exports = class ScrambleCommand extends commando.Command {
+module.exports = class ScrambleCommand extends Command {
   constructor(client) {
     super(client, {
       name: 'scramble',
@@ -23,10 +23,10 @@ module.exports = class ScrambleCommand extends commando.Command {
     });
   }
 
-  async run(message, args) {
-    String.prototype.shuffle = function() {
-      let a = this.split(''),
-        n = a.length;
+  run(message, args) {
+    const shuffle = () => {
+      const a = this.split('');
+      const n = a.length;
 
       for (let i = n - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -38,7 +38,7 @@ module.exports = class ScrambleCommand extends commando.Command {
       return a.join('');
     };
 
-    message.delete(1);
-    message.channel.send(args.toScramble.shuffle());
+    message.delete();
+    message.channel.send(shuffle(args.toScramble));
   }
 };

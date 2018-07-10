@@ -1,8 +1,8 @@
-const commando = require('discord.js-commando');
+const { Command } = require('discord.js-commando');
 const { oneLine } = require('common-tags');
 const { RichEmbed } = require('discord.js');
 
-module.exports = class BanCommand extends commando.Command {
+module.exports = class BanCommand extends Command {
   constructor(client) {
     super(client, {
       name: 'ban',
@@ -64,9 +64,7 @@ Reason: "${args.reason}"`)
           .setDescription(`**Action:** Ban \n**User:** ${args.user.user.tag} (${args.user.id}) \n**Reason:** ${args.reason}`)
           .setTimestamp();
         message.delete(1);
-        message.guild.channels.get(modlog).send({
-          embed
-        });
+        message.guild.channels.get(modlog).send({ embed });
         message.reply(`The user ${member.user.tag} was successfully banned.`);
       })
         .catch(err => {
