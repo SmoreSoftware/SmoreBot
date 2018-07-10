@@ -7,6 +7,7 @@
     "node": "10.x"
   },
   "scripts": {
+    "test": "node smore.js",
     "lint": "eslint .",
     "start": "node smore.js"
   },
