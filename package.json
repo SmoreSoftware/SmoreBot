@@ -1,10 +1,24 @@
 {
+  "name": "smorejs",
+  "version": "2.0.6",
+  "description": "SmoreBot JS is the JavaScript bot written in Discord.js and Node.js it is designed to have music and server prefixes with custom settings per guild! Version 2 is the SmoreJS rewrite with migration onto the Discord.js-Commando framework.",
+  "main": "smore.js",
+  "engines": {
+    "node": "10.x"
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "start": "node smore.js"
+  },
+  "repository": "SmoreSoftware/SmoreJS",
   "bugs": {
     "url": "https://github.com/SmoreSoftware/SmoreJS/issues"
   },
+  "homepage": "https://github.com/SmoreSoftware/SmoreJS#readme",
+  "license": "AGPL-3.0-or-later",
   "contributors": [
-    "SpaceX#0276",
     "TJDoesCode#6088",
+    "Jdender~ <jdenderplays@gmail.com> (https://github.com/jdenderplays)",
     "Jonah Snider <me@jonahsnider.ninja> (jonahsnider.ninja)"
   ],
   "dependencies": {
@@ -29,19 +43,8 @@
     "twit": "2.2.11",
     "winston": "2.4.2"
   },
-  "description": "SmoreBot JS is the JavaScript bot written in Discord.js and Node.js it is designed to have music and server prefixes with custom settings per guild! Version 2 is the SmoreJS rewrite with migration onto the Discord.js-Commando framework.",
   "devDependencies": {
     "eslint": "4.19.1",
     "eslint-config-aqua": "4.3.0"
-  },
-  "homepage": "https://github.com/SmoreSoftware/SmoreJS#readme",
-  "license": "AGPL-3.0-or-later",
-  "main": "smore.js",
-  "name": "smorejs",
-  "repository": "SmoreSoftware/SmoreJS",
-  "scripts": {
-    "lint": "eslint .",
-    "start": "node smore.js"
-  },
-  "version": "2.0.6"
+  }
 }
