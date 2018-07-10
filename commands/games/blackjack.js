@@ -23,7 +23,7 @@ module.exports = class BlackjackCommand extends Command {
         prompt: `How many ${Currency.textPlural} do you want to bet?\n`,
         type: 'integer',
         validate: async (bet, msg) => {
-          bet = parseInt(bet);
+          bet = parseInt(bet, 10);
           const balance = await Currency.getBalance(msg.author.id);
           if (balance < bet) {
             return `
@@ -43,23 +43,21 @@ module.exports = class BlackjackCommand extends Command {
     });
   }
 
-  async run(msg, {
-    bet
-  }) {
+  run(msg, { bet }) {
     if (Blackjack.gameExists(msg.author.id)) {
       return msg.reply('You can\'t start 2 games of blackjack at the same time.');
     }
 
     const blackjack = new Blackjack(msg);
-    return msg.say(
-      `New game of blackjack started with ${msg.member.displayName} with a bet of ${Currency.convert(bet)}!`
-    ).then(async () => {
+    return msg.say(`New game of blackjack started with ${msg.member.displayName} with a bet of ${Currency.convert(bet)}!`).then(async () => {
       const balance = await Currency.getBalance(msg.author.id);
       const playerHand = blackjack.getHand();
       const dealerHand = blackjack.getHand();
       let playerHands;
 
-      if (Blackjack.handValue(playerHand) !== 'Blackjack') {
+      if (Blackjack.handValue(playerHand) === 'Blackjack') {
+        playerHands = [playerHand];
+      } else {
         playerHands = await this.getFinalHand(msg, playerHand, dealerHand, balance, bet, blackjack);
         const result = this.gameResult(Blackjack.handValue(playerHands[0]), 0);
         const noHit = playerHands.length === 1 && result === 'bust';
@@ -69,8 +67,6 @@ module.exports = class BlackjackCommand extends Command {
           !noHit) {
           blackjack.hit(dealerHand);
         }
-      } else {
-        playerHands = [playerHand];
       }
 
       blackjack.endGame();
@@ -93,11 +89,7 @@ module.exports = class BlackjackCommand extends Command {
 
         if (result !== 'bust') hideHoleCard = false;
 
-        const lossOrGain = Math.floor((['loss', 'bust'].includes(result)
-          ? -1 : result === 'push'
-            ? 0 : 1) * (hand.doubled
-          ? 2 : 1) * (playerValue === 'Blackjack'
-          ? 1.5 : 1) * bet);
+        const lossOrGain = Math.floor((['loss', 'bust'].includes(result) ? -1 : result === 'push' ? 0 : 1) * (hand.doubled ? 2 : 1) * (playerValue === 'Blackjack' ? 1.5 : 1) * bet);
 
         winnings += lossOrGain;
         const soft = Blackjack.isSoft(hand);
@@ -106,7 +98,7 @@ module.exports = class BlackjackCommand extends Command {
           value: stripIndents`
 						${hand.join(' - ')}
 						Value: ${soft ? 'Soft ' : ''}${playerValue}
-						Result: ${result.replace(/(^\w|\s\w)/g, ma => ma.toUpperCase())}${result !== 'push' ? `, ${lossOrGain}` : `, ${Currency.plural} back`}
+						Result: ${result.replace(/(^\w|\s\w)/g, ma => ma.toUpperCase())}${result === 'push' ? `, ${Currency.plural} back` : `, ${lossOrGain}`}
 					`,
           inline: true
         });
@@ -125,10 +117,8 @@ module.exports = class BlackjackCommand extends Command {
 				`
       });
 
-      embed.color = winnings > 0 ? 0x009900 : winnings < 0 ? 0x990000 : undefined;
-      embed.description = `You ${winnings === 0
-        ? 'broke even' : `${winnings > 0
-          ? 'won' : 'lost'} ${Math.abs(winnings)}`}`;
+      embed.color = winnings > 0 ? 0x009900 : winnings < 0 ? 0x990000 : null;
+      embed.description = `You ${winnings === 0 ? 'broke even' : `${winnings > 0 ? 'won' : 'lost'} ${Math.abs(winnings)}`}`;
 
       if (winnings !== 0) Currency.changeBalance(msg.author.id, winnings);
 
@@ -175,14 +165,9 @@ module.exports = class BlackjackCommand extends Command {
 
         await msg.embed({
           title: `Blackjack | ${msg.member.displayName}`,
-          description: !canDoubleDown && !canSplit
-            ? 'Type `hit` to draw another card or `stand` to pass.' : `Type \`hit\` to draw another card, ${canDoubleDown
-              ? '`double down` to double down, '
-              : ''}${canSplit
-              ? '`split` to split, ' : ''}or \`stand\` to pass.`,
+          description: !canDoubleDown && !canSplit ? 'Type `hit` to draw another card or `stand` to pass.' : `Type \`hit\` to draw another card, ${canDoubleDown ? '`double down` to double down, ' : ''}${canSplit ? '`split` to split, ' : ''}or \`stand\` to pass.`,
           fields: [{
-            name: hands.length === 1
-              ? '**Your hand**' : `**Hand ${hands.indexOf(currentHand) + 1}**`,
+            name: hands.length === 1 ? '**Your hand**' : `**Hand ${hands.indexOf(currentHand) + 1}**`,
             value: stripIndents`
 								${currentHand.join(' - ')}
 								Value: ${Blackjack.isSoft(currentHand) ? 'Soft ' : ''}${Blackjack.handValue(currentHand)}

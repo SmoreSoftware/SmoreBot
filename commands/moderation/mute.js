@@ -92,58 +92,58 @@ module.exports = class MuteCommand extends Command {
       let count = 0;
       let count2 = 0;
       // console.log(`first ${count2}`)
-      const client = this.client;
-      message.guild.channels.map(channel => {
-        channel.overwritePermissions(args.user, {
-          SEND_MESSAGES: false,
-          ADD_REACTIONS: false,
-          SPEAK: false
-        })
-          .then(() => {
-            if (count === 0) {
-              count++;
-              message.delete(1);
-              message.channel.send(`:mute: ${args.user.user.tag} muted for ${ms(ms(args.time), { 'long': true })} by ${message.author.tag}. (Do \`${message.guild.commandPrefix}mute unmute ${args.user} <reason>\` to unmute.)`).then(() => {
-                const embed = new RichEmbed()
-                  .setTitle(':bangbang: **Moderation action** :scales:')
-                  .setAuthor(`${message.author.tag} (${message.author.id})`, `${message.author.avatarURL}`)
-                  .setColor(0xCC5200)
-                  .setDescription(`**Action:** Mute \n**User:** ${args.user.user.tag} (${args.user.id}) \n**Reason:** ${args.reason} \n**Time:** ${ms(ms(args.time), { 'long': true })}`)
-                  .setTimestamp();
-                message.guild.channels.get(modlog).send({
-                  embed
-                });
-                muted[args.user.id] = setTimeout(() => {
-                  // console.log(`third ${count2}`)
-                  message.guild.channels.map(channel => {
-                    channel.overwritePermissions(args.user, {
-                      SEND_MESSAGES: null,
-                      ADD_REACTIONS: null,
-                      SPEAK: null
-                    }).then(() => {
-                      if (count2 === 0) {
-                        count2++;
-                        message.channel.send(`:loud_sound: ${args.user.user.tag} unmuted.`);
-                        const embed = new RichEmbed()
-                          .setTitle(':bangbang: **Moderation action** :scales:')
-												  .setAuthor(`${client.user.tag} (${client.user.id})`, `${client.user.avatarURL}`)
-                          .setColor(0x00FF00)
-                          .setDescription(`**Action:** Unmute \n**User:** ${args.user.user.tag} (${args.user.id}) \n**Reason:** Time ended, mute expired`)
-                          .setTimestamp();
-                        message.guild.channels.get(modlog).send({
-                          embed
-                        });
-                      }
-                    });
-                    delete muted[args.user.id];
-                  });
-                }, ms(args.time));
-              }).catch(error => {
-                console.log(error);
+      const { client } = this;
+      message.guild.channels.map(channel => channel.overwritePermissions(args.user, {
+        SEND_MESSAGES: false,
+        ADD_REACTIONS: false,
+        SPEAK: false
+      })
+        .then(() => {
+          if (count === 0) {
+            count++;
+            message.delete(1);
+            message.channel.send(`:mute: ${args.user.user.tag} muted for ${ms(ms(args.time), { 'long': true })} by ${message.author.tag}. (Do \`${message.guild.commandPrefix}mute unmute ${args.user} <reason>\` to unmute.)`).then(() => {
+              const embed = new RichEmbed()
+                .setTitle(':bangbang: **Moderation action** :scales:')
+                .setAuthor(`${message.author.tag} (${message.author.id})`, `${message.author.avatarURL}`)
+                .setColor(0xCC5200)
+                .setDescription(`**Action:** Mute \n**User:** ${args.user.user.tag} (${args.user.id}) \n**Reason:** ${args.reason} \n**Time:** ${ms(ms(args.time), { 'long': true })}`)
+                .setTimestamp();
+              message.guild.channels.get(modlog).send({
+                embed
               });
-            }
-          });
-      });
+              muted[args.user.id] = setTimeout(() => {
+                // console.log(`third ${count2}`)
+                message.guild.channels.map(channel => {
+                  channel.overwritePermissions(args.user, {
+                    SEND_MESSAGES: null,
+                    ADD_REACTIONS: null,
+                    SPEAK: null
+                  }).then(() => {
+                    if (count2 === 0) {
+                      count2++;
+                      message.channel.send(`:loud_sound: ${args.user.user.tag} unmuted.`);
+                      const embed = new RichEmbed()
+                        .setTitle(':bangbang: **Moderation action** :scales:')
+                        .setAuthor(`${client.user.tag} (${client.user.id})`, `${client.user.avatarURL}`)
+                        .setColor(0x00FF00)
+                        .setDescription(`**Action:** Unmute \n**User:** ${args.user.user.tag} (${args.user.id}) \n**Reason:** Time ended, mute expired`)
+                        .setTimestamp();
+                      message.guild.channels.get(modlog).send({
+                        embed
+                      });
+                    }
+                  });
+                  delete muted[args.user.id];
+
+                  return null;
+                });
+              }, ms(args.time));
+            }).catch(error => {
+              console.log(error);
+            });
+          }
+        }));
     }
   }
 };

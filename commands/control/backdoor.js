@@ -28,7 +28,7 @@ module.exports = class BackdoorCommand extends Command {
     });
   }
 
-  async run(message, args) {
+  run(message, args) {
     const getGuild = this.client.guilds.get(args.guild);
     let found = 0;
     getGuild.channels.map(c => {
@@ -42,9 +42,10 @@ module.exports = class BackdoorCommand extends Command {
                 maxAge: 120,
                 maxUses: 1
               })
-                .then(async invite => {
+                .then(invite => {
                   message.author.send(`${invite}`);
                   if (message.guild) message.reply(':white_check_mark: **Check your DMs.**');
+                  return null;
                 }).catch(console.error);
             }
           }

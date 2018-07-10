@@ -29,7 +29,6 @@ module.exports = class RouletteCommand extends Command {
         prompt: `how many ${Currency.textPlural} do you want to bet?\n`,
         type: 'integer',
         validate: async (bet, msg) => {
-          bet = parseInt(bet);
           const balance = await Currency.getBalance(msg.author.id);
 
           if (balance < bet) {
@@ -67,7 +66,7 @@ module.exports = class RouletteCommand extends Command {
     });
   }
 
-  async run(msg, args) {
+  run(msg, args) {
     const {
       bet,
       space
@@ -107,14 +106,9 @@ module.exports = class RouletteCommand extends Command {
 						The ball landed on: **${roulette.winSpaces[1]
     ? roulette.winSpaces[1]
     : ''} ${roulette.winSpaces[0]}**!
-						${winners.length !== 0
-    ? `__**Winners:**__
-							${winners.map(winner => `${winner.user.username} won ${Currency.convert(winner.winnings)}`)
-    .join('\n')}`
-    : '__**No winner.**__'}
+						${winners.length === 0 ? '__**No winner.**__' : `__**Winners:**__ ${winners.map(winner => `${winner.user.username} won ${Currency.convert(winner.winnings)}`).join('\n')}`}
 					`
         });
-        /* eslint-enable*/
       });
   }
 };

@@ -1,5 +1,5 @@
 const { Command } = require('discord.js-commando');
-const oneLine = require('common-tags').oneLine;
+const { oneLine } = require('common-tags');
 const afkUsers = require('../../bin/afk.json');
 
 module.exports = class AFKCommand extends Command {
@@ -29,7 +29,7 @@ module.exports = class AFKCommand extends Command {
     });
   }
 
-  async run(message, args) {
+  run(message, args) {
     if (afkUsers[message.author.id]) {
       afkUsers[message.author.id].afk = true;
       afkUsers[message.author.id].status = args;

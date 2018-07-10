@@ -1,5 +1,5 @@
 const { Command } = require('discord.js-commando');
-const oneLine = require('common-tags').oneLine;
+const { oneLine, stripIndents } = require('common-tags');
 
 module.exports = class ListGuildsCommand extends Command {
   constructor(bot) {
@@ -20,15 +20,13 @@ module.exports = class ListGuildsCommand extends Command {
     });
   }
 
-  async run(message) {
-    this.client.guilds.map(guild => {
-      message.channel.send(`Guild: ${guild.id}
-Name: ${guild.name}
-Owner: ${guild.owner.user.tag} (${guild.owner.id})
-Default Channel: #${guild.defaultChannel.name} (${guild.defaultChannel.id})
-Members: ${guild.members.size}
-Humans: ${guild.members.filter(u => !u.user.bot).size} (${Math.floor(guild.members.filter(u => !u.user.bot).size / guild.members.size * 100)}%)
-Bots: ${guild.members.filter(u => u.user.bot).size} (${Math.floor(guild.members.filter(u => u.user.bot).size / guild.members.size * 100)}%)`);
-    });
+  run(message) {
+    this.client.guilds.map(guild => message.channel.send(stripIndents`Guild: ${guild.id}
+      Name: ${guild.name}
+      Owner: ${guild.owner.user.tag} (${guild.owner.id})
+      Default Channel: #${guild.defaultChannel.name} (${guild.defaultChannel.id})
+      Members: ${guild.members.size}
+      Humans: ${guild.members.filter(u => !u.user.bot).size} (${Math.floor(guild.members.filter(u => !u.user.bot).size / guild.members.size * 100)}%)
+      Bots: ${guild.members.filter(u => u.user.bot).size} (${Math.floor(guild.members.filter(u => u.user.bot).size / guild.members.size * 100)}%)`));
   }
 };

@@ -1,5 +1,5 @@
 const { Command } = require('discord.js-commando');
-const oneLine = require('common-tags').oneLine;
+const { oneLine } = require('common-tags');
 const { RichEmbed } = require('discord.js');
 const { writeFileSync, readFileSync } = require('fs');
 
@@ -47,7 +47,7 @@ module.exports = class NoteCommand extends Command {
       const user = this.client.notes[message.author.id];
 
       if (action === 'get') {
-        const NoteToGet = parseInt(title);
+        const NoteToGet = parseInt(title, 10);
         const note = user.notes[NoteToGet];
         const embed = new RichEmbed()
           .setTitle(note.title)
@@ -93,7 +93,7 @@ To delete a note: \`${message.guild.commandPrefix}note delete (ID)\`
         await message.channel.send({ embed });
       } else
       if (action === 'delete') {
-        const NoteToDelete = parseInt(title);
+        const NoteToDelete = parseInt(title, 10);
         console.log(NoteToDelete);
         const index = user.notes.indexOf(NoteToDelete);
         user.notes.splice(index, 1);

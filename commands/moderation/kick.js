@@ -1,5 +1,5 @@
 const { Command } = require('discord.js-commando');
-const oneLine = require('common-tags').oneLine;
+const { oneLine, stripIndents } = require('common-tags');
 const { RichEmbed } = require('discord.js');
 
 module.exports = class KickCommand extends Command {
@@ -33,7 +33,7 @@ module.exports = class KickCommand extends Command {
     });
   }
 
-  async run(message, args) {
+  un(message, args) {
     const modrole = message.guild.settings.get('modrole');
     const adminrole = message.guild.settings.get('adminrole');
     const modlog = message.guild.settings.get('modlog');
@@ -44,9 +44,9 @@ module.exports = class KickCommand extends Command {
     if (!message.guild.member(this.client.user).hasPermission('KICK_MEMBERS')) return message.reply('I do not have permission to kick members!');
     try {
       args.user.kick(`${args.reason} -${message.author.tag}`).then(member => {
-        args.user.send(`You have been kicked from the server "${message.guild}"!
-Staff member: ${message.author.tag}
-Reason: "${args.reason}"`).catch(console.error);
+        args.user.send(stripIndents`You have been kicked from the server "${message.guild}"!
+        Staff member: ${message.author.tag}
+        Reason: "${args.reason}"`).catch(console.error);
         const embed = new RichEmbed()
           .setTitle(':bangbang: **Moderation action** :scales:')
           .setAuthor(`${message.author.tag} (${message.author.id})`, `${message.author.avatarURL}`)
@@ -60,13 +60,13 @@ Reason: "${args.reason}"`).catch(console.error);
         message.reply(`The user ${member.user.tag} was successfully kicked.`);
       })
         .catch(err => {
-          message.reply(`There was an error!
-\`\`\`${err}\`\`\``);
+          message.reply(stripIndents`There was an error!
+          \`\`\`${err}\`\`\``);
           console.error(err);
         });
     } catch (err) {
-      message.reply(`There was an error!
-\`\`\`${err}\`\`\``);
+      message.reply(stripIndents`There was an error!
+      \`\`\`${err}\`\`\``);
       console.error(err);
     }
   }

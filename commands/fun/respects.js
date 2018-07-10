@@ -1,5 +1,5 @@
 const { Command } = require('discord.js-commando');
-const oneLine = require('common-tags').oneLine;
+const { oneLine } = require('common-tags');
 
 module.exports = class RespectsCommand extends Command {
   constructor(bot) {
@@ -17,7 +17,7 @@ module.exports = class RespectsCommand extends Command {
     });
   }
 
-  async run(message) {
+  run(message) {
     message.channel.send('Press F to pay respects').then(m => {
       m.react('🇫');
       message.delete();

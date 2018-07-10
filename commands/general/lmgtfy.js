@@ -1,5 +1,6 @@
 const { Command } = require('discord.js-commando');
-const oneLine = require('common-tags').oneLine;
+const { Util } = require('discord.js');
+const { oneLine, stripIndents } = require('common-tags');
 
 module.exports = class LmgtfyCommand extends Command {
   constructor(client) {
@@ -23,8 +24,7 @@ module.exports = class LmgtfyCommand extends Command {
         infinite: false
       },
       {
-        key: 'toSearch',
-        label: 'search',
+        key: 'query',
         prompt: 'What would you like to search?',
         type: 'string',
         infinite: false
@@ -34,9 +34,8 @@ module.exports = class LmgtfyCommand extends Command {
     });
   }
 
-  async run(message, args) {
-    const toLink = args.toSearch.replace(/\s+/g, '+');
-    message.channel.send(`Dear ${args.member}, your friend decided to help you out in your search for finding "${args.toSearch}".
-http://lmgtfy.com/?q=${toLink}`);
+  run(message, { member, query }) {
+    message.channel.send(stripIndents`Dear ${member}, your friend decided to help you out in your search for finding "${Util.escapeMarkdown(query)}".
+    https://lmgtfy.com/?q=${encodeURIComponent(query)}`);
   }
 };

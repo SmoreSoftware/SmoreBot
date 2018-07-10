@@ -1,5 +1,5 @@
 const { Command } = require('discord.js-commando');
-const oneLine = require('common-tags').oneLine;
+const { oneLine } = require('common-tags');
 const childProcess = require('child_process');
 
 module.exports = class ExecCommand extends Command {
@@ -21,10 +21,10 @@ module.exports = class ExecCommand extends Command {
     });
   }
 
-  async run(message) {
+  run(message) {
     const toExec = message.content.split(' ').slice(1);
     childProcess.exec(toExec.join(' '), {},
-      (err, stdout, stderr) => {
+      (err, stdout) => {
         if (err) return message.channel.sendCode('', err.message);
         message.channel.sendCode('', stdout);
       }); // .catch(console.error)

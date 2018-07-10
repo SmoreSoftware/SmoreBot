@@ -11,15 +11,13 @@ module.exports = class RankCommand extends Command {
       group: 'general',
       memberName: 'rank',
       description: 'Adds or removes a public role to a user.',
-      details: oneLine`
-			Do you want to opt-in to a special channel? Do you want to show what games you play?
-			This command allows members to get or remove public roles.
-			`,
+      details: oneLine`Do you want to opt-in to a special channel? Do you want to show what games you play?
+			This command allows members to get or remove public roles.`,
       examples: ['rank give ping'],
       args: [{
         key: 'action',
         label: 'action',
-        prompt: 'What action would you like to preform? (\`give\`, \`take\`, or \`list\`)',
+        prompt: 'What action would you like to preform? (`give`, `take`, or `list`)',
         type: 'string',
         infinite: false
       },
@@ -36,7 +34,7 @@ module.exports = class RankCommand extends Command {
     });
   }
 
-  async run(message, args) {
+  run(message, args) {
     if (args.action.toLowerCase() === 'give' || args.action.toLowerCase() === 'add') {
       if (!message.guild.member(this.client.user).hasPermission('MANAGE_ROLES')) return message.reply('I do not have permission to manage roles! Contact a mod or admin.');
       const rankToGive = message.guild.roles.find('name', args.rank);

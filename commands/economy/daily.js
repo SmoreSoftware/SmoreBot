@@ -1,5 +1,5 @@
 const { Command } = require('discord.js-commando');
-const oneLine = require('common-tags').oneLine;
+const { oneLine } = require('common-tags');
 const sql = require('sqlite');
 const fs = require('fs');
 
@@ -26,7 +26,7 @@ module.exports = class DailyCommand extends Command {
     });
   }
 
-  async run(message) {
+  run(message) {
     fs.open('./db.lock', 'r', err => {
       if (err) {
         if (err.code === 'ENOENT') {
@@ -42,7 +42,7 @@ module.exports = class DailyCommand extends Command {
     });
     fs.closeSync(fs.openSync('./db.lock', 'w'));
 
-    async function onSuccess() {
+    function onSuccess() {
       sql.open('./bin/bank.sqlite');
       sql.get(`SELECT * FROM bank WHERE userId ="${message.author.id}"`).then(async row => {
         if (!row) {
@@ -51,9 +51,9 @@ module.exports = class DailyCommand extends Command {
           message.reply('Account created.');
           return;
         }
-        const curBal = parseInt(row.balance);
+        const curBal = parseInt(row.balance, 10);
         const newBal = curBal + 100;
-        const curPoints = parseInt(row.points);
+        const curPoints = parseInt(row.points, 10);
         sql.run(`UPDATE bank SET balance = ${newBal} WHERE userId = ${message.author.id}`);
         sql.run(`UPDATE bank SET points = ${curPoints} WHERE userId = ${message.author.id}`);
         await message.reply(`Daily 100 SBT awarded. Your balance is now ${row.balance + 100} SBT.

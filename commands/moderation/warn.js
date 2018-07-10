@@ -1,5 +1,5 @@
 const { Command } = require('discord.js-commando');
-const oneLine = require('common-tags').oneLine;
+const { oneLine } = require('common-tags');
 const { RichEmbed } = require('discord.js');
 
 module.exports = class WarnCommand extends Command {
@@ -33,7 +33,7 @@ module.exports = class WarnCommand extends Command {
     });
   }
 
-  async run(message, args) {
+  run(message, args) {
     const modrole = message.guild.settings.get('modrole');
     const adminrole = message.guild.settings.get('adminrole');
     const modlog = message.guild.settings.get('modlog');

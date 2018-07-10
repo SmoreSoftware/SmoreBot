@@ -1,5 +1,5 @@
 const { Command } = require('discord.js-commando');
-const oneLine = require('common-tags').oneLine;
+const { oneLine } = require('common-tags');
 
 module.exports = class SmoreCommand extends Command {
   constructor(client) {
@@ -9,17 +9,15 @@ module.exports = class SmoreCommand extends Command {
       group: 'fun',
       memberName: 'smore',
       description: 'Displays a random picture of S\'mores Pop-Tarts.',
-      details: oneLine`
-				Our bot is based on S'mores Pop-Tarts.
+      details: oneLine`Our bot is based on S'mores Pop-Tarts.
         We figured we could honor that with a command to display
-        a random picture of our namesake.
-			`,
-      examples: ['smore']
+        a random picture of our namesake.`
     });
   }
 
-  async run(message) {
-    let toSmore = ['https://www.poptarts.com/content/NorthAmerica/pop_tarts/en_US/pages/flavors/bakery/frosted-s-mores-toaster-pastries/jcr:content/productContent/par/responsiveimage.img.png/1475703429032.png',
+  run(message) {
+    const toSmore = [
+      'https://www.poptarts.com/content/NorthAmerica/pop_tarts/en_US/pages/flavors/bakery/frosted-s-mores-toaster-pastries/jcr:content/productContent/par/responsiveimage.img.png/1475703429032.png',
       'https://i.ytimg.com/vi/aH8Xhz8a6VA/maxresdefault.jpg',
       'https://i5.walmartimages.com/asr/a666e566-cb3c-49e3-b53e-ec969e4c85c4_1.3194f476fa1cb6a1751cb559c2a67b58.jpeg',
       'https://upload.wikimedia.org/wikipedia/commons/b/be/Pop-Tarts-Smores.jpg',
@@ -41,8 +39,8 @@ module.exports = class SmoreCommand extends Command {
       'https://thejelliedbelly.files.wordpress.com/2013/12/pop-t.jpg',
       'https://runningtofit.files.wordpress.com/2010/07/img_3456.jpg',
       'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTzMukpkvYLL_AVtL1JV11mOXcuoecML2K1t1ohfhtRLH-8hNSmhQ',
-      'http://theswca.com/images-food/poptarts-smores.jpg'];
-    toSmore = toSmore[Math.floor(Math.random() * toSmore.length)];
-    message.channel.send(toSmore);
+      'http://theswca.com/images-food/poptarts-smores.jpg'
+    ];
+    message.channel.send(toSmore[Math.floor(Math.random() * toSmore.length)]);
   }
 };

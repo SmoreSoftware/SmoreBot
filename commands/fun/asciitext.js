@@ -1,5 +1,5 @@
 const { Command } = require('discord.js-commando');
-const oneLine = require('common-tags').oneLine;
+const { oneLine } = require('common-tags');
 const ascii = require('figlet');
 
 module.exports = class AsciiTextCommand extends Command {
@@ -29,7 +29,7 @@ module.exports = class AsciiTextCommand extends Command {
     });
   }
 
-  async run(message, args) {
+  run(message, args) {
     ascii(args.toAscii, {
       horizontalLayout: 'fitted',
       verticalLayout: 'fitted'

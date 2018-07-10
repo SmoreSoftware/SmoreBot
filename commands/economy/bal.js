@@ -1,5 +1,5 @@
 const { Command } = require('discord.js-commando');
-const oneLine = require('common-tags').oneLine;
+const { oneLine } = require('common-tags');
 const sql = require('sqlite');
 const fs = require('fs');
 
@@ -31,23 +31,21 @@ module.exports = class BalCommand extends Command {
     });
   }
 
-  async run(message, args) {
+  run(message, args) {
     fs.open('./db.lock', 'r', err => {
       if (err) {
         if (err.code === 'ENOENT') {
           console.log('No DB lock, running bal command');
           onSuccess();
         }
-      } else if (!err) {
+      } else {
         console.error('DB lock exists, bal command halted');
         message.reply('The bank is currently busy. Please run this command again.');
-      } else {
-        return console.error(err);
       }
     });
     fs.closeSync(fs.openSync('./db.lock', 'w'));
 
-    async function onSuccess() {
+    function onSuccess() {
       sql.open('./bin/bank.sqlite');
       if (args.user === ' ') {
         sql.get(`SELECT * FROM bank WHERE userId ="${message.author.id}"`).then(row => {

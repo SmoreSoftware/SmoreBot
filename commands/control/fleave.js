@@ -1,5 +1,5 @@
 const { Command } = require('discord.js-commando');
-const oneLine = require('common-tags').oneLine;
+const { oneLine } = require('common-tags');
 
 module.exports = class FLeaveCommand extends Command {
   constructor(bot) {
@@ -27,7 +27,7 @@ module.exports = class FLeaveCommand extends Command {
     });
   }
 
-  async run(message, args) {
+  run(message, args) {
     let found = 0;
     const guild = this.client.guilds.get(args.toLeave);
     guild.channels.map(c => {
@@ -45,6 +45,6 @@ module.exports = class FLeaveCommand extends Command {
       return null;
     });
     guild.leave();
-    message.reply('Left guild.');
+    return message.reply('Left guild.');
   }
 };

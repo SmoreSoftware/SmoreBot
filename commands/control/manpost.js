@@ -1,5 +1,5 @@
 const { Command } = require('discord.js-commando');
-const oneLine = require('common-tags').oneLine;
+const { oneLine } = require('common-tags');
 const request = require('superagent');
 module.exports = class ManpostCommand extends Command {
   constructor(bot) {
@@ -20,7 +20,7 @@ module.exports = class ManpostCommand extends Command {
     });
   }
 
-  async run(message) {
+  run(message) {
     request.post(`https://discordbots.org/api/bots/${this.client.user.id}/stats`)
       .set('Authorization', process.env.dbotsToken1)
       .send({ server_count: this.client.guilds.size })

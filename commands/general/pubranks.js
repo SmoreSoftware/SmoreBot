@@ -1,5 +1,5 @@
 const { Command } = require('discord.js-commando');
-const oneLine = require('common-tags').oneLine;
+const { oneLine } = require('common-tags');
 const fs = require('fs');
 const ranks = require('../../bin/ranks.json');
 // const rawJSON = require('./ranks.json');
@@ -17,11 +17,11 @@ module.exports = class PubRanksCommand extends Command {
       This command allows for management of a server's public roles.
       Note: Adding and removing public roles must be done by someone with the MANAGE_ROLES permission.
 			`,
-      examples: ['pubrank add ping'],
+      examples: ['pubranks add ping'],
       args: [{
         key: 'action',
         label: 'action',
-        prompt: 'What action would you like to preform? (\`add\`, \`remove\`, or \`list\`)',
+        prompt: 'What action would you like to preform? (`add`, `remove`, or `list`)',
         type: 'string',
         infinite: false
       },
@@ -38,7 +38,7 @@ module.exports = class PubRanksCommand extends Command {
     });
   }
 
-  async run(message, args) {
+  run(message, args) {
     if (args.action.toLowerCase() === 'add') {
       if (!message.guild.member(message.author).hasPermission('MANAGE_ROLES', false, true, true)) return message.reply(`You do not have permission to perform this action! Did you mean \`${message.guild.commandPrefix}rank give\`?`);
       if (!ranks[message.guild.id]) {

@@ -1,5 +1,5 @@
 const { Command } = require('discord.js-commando');
-const oneLine = require('common-tags').oneLine;
+const { oneLine } = require('common-tags');
 
 module.exports = class PurgeCommand extends Command {
   constructor(client) {
@@ -30,7 +30,7 @@ module.exports = class PurgeCommand extends Command {
     });
   }
 
-  async run(message, args) {
+  run(message, args) {
     const modrole = message.guild.settings.get('modrole');
     const adminrole = message.guild.settings.get('adminrole');
     const modlog = message.guild.settings.get('modlog');

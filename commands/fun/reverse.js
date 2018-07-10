@@ -1,5 +1,5 @@
 const { Command } = require('discord.js-commando');
-const oneLine = require('common-tags').oneLine;
+const { oneLine } = require('common-tags');
 
 module.exports = class ReverseCommand extends Command {
   constructor(client) {
@@ -25,7 +25,7 @@ module.exports = class ReverseCommand extends Command {
     });
   }
 
-  async run(message, args) {
+  run(message, args) {
     let reversed = '';
     let i = args.toSay.length;
 
