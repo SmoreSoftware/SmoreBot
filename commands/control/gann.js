@@ -9,7 +9,7 @@ module.exports = class GAnnCommand extends Command {
       group: 'control',
       memberName: 'gann',
       description: 'Sends a global announcement.',
-      details: oneLine`
+      details: oneLine `
 				This command sends an announcement to all servers.
         Permission locked to bot owners for security reasons.
 			`,
@@ -29,12 +29,12 @@ module.exports = class GAnnCommand extends Command {
 
   async run(message, args) {
     if (message.author.id === '197891949913571329') {
-      let toSay = stripIndents`${args.msg}
-      ~TJ, SmoreSoftware Owner`;
-		  this.client.guilds.map(guild => {
+      let toSay = `${args.msg}
+~TJ, SmoreSoftware Chief Operating Officer`;
+      this.client.guilds.map(guild => {
         let found = 0;
         toSay = `${args.msg}
-~TJ, SmoreSoftware Owner
+~TJ, SmoreSoftware Chief Operating Officer
 Want to turn these announcements off? Do \`${guild.commandPrefix}settings add announcements off\` to opt out.`;
         const setting = guild.settings.get('announcements');
         if (setting === 'off') return;
@@ -55,11 +55,11 @@ Want to turn these announcements off? Do \`${guild.commandPrefix}settings add an
       message.reply(`Execution completed. Shouted "${toSay}"`);
     } else if (message.author.id === '251383432331001856') {
       let toSay = `${args.msg}
-~Chrono, SmoreSoftware Founder & Retired Developer`;
+~Chrono, SmoreSoftware Chief Executive Officer`;
       this.client.guilds.map(guild => {
         let found = 0;
         toSay = `${args.msg}
-~Chrono, SmoreSoftware Founder & Retired Developer
+~Chrono, SmoreSoftware Chief Executive Officer
 Want to turn these announcements off? Do \`${guild.commandPrefix}settings add announcements off\` to opt out.`;
         const setting = guild.settings.get('announcements');
         if (setting === 'off') return;
@@ -77,13 +77,13 @@ Want to turn these announcements off? Do \`${guild.commandPrefix}settings add an
         });
       });
       message.reply(`Execution completed. Shouted "${toSay}"`);
-    } else if (message.author.id === '156019409658314752') {
+    } else if (message.author.id === '250432205145243649') {
       let toSay = `${args.msg}
-~Ciel, SmoreSoftware CEO & Host`;
+~Jdender, SmoreSoftware Chief Technology Officer`;
       this.client.guilds.map(guild => {
         let found = 0;
         toSay = `${args.msg}
-~Ciel, SmoreSoftware CEO & Host
+~Jdender, SmoreSoftware Chief Technology Officer
 Want to turn these announcements off? Do \`${guild.commandPrefix}settings add announcements off\` to opt out.`;
         const setting = guild.settings.get('announcements');
         if (setting === 'off') return;
