@@ -136,26 +136,26 @@ client
     console.error(`Error in command ${cmd.groupID}:${cmd.memberName}`, err);
   })
   .on('commandBlocked', (msg, reason) => {
-    console.log(oneLine`
+    console.log(oneLine `
 			Command ${msg.command ? `${msg.command.groupID}:${msg.command.memberName}` : ''}
 			blocked; ${reason}
 		`);
   })
   .on('commandPrefixChange', (guild, prefix) => {
-    console.log(oneLine`
+    console.log(oneLine `
 			Prefix ${prefix === '' ? 'removed' : `changed to ${prefix || 'the default'}`}
 			${guild ? `in guild ${guild.name} (${guild.id})` : 'globally'}.
 		`);
   })
   .on('commandStatusChange', (guild, command, enabled) => {
-    console.log(oneLine`
+    console.log(oneLine `
 			Command ${command.groupID}:${command.memberName}
 			${enabled ? 'enabled' : 'disabled'}
 			${guild ? `in guild ${guild.name} (${guild.id})` : 'globally'}.
 		`);
   })
   .on('groupStatusChange', (guild, group, enabled) => {
-    console.log(oneLine`
+    console.log(oneLine `
 			Group ${group.id}
 			${enabled ? 'enabled' : 'disabled'}
 			${guild ? `in guild ${guild.name} (${guild.id})` : 'globally'}.
@@ -326,32 +326,32 @@ Now on: ${client.guilds.size} servers`);
 
     const onSuccess = () => {
       sql.get(`SELECT * FROM bank WHERE userId ="${message.author.id}"`).then(row => {
-        if (row) {
-          if (parseInt(row.points, 10) >= 100) {
-            const curBal = parseInt(row.balance, 10);
-            const newBal = curBal + 1;
-            sql.run(`UPDATE bank SET balance = ${newBal} WHERE userId = ${message.author.id}`);
-            sql.run(`UPDATE bank SET points = ${0} WHERE userId = ${message.author.id}`);
+          if (row) {
+            if (parseInt(row.points, 10) >= 100) {
+              const curBal = parseInt(row.balance, 10);
+              const newBal = curBal + 1;
+              sql.run(`UPDATE bank SET balance = ${newBal} WHERE userId = ${message.author.id}`);
+              sql.run(`UPDATE bank SET points = ${0} WHERE userId = ${message.author.id}`);
+            }
+            if (!cooldownUsers.includes(message.author.id)) {
+              sql.get(`SELECT * FROM bank WHERE userId ="${message.author.id}"`).then(row => {
+                const newPts = Math.floor(Math.abs((Math.random() * (10 - 36)) + 10));
+                sql.run(`UPDATE bank SET points = ${row.points + newPts} WHERE userId = ${message.author.id}`);
+                cooldownUsers.push(message.author.id);
+              });
+            } else if (!waitingUsers.includes(message.author.id)) {
+              waitingUsers.push(message.author.id);
+              setTimeout(() => {
+                const index1 = cooldownUsers.indexOf(message.author.id);
+                const index2 = waitingUsers.indexOf(message.author.id);
+                cooldownUsers.splice(index1, 1);
+                waitingUsers.splice(index2, 1);
+              }, ms('1m'));
+            }
+          } else {
+            sql.run('INSERT INTO bank (userId, balance, points) VALUES (?, ?, ?)', [message.author.id, 0, 0]);
           }
-          if (!cooldownUsers.includes(message.author.id)) {
-            sql.get(`SELECT * FROM bank WHERE userId ="${message.author.id}"`).then(row => {
-              const newPts = Math.floor(Math.abs((Math.random() * (10 - 36)) + 10));
-              sql.run(`UPDATE bank SET points = ${row.points + newPts} WHERE userId = ${message.author.id}`);
-              cooldownUsers.push(message.author.id);
-            });
-          } else if (!waitingUsers.includes(message.author.id)) {
-            waitingUsers.push(message.author.id);
-            setTimeout(() => {
-              const index1 = cooldownUsers.indexOf(message.author.id);
-              const index2 = waitingUsers.indexOf(message.author.id);
-              cooldownUsers.splice(index1, 1);
-              waitingUsers.splice(index2, 1);
-            }, ms('1m'));
-          }
-        } else {
-          sql.run('INSERT INTO bank (userId, balance, points) VALUES (?, ?, ?)', [message.author.id, 0, 0]);
-        }
-      })
+        })
         .catch(err => {
           if (err) console.error(`${err} \n${err.stack}`);
           sql.run('CREATE TABLE IF NOT EXISTS bank (userId TEXT, balance INTEGER, points INTEGER)').then(() => {
@@ -389,7 +389,6 @@ setInterval(() => {
       }
     } else {
       console.error('DB lock exists, transaction polling halted');
-    } else {
       return console.error(err);
     }
   });
@@ -425,38 +424,38 @@ setInterval(() => {
         console.log(JSON.stringify(body, null, 2));
         body.forEach(t => {
           sql.get(`SELECT * FROM bank WHERE userId ="${t.user}"`).then(row => {
-            if (row) {
-              const curBal = parseInt(row.balance, 10);
-              const newBal = curBal + t.amount;
-              sql.run(`UPDATE bank SET balance = ${newBal} WHERE userId = ${t.user}`);
-              const transAuth = client.users.get(t.user);
-              const embed = new RichEmbed()
-                .setTitle('Discoin Transaction recieved\n')
-                .setAuthor(transAuth.tag, transAuth.avatarURL)
-                .setColor(0x0000FF)
-                .addField('Transaction Reciept:', t.receipt, true)
-                .addField('Transaction Status:', 'Approved', true)
-                .addField('Transaction Amount:', `${t.amount} SBT`, true)
-                .addField('Converted From:', t.source, true)
-                .addField('Reception Time:', getDateTime(), true)
-                .setFooter(`Transaction made at ${t.timestamp}`);
-              transAuth.send({ embed });
-            } else {
-              sql.run('INSERT INTO bank (userId, balance, points) VALUES (?, ?, ?)', [t.user, t.amount, 0]);
-              const transAuth = client.users.get(t.user);
-              const embed = new RichEmbed()
-                .setTitle('Discoin Transaction recieved\n')
-                .setAuthor(transAuth.tag, transAuth.avatarURL)
-                .setColor(0x0000FF)
-                .addField('Transaction Reciept:', t.receipt, true)
-                .addField('Transaction Status:', 'Approved', true)
-                .addField('Transaction Amount:', `${t.amount} SBT`, true)
-                .addField('Converted From:', t.source, true)
-                .addField('Reception Time:', getDateTime(), true)
-                .setFooter(`Transaction made at ${t.timestamp}`);
-              transAuth.send({ embed });
-            }
-          })
+              if (row) {
+                const curBal = parseInt(row.balance, 10);
+                const newBal = curBal + t.amount;
+                sql.run(`UPDATE bank SET balance = ${newBal} WHERE userId = ${t.user}`);
+                const transAuth = client.users.get(t.user);
+                const embed = new RichEmbed()
+                  .setTitle('Discoin Transaction recieved\n')
+                  .setAuthor(transAuth.tag, transAuth.avatarURL)
+                  .setColor(0x0000FF)
+                  .addField('Transaction Reciept:', t.receipt, true)
+                  .addField('Transaction Status:', 'Approved', true)
+                  .addField('Transaction Amount:', `${t.amount} SBT`, true)
+                  .addField('Converted From:', t.source, true)
+                  .addField('Reception Time:', getDateTime(), true)
+                  .setFooter(`Transaction made at ${t.timestamp}`);
+                transAuth.send({ embed });
+              } else {
+                sql.run('INSERT INTO bank (userId, balance, points) VALUES (?, ?, ?)', [t.user, t.amount, 0]);
+                const transAuth = client.users.get(t.user);
+                const embed = new RichEmbed()
+                  .setTitle('Discoin Transaction recieved\n')
+                  .setAuthor(transAuth.tag, transAuth.avatarURL)
+                  .setColor(0x0000FF)
+                  .addField('Transaction Reciept:', t.receipt, true)
+                  .addField('Transaction Status:', 'Approved', true)
+                  .addField('Transaction Amount:', `${t.amount} SBT`, true)
+                  .addField('Converted From:', t.source, true)
+                  .addField('Reception Time:', getDateTime(), true)
+                  .setFooter(`Transaction made at ${t.timestamp}`);
+                transAuth.send({ embed });
+              }
+            })
             .catch(err => {
               if (err) return console.error(`${err} \n${err.stack}`);
               sql.run('CREATE TABLE IF NOT EXISTS bank (userId TEXT, balance INTEGER, points INTEGER)').then(() => {
